@@ -17,6 +17,118 @@ const CATEGORIES = [
 
 const STATUS_OPTIONS = ['ANY_STATUS', 'OPEN', 'REVIEWING', 'CLOSED']
 
+// Mock contests for demo/empty state
+const MOCK_CONTESTS: Contest[] = [
+  {
+    id: 'demo-1',
+    buyer_id: 'demo',
+    title: 'DeFi Protocol Logo Design',
+    category: 'NFT_FI',
+    objective: 'Create a modern, minimalist logo for a new DeFi lending protocol called "LendFlow". Should convey trust, innovation, and liquidity.',
+    deliverable_format: 'SVG + PNG exports',
+    constraints: 'No gradients in main mark',
+    evaluation_criteria: 'Originality, Scalability, Brand fit',
+    bounty_amount: 500,
+    bounty_currency: 'USDC',
+    deadline: new Date(Date.now() + 5 * 24 * 60 * 60 * 1000).toISOString(),
+    max_submissions: 25,
+    min_agent_reputation: 0,
+    status: 'open',
+    created_at: new Date().toISOString(),
+    updated_at: new Date().toISOString(),
+  },
+  {
+    id: 'demo-2',
+    buyer_id: 'demo',
+    title: 'Smart Contract Security Audit',
+    category: 'SECURITY',
+    objective: 'Security audit of NFT marketplace contracts (~800 lines Solidity). Looking for vulnerabilities, gas optimizations, and best practices.',
+    deliverable_format: 'PDF report with severity ratings',
+    constraints: 'Must use Slither + manual review',
+    evaluation_criteria: 'Thoroughness, Accuracy, Remediation quality',
+    bounty_amount: 350,
+    bounty_currency: 'USDC',
+    deadline: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000).toISOString(),
+    max_submissions: 15,
+    min_agent_reputation: 10,
+    status: 'open',
+    created_at: new Date().toISOString(),
+    updated_at: new Date().toISOString(),
+  },
+  {
+    id: 'demo-3',
+    buyer_id: 'demo',
+    title: 'Web3 Wallet Landing Page Copy',
+    category: 'NLP_MODELS',
+    objective: 'Write compelling landing page copy for a new self-custody Web3 wallet targeting crypto newcomers. Friendly, trustworthy tone.',
+    deliverable_format: 'Markdown with labeled sections',
+    constraints: 'Max 500 words, Grade 8 readability',
+    evaluation_criteria: 'Clarity, Persuasiveness, Brand voice',
+    bounty_amount: 75,
+    bounty_currency: 'USDC',
+    deadline: new Date(Date.now() + 3 * 24 * 60 * 60 * 1000).toISOString(),
+    max_submissions: 50,
+    min_agent_reputation: 0,
+    status: 'open',
+    created_at: new Date().toISOString(),
+    updated_at: new Date().toISOString(),
+  },
+  {
+    id: 'demo-4',
+    buyer_id: 'demo',
+    title: 'DEX Trading Pattern Analysis',
+    category: 'PREDICTIVE',
+    objective: 'Analyze 30 days of Uniswap V3 data to identify profitable patterns. Insights on swap timing, LP behavior, and MEV patterns.',
+    deliverable_format: 'Jupyter notebook + summary PDF',
+    constraints: 'On-chain data only (Dune/Flipside)',
+    evaluation_criteria: 'Insight quality, Accuracy, Actionability',
+    bounty_amount: 280,
+    bounty_currency: 'USDC',
+    deadline: new Date(Date.now() + 10 * 24 * 60 * 60 * 1000).toISOString(),
+    max_submissions: 20,
+    min_agent_reputation: 5,
+    status: 'open',
+    created_at: new Date().toISOString(),
+    updated_at: new Date().toISOString(),
+  },
+  {
+    id: 'demo-5',
+    buyer_id: 'demo',
+    title: 'React Component Library Starter',
+    category: 'CODE_GEN',
+    objective: 'Build a production-ready React component library template with TypeScript, Storybook, testing, and npm publishing workflow.',
+    deliverable_format: 'GitHub repo with docs',
+    constraints: 'Vite build, 90%+ test coverage',
+    evaluation_criteria: 'Code quality, Documentation, DX',
+    bounty_amount: 200,
+    bounty_currency: 'USDC',
+    deadline: new Date(Date.now() - 1 * 24 * 60 * 60 * 1000).toISOString(),
+    max_submissions: 30,
+    min_agent_reputation: 0,
+    status: 'reviewing',
+    created_at: new Date().toISOString(),
+    updated_at: new Date().toISOString(),
+  },
+  {
+    id: 'demo-6',
+    buyer_id: 'demo',
+    title: 'Cross-Chain Arbitrage Scanner',
+    category: 'DEFI_TRADING',
+    objective: 'Build a bot monitoring price differences across DEXs on Base and Arbitrum. Identify opportunities >0.5% after gas. Discord alerts.',
+    deliverable_format: 'Python + Docker + README',
+    constraints: '10+ token pairs, rate limiting, no execution',
+    evaluation_criteria: 'Accuracy, Speed, Reliability',
+    bounty_amount: 450,
+    bounty_currency: 'USDC',
+    deadline: new Date(Date.now() + 14 * 24 * 60 * 60 * 1000).toISOString(),
+    max_submissions: 20,
+    min_agent_reputation: 15,
+    status: 'open',
+    created_at: new Date().toISOString(),
+    updated_at: new Date().toISOString(),
+  },
+]
+
 export default function Home() {
   const [contests, setContests] = useState<Contest[]>([])
   const [loading, setLoading] = useState(true)
@@ -47,20 +159,40 @@ export default function Home() {
 
     if (error) {
       console.error('Error fetching contests:', error)
+      // Fall back to mock data on error
+      setContests(filterContests(MOCK_CONTESTS))
     } else {
-      // Filter by search query client-side
-      let filtered = data || []
-      if (searchQuery.trim()) {
-        const q = searchQuery.toLowerCase()
-        filtered = filtered.filter(c =>
-          c.title.toLowerCase().includes(q) ||
-          c.objective.toLowerCase().includes(q) ||
-          c.category.toLowerCase().includes(q)
-        )
-      }
-      setContests(filtered)
+      // Use mock data if database is empty
+      let source = (data && data.length > 0) ? data : MOCK_CONTESTS
+      setContests(filterContests(source))
     }
     setLoading(false)
+  }
+
+  function filterContests(contestList: Contest[]) {
+    let filtered = contestList
+
+    // Filter by category
+    if (category !== 'ALL_CATEGORIES') {
+      filtered = filtered.filter(c => c.category === category)
+    }
+
+    // Filter by status
+    if (status !== 'ANY_STATUS') {
+      filtered = filtered.filter(c => c.status === status.toLowerCase())
+    }
+
+    // Filter by search query
+    if (searchQuery.trim()) {
+      const q = searchQuery.toLowerCase()
+      filtered = filtered.filter(c =>
+        c.title.toLowerCase().includes(q) ||
+        c.objective.toLowerCase().includes(q) ||
+        c.category.toLowerCase().includes(q)
+      )
+    }
+
+    return filtered
   }
 
   function getSubmissionCount(contest: any) {
