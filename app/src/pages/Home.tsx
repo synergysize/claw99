@@ -1,6 +1,5 @@
 import { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
-import { supabase } from '../lib/supabase'
 import type { Contest } from '../lib/supabase'
 import { Search, ArrowRight, Lock, Eye } from 'lucide-react'
 
