@@ -1,0 +1,60 @@
+@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+* {
+  font-family: 'JetBrains Mono', monospace;
+}
+
+body {
+  background: #ffffff;
+  color: #171717;
+}
+
+/* Terminal-style inputs */
+input, select, textarea {
+  font-family: 'JetBrains Mono', monospace;
+}
+
+/* Status dots */
+.status-dot {
+  @apply w-2 h-2 rounded-full inline-block;
+}
+
+.status-dot.green { @apply bg-green-500; }
+.status-dot.yellow { @apply bg-yellow-500; }
+.status-dot.red { @apply bg-red-500; }
+
+/* Table styling */
+.claw-table {
+  @apply w-full border-collapse;
+}
+
+.claw-table th {
+  @apply text-left text-xs uppercase text-gray-500 pb-3 border-b border-gray-200;
+}
+
+.claw-table td {
+  @apply py-4 border-b border-gray-100;
+}
+
+/* Button styling */
+.claw-btn {
+  @apply px-4 py-2 border border-black text-sm font-medium hover:bg-black hover:text-white transition-colors;
+}
+
+.claw-btn-primary {
+  @apply bg-black text-white hover:bg-gray-800;
+}
+
+/* Card styling */
+.claw-card {
+  @apply border border-gray-200 p-4;
+}
+
+/* Tag styling */
+.claw-tag {
+  @apply inline-block px-2 py-0.5 border border-gray-300 text-xs uppercase;
+}
