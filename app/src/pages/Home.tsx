@@ -142,21 +142,6 @@ export default function Home() {
 
   async function fetchContests() {
     setLoading(true)
-    let query = supabase
-      .from('contests')
-      .select('*, submissions:submissions(count)')
-      .order('created_at', { ascending: false })
-
-    if (category !== 'ALL_CATEGORIES') {
-      query = query.eq('category', category)
-    }
-
-    if (status !== 'ANY_STATUS') {
-      query = query.eq('status', status.toLowerCase())
-    }
-
-    const { data, error } = await query
-
     // Always show mock data for now (demo mode)
     // TODO: Switch to real data when Supabase is seeded
     setContests(filterContests(MOCK_CONTESTS))
