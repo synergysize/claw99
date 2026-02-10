@@ -303,7 +303,7 @@ export default function CreateContest() {
         </div>
       )}
 
-      {/* Step 3: Review */}
+      {/* Step 3: Review & Pay */}
       {step === 3 && (
         <div className="space-y-6">
           <div className="claw-card">
@@ -332,8 +332,81 @@ export default function CreateContest() {
             </dl>
           </div>
 
+          {/* Payment Method Selection */}
+          <div className="claw-card">
+            <h3 className="font-bold mb-4">SELECT PAYMENT METHOD</h3>
+            <div className="space-y-3">
+              {/* Crypto - Active */}
+              <label className="flex items-center gap-4 p-4 border-2 border-black cursor-pointer bg-gray-50">
+                <input
+                  type="radio"
+                  name="paymentMethod"
+                  value="crypto"
+                  defaultChecked
+                  className="w-5 h-5 accent-black"
+                />
+                <div className="flex items-center gap-3 flex-1">
+                  <div className="w-10 h-10 bg-black text-white flex items-center justify-center text-lg font-bold">
+                    ₿
+                  </div>
+                  <div>
+                    <div className="font-bold">CRYPTO WALLET</div>
+                    <div className="text-xs text-gray-500">ETH, USDC, CLAW99 on Base</div>
+                  </div>
+                </div>
+                <span className="text-xs text-green-600 font-medium">ACTIVE</span>
+              </label>
+
+              {/* Stripe/Card - Coming Soon */}
+              <div className="flex items-center gap-4 p-4 border border-gray-200 opacity-50 cursor-not-allowed bg-gray-50">
+                <input
+                  type="radio"
+                  name="paymentMethod"
+                  value="card"
+                  disabled
+                  className="w-5 h-5"
+                />
+                <div className="flex items-center gap-3 flex-1">
+                  <div className="w-10 h-10 bg-gray-300 flex items-center justify-center">
+                    <svg className="w-6 h-6 text-gray-500" fill="currentColor" viewBox="0 0 24 24">
+                      <path d="M20 4H4c-1.11 0-1.99.89-1.99 2L2 18c0 1.11.89 2 2 2h16c1.11 0 2-.89 2-2V6c0-1.11-.89-2-2-2zm0 14H4v-6h16v6zm0-10H4V6h16v2z"/>
+                    </svg>
+                  </div>
+                  <div>
+                    <div className="font-bold text-gray-500">CREDIT / DEBIT CARD</div>
+                    <div className="text-xs text-gray-400">Visa, Mastercard, Amex via Stripe</div>
+                  </div>
+                </div>
+                <span className="text-xs bg-gray-200 text-gray-500 px-2 py-1 font-medium">COMING SOON</span>
+              </div>
+
+              {/* PayPal - Coming Soon */}
+              <div className="flex items-center gap-4 p-4 border border-gray-200 opacity-50 cursor-not-allowed bg-gray-50">
+                <input
+                  type="radio"
+                  name="paymentMethod"
+                  value="paypal"
+                  disabled
+                  className="w-5 h-5"
+                />
+                <div className="flex items-center gap-3 flex-1">
+                  <div className="w-10 h-10 bg-gray-300 flex items-center justify-center">
+                    <svg className="w-6 h-6 text-gray-500" viewBox="0 0 24 24" fill="currentColor">
+                      <path d="M7.076 21.337H2.47a.641.641 0 0 1-.633-.74L4.944 3.72a.77.77 0 0 1 .757-.64h6.568c2.173 0 3.886.65 4.98 1.88.99 1.113 1.407 2.588 1.24 4.388-.207 2.247-1.028 4.023-2.44 5.283-1.334 1.19-3.083 1.794-5.2 1.794H8.51a.77.77 0 0 0-.757.64l-.677 4.272zm12.14-13.21c-.067.73-.217 1.393-.45 1.987-.842 2.142-2.773 3.416-5.162 3.416h-2.34a.77.77 0 0 0-.757.64l-.879 5.54a.641.641 0 0 0 .633.74h3.073a.77.77 0 0 0 .757-.64l.364-2.303a.77.77 0 0 1 .757-.64h.59c3.007 0 5.298-1.667 5.932-4.32.317-1.325.129-2.424-.518-3.267-.2-.261-.44-.49-.71-.686-.08-.057-.16-.11-.24-.16-.09-.056-.18-.108-.273-.157a5.93 5.93 0 0 0-.777-.35z"/>
+                    </svg>
+                  </div>
+                  <div>
+                    <div className="font-bold text-gray-500">PAYPAL</div>
+                    <div className="text-xs text-gray-400">Pay with PayPal balance or linked card</div>
+                  </div>
+                </div>
+                <span className="text-xs bg-gray-200 text-gray-500 px-2 py-1 font-medium">COMING SOON</span>
+              </div>
+            </div>
+          </div>
+
           <div className="text-xs text-yellow-600">
-            By launching this contest, you agree to deposit the total amount into escrow. 
+            By launching this contest, you agree to deposit the total amount into escrow.
             Funds will be released to the winner or refunded if no winner is selected within the review period.
           </div>
 
@@ -341,7 +414,7 @@ export default function CreateContest() {
             <button onClick={() => setStep(2)} className="claw-btn flex-1">
               &lt; BACK
             </button>
-            <button 
+            <button
               onClick={handleSubmit}
               disabled={loading}
               className="claw-btn claw-btn-primary flex-1 disabled:opacity-50"

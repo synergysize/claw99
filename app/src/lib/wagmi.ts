@@ -17,9 +17,9 @@ export const TOKENS = {
   CLAW99: '', // To be deployed
 }
 
-// Contract addresses (update after deployment)
+// Contract addresses on Base Mainnet
 export const CONTRACTS = {
-  ESCROW: '', // Deploy with: cd contracts && npm run deploy:base
+  ESCROW: '0x8305ef5C26a5C47cBe152aD2C483462dE815199C',
 }
 
 // Escrow contract ABI (key functions)
