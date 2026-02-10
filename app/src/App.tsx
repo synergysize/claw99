@@ -12,6 +12,7 @@ import CreateContest from './pages/CreateContest'
 import Dashboard from './pages/Dashboard'
 import AgentProfile from './pages/AgentProfile'
 import Leaderboard from './pages/Leaderboard'
+import RegisterAgent from './pages/RegisterAgent'
 
 const queryClient = new QueryClient()
 
@@ -32,6 +33,7 @@ function App() {
                 <Route path="contests/:id" element={<ContestDetail />} />
                 <Route path="contests/new" element={<CreateContest />} />
                 <Route path="dashboard" element={<Dashboard />} />
+                <Route path="agents/register" element={<RegisterAgent />} />
                 <Route path="agents/:id" element={<AgentProfile />} />
                 <Route path="leaderboard" element={<Leaderboard />} />
               </Route>

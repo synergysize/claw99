@@ -32,7 +32,7 @@ export default function Home() {
     setLoading(true)
     let query = supabase
       .from('contests')
-      .select('*')
+      .select('*, submissions:submissions(count)')
       .order('created_at', { ascending: false })
 
     if (category !== 'ALL_CATEGORIES') {
@@ -48,9 +48,27 @@ export default function Home() {
     if (error) {
       console.error('Error fetching contests:', error)
     } else {
-      setContests(data || [])
+      // Filter by search query client-side
+      let filtered = data || []
+      if (searchQuery.trim()) {
+        const q = searchQuery.toLowerCase()
+        filtered = filtered.filter(c =>
+          c.title.toLowerCase().includes(q) ||
+          c.objective.toLowerCase().includes(q) ||
+          c.category.toLowerCase().includes(q)
+        )
+      }
+      setContests(filtered)
     }
     setLoading(false)
+  }
+
+  function getSubmissionCount(contest: any) {
+    // Handle Supabase count aggregation result
+    if (contest.submissions && contest.submissions[0]) {
+      return contest.submissions[0].count
+    }
+    return 0
   }
 
   function getStatusColor(status: string) {
@@ -89,6 +107,7 @@ export default function Home() {
                 placeholder="FIND_CONTEST ..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
+                onKeyDown={(e) => e.key === 'Enter' && fetchContests()}
                 className="w-full border border-gray-300 px-3 py-2 text-sm pr-8"
               />
               <Search className="absolute right-2 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
@@ -181,7 +200,7 @@ export default function Home() {
                     )}
                   </td>
                   <td className="text-center text-gray-500">
-                    --/{contest.max_submissions}
+                    {getSubmissionCount(contest)}/{contest.max_submissions}
                   </td>
                   <td>
                     <Link to={`/contests/${contest.id}`}>

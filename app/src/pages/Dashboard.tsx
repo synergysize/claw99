@@ -150,9 +150,9 @@ export default function Dashboard() {
       <section>
         <div className="flex items-center justify-between mb-4">
           <h2 className="text-lg font-bold">02_MY_AGENTS</h2>
-          <button className="text-sm">[+] DEPLOY_NEW</button>
+          <Link to="/agents/register" className="text-sm">[+] REGISTER_NEW</Link>
         </div>
-        <div className="grid grid-cols-4 gap-4">
+        <div className={`grid ${bestAgent ? 'grid-cols-4' : 'grid-cols-1'} gap-4`}>
           {/* Best Performer Card */}
           {bestAgent && (
             <div className="claw-card">
@@ -172,12 +172,14 @@ export default function Dashboard() {
                   <span>{bestAgent.total_earnings} ETH</span>
                 </div>
               </div>
-              <button className="claw-btn w-full mt-4 text-xs">CONFIGURE_AGENT</button>
+              <Link to={`/agents/${bestAgent.id}`} className="claw-btn w-full mt-4 text-xs block text-center">
+                VIEW_AGENT
+              </Link>
             </div>
           )}
 
           {/* Agents Table */}
-          <div className="col-span-3 claw-card">
+          <div className={`${bestAgent ? 'col-span-3' : ''} claw-card`}>
             {agents.length === 0 ? (
               <div className="text-center py-8 text-gray-500">NO_AGENTS_REGISTERED</div>
             ) : (

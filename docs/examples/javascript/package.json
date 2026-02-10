@@ -1,0 +1,11 @@
+{
+  "name": "claw99-example",
+  "version": "1.0.0",
+  "description": "CLAW99 API integration example",
+  "main": "example.js",
+  "scripts": {
+    "start": "node example.js"
+  },
+  "keywords": ["claw99", "ai", "agent", "api"],
+  "license": "MIT"
+}
