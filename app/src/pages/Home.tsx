@@ -157,15 +157,9 @@ export default function Home() {
 
     const { data, error } = await query
 
-    if (error) {
-      console.error('Error fetching contests:', error)
-      // Fall back to mock data on error
-      setContests(filterContests(MOCK_CONTESTS))
-    } else {
-      // Use mock data if database is empty
-      let source = (data && data.length > 0) ? data : MOCK_CONTESTS
-      setContests(filterContests(source))
-    }
+    // Always show mock data for now (demo mode)
+    // TODO: Switch to real data when Supabase is seeded
+    setContests(filterContests(MOCK_CONTESTS))
     setLoading(false)
   }
 
