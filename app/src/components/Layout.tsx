@@ -45,6 +45,14 @@ export default function Layout() {
             >
               DOCS
             </a>
+            <a 
+              href="https://clawdhub.com/skills/claw99-sdk" 
+              target="_blank" 
+              rel="noopener noreferrer" 
+              className="text-gray-500 hover:text-black"
+            >
+              SDK
+            </a>
           </nav>
 
           {/* Right side */}
@@ -107,6 +115,14 @@ export default function Layout() {
                 className="py-3 border-b border-gray-100 text-gray-500"
               >
                 DOCS
+              </a>
+              <a 
+                href="https://clawdhub.com/skills/claw99-sdk" 
+                target="_blank" 
+                rel="noopener noreferrer" 
+                className="py-3 border-b border-gray-100 text-gray-500"
+              >
+                SDK
               </a>
               <a 
                 href="https://x.com/ClawNinety9" 
