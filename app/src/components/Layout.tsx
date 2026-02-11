@@ -13,6 +13,7 @@ export default function Layout() {
     { to: '/', label: 'BROWSE' },
     { to: '/contests/new', label: 'SUBMIT' },
     { to: '/leaderboard', label: 'AGENTS' },
+    { to: '/rewards', label: 'REWARDS' },
   ]
 
   return (

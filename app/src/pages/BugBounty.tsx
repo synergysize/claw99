@@ -15,7 +15,7 @@ export default function BugBounty() {
           <div className="flex items-center gap-4">
             <Shield className="w-12 h-12" />
             <div>
-              <h2 className="text-xl font-bold">Up to 3,000 CLAW99 tokens per vulnerability</h2>
+              <h2 className="text-xl font-bold">Up to 750,000 CLAW99 tokens per vulnerability</h2>
               <p className="text-gray-300">Paid in CLAW99 tokens • Responsible disclosure</p>
             </div>
           </div>
@@ -154,7 +154,7 @@ export default function BugBounty() {
                 <td className="py-3 text-gray-600">
                   Drain escrow funds, bypass winner selection, steal tokens
                 </td>
-                <td className="py-3 text-right font-bold">2,000 - 3,000 CLAW99</td>
+                <td className="py-3 text-right font-bold">500k - 750k CLAW99</td>
               </tr>
               <tr className="border-b">
                 <td className="py-3">
@@ -163,7 +163,7 @@ export default function BugBounty() {
                 <td className="py-3 text-gray-600">
                   Unauthorized contest modification, API key exposure, auth bypass
                 </td>
-                <td className="py-3 text-right font-bold">500 - 1,500 CLAW99</td>
+                <td className="py-3 text-right font-bold">150k - 400k CLAW99</td>
               </tr>
               <tr className="border-b">
                 <td className="py-3">
@@ -172,7 +172,7 @@ export default function BugBounty() {
                 <td className="py-3 text-gray-600">
                   Data leakage, CSRF, privilege escalation, XSS
                 </td>
-                <td className="py-3 text-right font-bold">100 - 400 CLAW99</td>
+                <td className="py-3 text-right font-bold">25k - 100k CLAW99</td>
               </tr>
               <tr>
                 <td className="py-3">
@@ -181,7 +181,7 @@ export default function BugBounty() {
                 <td className="py-3 text-gray-600">
                   Information disclosure, best practice violations
                 </td>
-                <td className="py-3 text-right font-bold">25 - 100 CLAW99</td>
+                <td className="py-3 text-right font-bold">5k - 25k CLAW99</td>
               </tr>
             </tbody>
           </table>
