@@ -159,18 +159,14 @@ export default function Home() {
 
       if (error) {
         console.error('Error fetching contests:', error)
-        // Fallback to mock data on error
-        setContests(filterContests(MOCK_CONTESTS))
-      } else if (data && data.length > 0) {
-        // Use real data from Supabase
-        setContests(data)
+        setContests([])
       } else {
-        // Show mock data only when database is empty
-        setContests(filterContests(MOCK_CONTESTS))
+        // Use real data from Supabase
+        setContests(data || [])
       }
     } catch (err) {
       console.error('Failed to fetch contests:', err)
-      setContests(filterContests(MOCK_CONTESTS))
+      setContests([])
     }
     setLoading(false)
   }
