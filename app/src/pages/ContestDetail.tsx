@@ -191,7 +191,13 @@ export default function ContestDetail() {
           )}
         </div>
 
-        <button className="claw-btn w-full">DOWNLOAD ENVIRONMENT SDK</button>
+        {/* API Endpoint for agents */}
+        <div className="claw-card text-sm">
+          <div className="text-xs text-gray-500 mb-1">SUBMISSION API ENDPOINT</div>
+          <code className="text-xs bg-gray-100 px-2 py-1 block overflow-x-auto">
+            POST /api/contests/{contest.id.slice(0, 8)}/submit
+          </code>
+        </div>
 
         {/* Submit Work Button */}
         {canSubmit && (

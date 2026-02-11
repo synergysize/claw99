@@ -4,6 +4,171 @@ import { useAccount } from 'wagmi'
 import { supabase } from '../lib/supabase'
 import type { Contest, Agent, Transaction } from '../lib/supabase'
 
+// Use mock data for development/demo
+const USE_MOCK_DATA = true
+
+const MOCK_CONTESTS: Contest[] = [
+  {
+    id: 'c001-abc123',
+    buyer_id: 'user-1',
+    title: 'SENTIMENT_ANALYSIS_V2',
+    category: 'data-analysis',
+    objective: 'Analyze crypto sentiment from Twitter/X feeds',
+    deliverable_format: 'JSON API response',
+    evaluation_criteria: 'Accuracy, speed, coverage',
+    bounty_amount: 2.5,
+    bounty_currency: 'ETH',
+    deadline: new Date(Date.now() + 86400000 * 3).toISOString(),
+    max_submissions: 50,
+    min_agent_reputation: 70,
+    status: 'open',
+    created_at: new Date().toISOString(),
+    updated_at: new Date().toISOString(),
+  },
+  {
+    id: 'c002-def456',
+    buyer_id: 'user-1',
+    title: 'MEV_DETECTOR_ALPHA',
+    category: 'security',
+    objective: 'Detect sandwich attacks in real-time',
+    deliverable_format: 'Alert system with webhook',
+    evaluation_criteria: 'Detection rate, false positives, latency',
+    bounty_amount: 5.0,
+    bounty_currency: 'ETH',
+    deadline: new Date(Date.now() + 86400000 * 7).toISOString(),
+    max_submissions: 30,
+    min_agent_reputation: 80,
+    status: 'reviewing',
+    created_at: new Date(Date.now() - 86400000 * 2).toISOString(),
+    updated_at: new Date().toISOString(),
+  },
+  {
+    id: 'c003-ghi789',
+    buyer_id: 'user-1',
+    title: 'WHALE_WALLET_TRACKER',
+    category: 'monitoring',
+    objective: 'Track top 100 whale wallet movements',
+    deliverable_format: 'Dashboard + API',
+    evaluation_criteria: 'Coverage, real-time updates',
+    bounty_amount: 1.8,
+    bounty_currency: 'ETH',
+    deadline: new Date(Date.now() - 86400000).toISOString(),
+    max_submissions: 100,
+    min_agent_reputation: 60,
+    status: 'completed',
+    created_at: new Date(Date.now() - 86400000 * 10).toISOString(),
+    updated_at: new Date().toISOString(),
+    winner_submission_id: 'sub-001',
+    payout_tx_hash: '0x1234567890abcdef...'
+  }
+]
+
+const MOCK_AGENTS: Agent[] = [
+  {
+    id: 'agent-001-xyz',
+    owner_id: 'user-1',
+    name: 'GHOST_RUNNER',
+    description: 'Claude-3.5',
+    categories: ['data-analysis', 'security'],
+    api_key: 'sk-xxx',
+    is_active: true,
+    contests_won: 7,
+    contests_entered: 12,
+    total_earnings: 4.2,
+    current_streak: 3,
+    best_streak: 5,
+    created_at: new Date(Date.now() - 86400000 * 30).toISOString(),
+    updated_at: new Date().toISOString()
+  },
+  {
+    id: 'agent-002-abc',
+    owner_id: 'user-1',
+    name: 'NEURAL_CORTEX',
+    description: 'GPT-4-turbo',
+    categories: ['nlp', 'code-gen'],
+    api_key: 'sk-yyy',
+    is_active: true,
+    contests_won: 3,
+    contests_entered: 8,
+    total_earnings: 1.9,
+    current_streak: 1,
+    best_streak: 2,
+    created_at: new Date(Date.now() - 86400000 * 15).toISOString(),
+    updated_at: new Date().toISOString()
+  },
+  {
+    id: 'agent-003-def',
+    owner_id: 'user-1',
+    name: 'SHADOW_NET',
+    description: 'Mixtral-8x7B',
+    categories: ['research'],
+    api_key: 'sk-zzz',
+    is_active: false,
+    contests_won: 1,
+    contests_entered: 5,
+    total_earnings: 0.5,
+    current_streak: 0,
+    best_streak: 1,
+    created_at: new Date(Date.now() - 86400000 * 45).toISOString(),
+    updated_at: new Date().toISOString()
+  }
+]
+
+const MOCK_TRANSACTIONS: Transaction[] = [
+  {
+    id: 'tx-001',
+    user_id: 'user-1',
+    contest_id: 'c003-ghi789',
+    from_address: '0x742d35Cc6634C0532925a3b844Bc9e7595f...',
+    to_address: '0x8ba1f109551bD432803012645Ac136ddd...',
+    tx_type: 'winner_payout',
+    amount: 1.8,
+    currency: 'ETH',
+    tx_hash: '0xabcdef1234567890abcdef1234567890abcdef1234567890abcdef1234567890',
+    status: 'confirmed',
+    created_at: new Date(Date.now() - 86400000).toISOString()
+  },
+  {
+    id: 'tx-002',
+    user_id: 'user-1',
+    contest_id: 'c002-def456',
+    from_address: '0x8ba1f109551bD432803012645Ac136ddd...',
+    to_address: '0xEscrow...',
+    tx_type: 'escrow_deposit',
+    amount: 5.0,
+    currency: 'ETH',
+    tx_hash: '0x9876543210fedcba9876543210fedcba9876543210fedcba9876543210fedcba',
+    status: 'confirmed',
+    created_at: new Date(Date.now() - 86400000 * 2).toISOString()
+  },
+  {
+    id: 'tx-003',
+    user_id: 'user-1',
+    contest_id: 'c001-abc123',
+    from_address: '0x8ba1f109551bD432803012645Ac136ddd...',
+    to_address: '0xEscrow2...',
+    tx_type: 'escrow_deposit',
+    amount: 2.5,
+    currency: 'ETH',
+    tx_hash: '0x1111222233334444555566667777888899990000aaaabbbbccccddddeeeefffff',
+    status: 'confirmed',
+    created_at: new Date(Date.now() - 86400000 * 5).toISOString()
+  },
+  {
+    id: 'tx-004',
+    user_id: 'user-1',
+    contest_id: 'c003-ghi789',
+    from_address: '0xEscrow...',
+    to_address: '0x8ba1f109551bD432803012645Ac136ddd...',
+    tx_type: 'winner_payout',
+    amount: 2.4,
+    currency: 'ETH',
+    tx_hash: '0xdeadbeefcafebabedeadbeefcafebabedeadbeefcafebabedeadbeefcafebabe',
+    status: 'confirmed',
+    created_at: new Date(Date.now() - 86400000 * 8).toISOString()
+  }
+]
+
 export default function Dashboard() {
   const { address, isConnected } = useAccount()
   const [contests, setContests] = useState<Contest[]>([])
@@ -12,7 +177,15 @@ export default function Dashboard() {
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
-    if (address) fetchData()
+    if (USE_MOCK_DATA) {
+      // Use mock data
+      setContests(MOCK_CONTESTS)
+      setAgents(MOCK_AGENTS)
+      setTransactions(MOCK_TRANSACTIONS)
+      setLoading(false)
+    } else if (address) {
+      fetchData()
+    }
   }, [address])
 
   async function fetchData() {
@@ -71,7 +244,7 @@ export default function Dashboard() {
     })
   }
 
-  if (!isConnected) {
+  if (!isConnected && !USE_MOCK_DATA) {
     return (
       <div className="text-center py-16">
         <h1 className="text-2xl font-bold mb-4">CONNECT WALLET</h1>
@@ -240,23 +413,27 @@ export default function Dashboard() {
                 </tr>
               </thead>
               <tbody>
-                {transactions.map((tx) => (
-                  <tr key={tx.id}>
-                    <td className="text-xs">{tx.tx_hash?.slice(0, 10)}...</td>
-                    <td>{new Date(tx.created_at).toLocaleString()}</td>
-                    <td className={tx.tx_type === 'winner_payout' ? 'text-green-600' : ''}>
-                      {tx.tx_type.toUpperCase()}
-                    </td>
-                    <td className={`text-right ${tx.amount > 0 ? 'text-green-600' : ''}`}>
-                      {tx.amount > 0 ? '+' : ''}{tx.amount} {tx.currency}
-                    </td>
-                    <td>
-                      <span className={`claw-tag text-xs ${tx.status === 'confirmed' ? 'bg-green-50' : ''}`}>
-                        [{tx.status.toUpperCase()}]
-                      </span>
-                    </td>
-                  </tr>
-                ))}
+                {transactions.map((tx) => {
+                  const isIncoming = tx.tx_type === 'winner_payout' || tx.tx_type === 'refund'
+                  const displayAmount = isIncoming ? tx.amount : -tx.amount
+                  return (
+                    <tr key={tx.id}>
+                      <td className="text-xs">{tx.tx_hash?.slice(0, 10)}...</td>
+                      <td>{new Date(tx.created_at).toLocaleString()}</td>
+                      <td className={isIncoming ? 'text-green-600' : ''}>
+                        {tx.tx_type.toUpperCase().replace('_', ' ')}
+                      </td>
+                      <td className={`text-right ${isIncoming ? 'text-green-600' : 'text-red-500'}`}>
+                        {isIncoming ? '+' : ''}{displayAmount} {tx.currency}
+                      </td>
+                      <td>
+                        <span className={`claw-tag text-xs ${tx.status === 'confirmed' ? 'bg-green-50' : ''}`}>
+                          [{tx.status.toUpperCase()}]
+                        </span>
+                      </td>
+                    </tr>
+                  )
+                })}
               </tbody>
             </table>
           )}

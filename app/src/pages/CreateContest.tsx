@@ -1,7 +1,20 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { useAccount } from 'wagmi'
+import { useAccount, useWriteContract, useWaitForTransactionReceipt } from 'wagmi'
+import { parseEther } from 'viem'
 import { supabase } from '../lib/supabase'
+import { ESCROW_ADDRESS, ESCROW_ABI, uuidToBytes32, BASE_CHAIN_ID } from '../lib/contracts'
+
+// Fetch ETH price from CoinGecko
+async function fetchEthPrice(): Promise<number> {
+  try {
+    const res = await fetch('https://api.coingecko.com/api/v3/simple/price?ids=ethereum&vs_currencies=usd')
+    const data = await res.json()
+    return data.ethereum.usd
+  } catch {
+    return 2500 // Fallback price
+  }
+}
 
 const CATEGORIES = [
   'DEFI_TRADING',
@@ -13,13 +26,19 @@ const CATEGORIES = [
   'CODE_GEN',
 ]
 
-const CURRENCIES = ['USDC', 'ETH', 'CLAW99']
+const CURRENCIES = ['ETH', 'USDC', 'CLAW99']
 
 export default function CreateContest() {
   const navigate = useNavigate()
   const { address, isConnected } = useAccount()
   const [loading, setLoading] = useState(false)
   const [step, setStep] = useState(1)
+  const [ethPrice, setEthPrice] = useState<number>(2500) // Default fallback
+
+  // Fetch ETH price on mount
+  useEffect(() => {
+    fetchEthPrice().then(setEthPrice)
+  }, [])
   
   const [form, setForm] = useState({
     title: '',
@@ -31,7 +50,7 @@ export default function CreateContest() {
     example_input: '',
     example_output: '',
     bounty_amount: 100,
-    bounty_currency: 'USDC',
+    bounty_currency: 'ETH',
     deadline_days: 7,
     max_submissions: 50,
     min_agent_reputation: 0,
@@ -40,6 +59,34 @@ export default function CreateContest() {
   function updateForm(field: string, value: any) {
     setForm(prev => ({ ...prev, [field]: value }))
   }
+
+  const { writeContract, data: txHash, isPending: isWritePending, isError: isWriteError, reset: resetWrite } = useWriteContract()
+  const { isLoading: isConfirming, isSuccess: isConfirmed } = useWaitForTransactionReceipt({
+    hash: txHash,
+  })
+
+  const [pendingContestId, setPendingContestId] = useState<string | null>(null)
+
+  // Reset loading state if write fails (user rejected, etc.)
+  useEffect(() => {
+    if (isWriteError) {
+      setLoading(false)
+      resetWrite()
+    }
+  }, [isWriteError, resetWrite])
+
+  // When transaction confirms, update contest status
+  useEffect(() => {
+    if (isConfirmed && pendingContestId) {
+      supabase
+        .from('contests')
+        .update({ status: 'open', escrow_tx_hash: txHash })
+        .eq('id', pendingContestId)
+        .then(() => {
+          navigate(`/contests/${pendingContestId}`)
+        })
+    }
+  }, [isConfirmed, pendingContestId, txHash, navigate])
 
   async function handleSubmit() {
     if (!isConnected || !address) {
@@ -76,8 +123,9 @@ export default function CreateContest() {
     // Calculate deadline
     const deadline = new Date()
     deadline.setDate(deadline.getDate() + form.deadline_days)
+    const deadlineTimestamp = BigInt(Math.floor(deadline.getTime() / 1000))
 
-    // Create contest
+    // Create contest in DB first (as draft)
     const { data: contest, error } = await supabase
       .from('contests')
       .insert({
@@ -95,7 +143,7 @@ export default function CreateContest() {
         deadline: deadline.toISOString(),
         max_submissions: form.max_submissions,
         min_agent_reputation: form.min_agent_reputation,
-        status: 'draft', // Will change to 'open' after escrow deposit
+        status: 'draft',
       })
       .select('id')
       .single()
@@ -106,9 +154,38 @@ export default function CreateContest() {
       return
     }
 
-    // TODO: Trigger escrow deposit transaction
-    alert('Contest created! Escrow deposit transaction needed to go live.')
-    navigate(`/contests/${contest?.id}`)
+    setPendingContestId(contest.id)
+
+    // Convert contest ID to bytes32 for contract
+    const contestIdBytes32 = uuidToBytes32(contest.id)
+
+    // Calculate amount with fee (5%)
+    const totalUsd = form.bounty_amount * 1.05
+    
+    // Convert USD to ETH
+    const ethAmount = totalUsd / ethPrice
+
+    try {
+      if (form.bounty_currency === 'ETH') {
+        // Fund with ETH (convert from USD value)
+        writeContract({
+          address: ESCROW_ADDRESS,
+          abi: ESCROW_ABI,
+          functionName: 'fundContestETH',
+          args: [contestIdBytes32, deadlineTimestamp],
+          value: parseEther(ethAmount.toFixed(18)),
+          chainId: BASE_CHAIN_ID,
+        })
+      } else {
+        // For USDC/tokens, would need approval first - simplified for now
+        alert('Token deposits coming soon. Use ETH for now.')
+        setLoading(false)
+        return
+      }
+    } catch (err: any) {
+      alert('Transaction failed: ' + err.message)
+      setLoading(false)
+    }
   }
 
   if (!isConnected) {
@@ -226,28 +303,62 @@ export default function CreateContest() {
       {/* Step 2: Settings */}
       {step === 2 && (
         <div className="space-y-6">
-          <div className="grid grid-cols-2 gap-4">
+          {/* Prize Amount Section */}
+          <div className="claw-card p-4 space-y-4">
+            <h3 className="font-bold text-sm">PRIZE AMOUNT</h3>
             <div>
-              <label className="block text-xs text-gray-500 mb-1">BOUNTY AMOUNT *</label>
-              <input
-                type="number"
-                value={form.bounty_amount}
-                onChange={(e) => updateForm('bounty_amount', Number(e.target.value))}
-                min={5}
-                className="w-full border border-gray-300 px-3 py-2"
-              />
+              <label className="block text-xs text-gray-500 mb-1">BOUNTY (USD) *</label>
+              <div className="relative">
+                <span className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500">$</span>
+                <input
+                  type="number"
+                  value={form.bounty_amount}
+                  onChange={(e) => updateForm('bounty_amount', Number(e.target.value))}
+                  min={5}
+                  className="w-full border border-gray-300 px-3 py-2 pl-7"
+                />
+              </div>
+              <p className="text-xs text-gray-400 mt-1">Enter the prize amount in US dollars</p>
             </div>
-            <div>
-              <label className="block text-xs text-gray-500 mb-1">CURRENCY *</label>
-              <select
-                value={form.bounty_currency}
-                onChange={(e) => updateForm('bounty_currency', e.target.value)}
-                className="w-full border border-gray-300 px-3 py-2 bg-white"
-              >
-                {CURRENCIES.map((cur) => (
-                  <option key={cur} value={cur}>{cur}</option>
-                ))}
-              </select>
+          </div>
+
+          {/* Payment Method Section */}
+          <div className="claw-card p-4 space-y-4">
+            <h3 className="font-bold text-sm">PAYMENT METHOD</h3>
+            <p className="text-xs text-gray-500">Choose how you want to fund this contest</p>
+            <div className="space-y-2">
+              {CURRENCIES.map((cur) => (
+                <label 
+                  key={cur}
+                  className={`flex items-center gap-3 p-3 border cursor-pointer transition-colors ${
+                    form.bounty_currency === cur ? 'border-black bg-gray-50' : 'border-gray-200 hover:border-gray-300'
+                  }`}
+                >
+                  <input
+                    type="radio"
+                    name="currency"
+                    value={cur}
+                    checked={form.bounty_currency === cur}
+                    onChange={(e) => updateForm('bounty_currency', e.target.value)}
+                    className="w-4 h-4 accent-black"
+                  />
+                  <div className="flex-1">
+                    <div className="font-medium">{cur}</div>
+                    <div className="text-xs text-gray-500">
+                      {cur === 'ETH' && 'Pay with Ethereum'}
+                      {cur === 'USDC' && 'Pay with USD Coin (coming soon)'}
+                      {cur === 'CLAW99' && 'Pay with CLAW99 token (coming soon)'}
+                    </div>
+                  </div>
+                  {cur === 'ETH' && form.bounty_currency === 'ETH' && (
+                    <div className="text-right text-sm">
+                      <div className="font-medium">{((form.bounty_amount * 1.05) / ethPrice).toFixed(6)} ETH</div>
+                      <div className="text-xs text-gray-500">@ ${ethPrice.toLocaleString()}</div>
+                    </div>
+                  )}
+                  {cur !== 'ETH' && <span className="text-xs text-gray-400">SOON</span>}
+                </label>
+              ))}
             </div>
           </div>
 
@@ -323,12 +434,18 @@ export default function CreateContest() {
               </div>
               <div className="flex justify-between">
                 <dt className="text-gray-500">Platform Fee (5%):</dt>
-                <dd>{(form.bounty_amount * 0.05).toFixed(2)} {form.bounty_currency}</dd>
+                <dd>${(form.bounty_amount * 0.05).toFixed(2)}</dd>
               </div>
               <div className="flex justify-between border-t pt-2 mt-2">
                 <dt className="text-gray-500">Total to Deposit:</dt>
-                <dd className="font-bold text-lg">{(form.bounty_amount * 1.05).toFixed(2)} {form.bounty_currency}</dd>
+                <dd className="font-bold text-lg">${(form.bounty_amount * 1.05).toFixed(2)}</dd>
               </div>
+              {form.bounty_currency === 'ETH' && (
+                <div className="flex justify-between text-sm text-gray-500 mt-2">
+                  <dt>ETH Equivalent:</dt>
+                  <dd>{((form.bounty_amount * 1.05) / ethPrice).toFixed(6)} ETH <span className="text-xs">(@ ${ethPrice.toLocaleString()}/ETH)</span></dd>
+                </div>
+              )}
             </dl>
           </div>
 
@@ -416,10 +533,10 @@ export default function CreateContest() {
             </button>
             <button
               onClick={handleSubmit}
-              disabled={loading}
+              disabled={loading || isWritePending || isConfirming}
               className="claw-btn claw-btn-primary flex-1 disabled:opacity-50"
             >
-              {loading ? 'CREATING...' : 'FUND & LAUNCH CONTEST'}
+              {isConfirming ? 'CONFIRMING TX...' : isWritePending ? 'SIGN IN WALLET...' : loading ? 'CREATING...' : 'FUND & LAUNCH CONTEST'}
             </button>
           </div>
         </div>

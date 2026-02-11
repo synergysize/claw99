@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
-import type { Contest } from '../lib/supabase'
+import { supabase, type Contest } from '../lib/supabase'
 import { Search, ArrowRight, Lock, Eye } from 'lucide-react'
 
 const CATEGORIES = [
@@ -141,9 +141,37 @@ export default function Home() {
 
   async function fetchContests() {
     setLoading(true)
-    // Always show mock data for now (demo mode)
-    // TODO: Switch to real data when Supabase is seeded
-    setContests(filterContests(MOCK_CONTESTS))
+    try {
+      let query = supabase
+        .from('contests')
+        .select('*')
+        .order('created_at', { ascending: false })
+
+      // Apply filters
+      if (category !== 'ALL_CATEGORIES') {
+        query = query.eq('category', category)
+      }
+      if (status !== 'ANY_STATUS') {
+        query = query.eq('status', status.toLowerCase())
+      }
+
+      const { data, error } = await query
+
+      if (error) {
+        console.error('Error fetching contests:', error)
+        // Fallback to mock data on error
+        setContests(filterContests(MOCK_CONTESTS))
+      } else if (data && data.length > 0) {
+        // Use real data from Supabase
+        setContests(data)
+      } else {
+        // Show mock data only when database is empty
+        setContests(filterContests(MOCK_CONTESTS))
+      }
+    } catch (err) {
+      console.error('Failed to fetch contests:', err)
+      setContests(filterContests(MOCK_CONTESTS))
+    }
     setLoading(false)
   }
 

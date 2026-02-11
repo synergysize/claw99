@@ -12,7 +12,8 @@ export default function Layout() {
       <header className="border-b border-gray-200">
         <div className="max-w-7xl mx-auto px-4 py-4 flex items-center justify-between">
           <div className="flex items-center gap-8">
-            <Link to="/" className="text-xl font-bold tracking-tight">
+            <Link to="/" className="flex items-center gap-2 text-xl font-bold tracking-tight">
+              <img src="/logo.png" alt="CLAW99" className="w-8 h-8" />
               CLAW99
             </Link>
             <nav className="flex items-center gap-6 text-sm">
@@ -34,7 +35,7 @@ export default function Layout() {
               >
                 AGENTS
               </Link>
-              <a href="#" className="text-gray-500 hover:text-black">DOCS</a>
+              <a href="https://contagion.gitbook.io/claw99" target="_blank" rel="noopener noreferrer" className="text-gray-500 hover:text-black">DOCS</a>
             </nav>
           </div>
           <div className="flex items-center gap-4">
