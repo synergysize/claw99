@@ -35,7 +35,6 @@ export default function Home() {
         .select('*')
         .order('created_at', { ascending: false })
 
-      // Apply filters
       if (category !== 'ALL_CATEGORIES') {
         query = query.eq('category', category)
       }
@@ -49,7 +48,6 @@ export default function Home() {
         console.error('Error fetching contests:', error)
         setContests([])
       } else {
-        // Use real data from Supabase
         setContests(data || [])
       }
     } catch (err) {
@@ -60,7 +58,6 @@ export default function Home() {
   }
 
   function getSubmissionCount(contest: any) {
-    // Handle Supabase count aggregation result
     if (contest.submissions && contest.submissions[0]) {
       return contest.submissions[0].count
     }
@@ -84,23 +81,22 @@ export default function Home() {
     const days = Math.floor(diff / (1000 * 60 * 60 * 24))
     const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60))
     const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60))
-    const seconds = Math.floor((diff % (1000 * 60)) / 1000)
     
-    if (days > 0) return `${days}d:${String(hours).padStart(2, '0')}h:${String(minutes).padStart(2, '0')}m`
-    return `${String(hours).padStart(2, '0')}h:${String(minutes).padStart(2, '0')}m:${String(seconds).padStart(2, '0')}s`
+    if (days > 0) return `${days}d ${hours}h`
+    return `${hours}h ${minutes}m`
   }
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-4 sm:space-y-6">
       {/* Filters */}
       <div className="claw-card">
-        <div className="grid grid-cols-4 gap-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
           <div>
-            <label className="block text-xs text-gray-500 mb-1">SEARCH QUERY</label>
+            <label className="block text-xs text-gray-500 mb-1">SEARCH</label>
             <div className="relative">
               <input
                 type="text"
-                placeholder="FIND_CONTEST ..."
+                placeholder="Find contest..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 onKeyDown={(e) => e.key === 'Enter' && fetchContests()}
@@ -117,7 +113,7 @@ export default function Home() {
               className="w-full border border-gray-300 px-3 py-2 text-sm bg-white"
             >
               {CATEGORIES.map((cat) => (
-                <option key={cat} value={cat}>{cat}</option>
+                <option key={cat} value={cat}>{cat.replace('_', ' ')}</option>
               ))}
             </select>
           </div>
@@ -129,105 +125,147 @@ export default function Home() {
               className="w-full border border-gray-300 px-3 py-2 text-sm bg-white"
             >
               {STATUS_OPTIONS.map((s) => (
-                <option key={s} value={s}>{s}</option>
+                <option key={s} value={s}>{s.replace('_', ' ')}</option>
               ))}
             </select>
           </div>
           <div className="flex items-end gap-2">
             <button 
               onClick={() => { setSearchQuery(''); setCategory('ALL_CATEGORIES'); setStatus('ANY_STATUS'); }}
-              className="claw-btn"
+              className="claw-btn flex-1 sm:flex-none"
             >
               RESET
             </button>
-            <button onClick={fetchContests} className="claw-btn claw-btn-primary">
-              EXECUTE_FILTER
+            <button onClick={fetchContests} className="claw-btn claw-btn-primary flex-1 sm:flex-none">
+              FILTER
             </button>
           </div>
         </div>
       </div>
 
-      {/* Contests Table */}
-      <div className="claw-card">
-        {loading ? (
-          <div className="text-center py-8 text-gray-500">LOADING...</div>
-        ) : contests.length === 0 ? (
-          <div className="text-center py-8 text-gray-500">NO_CONTESTS_FOUND</div>
-        ) : (
-          <table className="claw-table">
-            <thead>
-              <tr>
-                <th className="w-8">STS</th>
-                <th className="w-20">ID</th>
-                <th>TITLE / DESCRIPTION</th>
-                <th>CATEGORY</th>
-                <th className="text-right">BOUNTY</th>
-                <th className="text-right">DEADLINE</th>
-                <th className="text-center">SUBS</th>
-                <th className="w-16">ACTION</th>
-              </tr>
-            </thead>
-            <tbody>
-              {contests.map((contest) => (
-                <tr key={contest.id}>
-                  <td>
-                    <span className={`status-dot ${getStatusColor(contest.status)}`} />
-                  </td>
-                  <td className="text-xs text-gray-500">#{contest.id.slice(0, 4)}</td>
-                  <td>
-                    <div className="font-medium">{contest.title}</div>
-                    <div className="text-xs text-gray-500 truncate max-w-md">
-                      {contest.objective}
-                    </div>
-                  </td>
-                  <td>
-                    <span className="claw-tag">{contest.category}</span>
-                  </td>
-                  <td className="text-right font-medium">
-                    ${contest.bounty_amount.toLocaleString()}
-                  </td>
-                  <td className="text-right">
-                    {contest.status === 'reviewing' ? (
-                      <span className="text-yellow-600">REVIEWING</span>
-                    ) : contest.status === 'completed' ? (
-                      <span className="text-red-600">CLOSED</span>
-                    ) : (
-                      formatDeadline(contest.deadline)
-                    )}
-                  </td>
-                  <td className="text-center text-gray-500">
-                    {getSubmissionCount(contest)}/{contest.max_submissions}
-                  </td>
-                  <td>
-                    <Link to={`/contests/${contest.id}`}>
-                      {contest.status === 'completed' ? (
-                        <Lock className="w-4 h-4 text-gray-400 mx-auto" />
-                      ) : contest.status === 'reviewing' ? (
-                        <Eye className="w-4 h-4 text-yellow-500 mx-auto" />
-                      ) : (
-                        <ArrowRight className="w-4 h-4 mx-auto" />
-                      )}
-                    </Link>
-                  </td>
+      {/* Contests */}
+      {loading ? (
+        <div className="claw-card text-center py-8 text-gray-500">LOADING...</div>
+      ) : contests.length === 0 ? (
+        <div className="claw-card text-center py-8 text-gray-500">NO_CONTESTS_FOUND</div>
+      ) : (
+        <>
+          {/* Desktop Table */}
+          <div className="claw-card hidden lg:block overflow-x-auto">
+            <table className="claw-table">
+              <thead>
+                <tr>
+                  <th className="w-8">STS</th>
+                  <th className="w-20">ID</th>
+                  <th>TITLE / DESCRIPTION</th>
+                  <th>CATEGORY</th>
+                  <th className="text-right">BOUNTY</th>
+                  <th className="text-right">DEADLINE</th>
+                  <th className="text-center">SUBS</th>
+                  <th className="w-16">ACTION</th>
                 </tr>
-              ))}
-            </tbody>
-          </table>
-        )}
-      </div>
+              </thead>
+              <tbody>
+                {contests.map((contest) => (
+                  <tr key={contest.id}>
+                    <td>
+                      <span className={`status-dot ${getStatusColor(contest.status)}`} />
+                    </td>
+                    <td className="text-xs text-gray-500">#{contest.id.slice(0, 4)}</td>
+                    <td>
+                      <div className="font-medium">{contest.title}</div>
+                      <div className="text-xs text-gray-500 truncate max-w-md">
+                        {contest.objective}
+                      </div>
+                    </td>
+                    <td>
+                      <span className="claw-tag">{contest.category}</span>
+                    </td>
+                    <td className="text-right font-medium">
+                      ${contest.bounty_amount.toLocaleString()}
+                    </td>
+                    <td className="text-right">
+                      {contest.status === 'reviewing' ? (
+                        <span className="text-yellow-600">REVIEWING</span>
+                      ) : contest.status === 'completed' ? (
+                        <span className="text-red-600">CLOSED</span>
+                      ) : (
+                        formatDeadline(contest.deadline)
+                      )}
+                    </td>
+                    <td className="text-center text-gray-500">
+                      {getSubmissionCount(contest)}/{contest.max_submissions}
+                    </td>
+                    <td>
+                      <Link to={`/contests/${contest.id}`}>
+                        {contest.status === 'completed' ? (
+                          <Lock className="w-4 h-4 text-gray-400 mx-auto" />
+                        ) : contest.status === 'reviewing' ? (
+                          <Eye className="w-4 h-4 text-yellow-500 mx-auto" />
+                        ) : (
+                          <ArrowRight className="w-4 h-4 mx-auto" />
+                        )}
+                      </Link>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+
+          {/* Mobile Cards */}
+          <div className="lg:hidden space-y-3">
+            {contests.map((contest) => (
+              <Link 
+                key={contest.id} 
+                to={`/contests/${contest.id}`}
+                className="claw-card block hover:border-gray-400 transition-colors"
+              >
+                <div className="flex items-start justify-between gap-3">
+                  <div className="flex-1 min-w-0">
+                    <div className="flex items-center gap-2 mb-1">
+                      <span className={`status-dot ${getStatusColor(contest.status)}`} />
+                      <span className="text-xs text-gray-400">#{contest.id.slice(0, 4)}</span>
+                      <span className="claw-tag text-xs">{contest.category}</span>
+                    </div>
+                    <h3 className="font-medium text-sm mb-1 truncate">{contest.title}</h3>
+                    <p className="text-xs text-gray-500 line-clamp-2">{contest.objective}</p>
+                  </div>
+                  <div className="text-right flex-shrink-0">
+                    <div className="font-bold text-lg">${contest.bounty_amount.toLocaleString()}</div>
+                    <div className="text-xs text-gray-500">
+                      {contest.status === 'reviewing' ? (
+                        <span className="text-yellow-600">REVIEWING</span>
+                      ) : contest.status === 'completed' ? (
+                        <span className="text-red-600">CLOSED</span>
+                      ) : (
+                        formatDeadline(contest.deadline)
+                      )}
+                    </div>
+                  </div>
+                </div>
+                <div className="flex items-center justify-between mt-3 pt-3 border-t border-gray-100 text-xs text-gray-500">
+                  <span>{getSubmissionCount(contest)}/{contest.max_submissions} submissions</span>
+                  <span className="flex items-center gap-1">
+                    VIEW <ArrowRight className="w-3 h-3" />
+                  </span>
+                </div>
+              </Link>
+            ))}
+          </div>
+        </>
+      )}
 
       {/* Pagination */}
-      <div className="flex items-center justify-between text-sm">
-        <button className="text-gray-500 hover:text-black">&lt; PREV_PAGE</button>
-        <div className="flex items-center gap-2">
+      {contests.length > 0 && (
+        <div className="flex items-center justify-center gap-2 text-sm">
+          <button className="px-3 py-2 text-gray-500 hover:text-black">&lt;</button>
           <button className="w-8 h-8 border border-black flex items-center justify-center">1</button>
-          <button className="w-8 h-8 border border-gray-300 flex items-center justify-center hover:border-black">2</button>
-          <button className="w-8 h-8 border border-gray-300 flex items-center justify-center hover:border-black">3</button>
-          <span>...</span>
-          <button className="w-8 h-8 border border-gray-300 flex items-center justify-center hover:border-black">9</button>
+          <button className="w-8 h-8 border border-gray-300 flex items-center justify-center hover:border-black hidden sm:flex">2</button>
+          <button className="w-8 h-8 border border-gray-300 flex items-center justify-center hover:border-black hidden sm:flex">3</button>
+          <button className="px-3 py-2 text-gray-500 hover:text-black">&gt;</button>
         </div>
-        <button className="text-gray-500 hover:text-black">NEXT_PAGE &gt;</button>
-      </div>
+      )}
     </div>
   )
 }
