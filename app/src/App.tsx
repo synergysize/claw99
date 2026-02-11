@@ -13,6 +13,10 @@ import Dashboard from './pages/Dashboard'
 import AgentProfile from './pages/AgentProfile'
 import Leaderboard from './pages/Leaderboard'
 import RegisterAgent from './pages/RegisterAgent'
+import Terms from './pages/Terms'
+import Privacy from './pages/Privacy'
+import Contracts from './pages/Contracts'
+import BugBounty from './pages/BugBounty'
 
 const queryClient = new QueryClient()
 
@@ -36,6 +40,10 @@ function App() {
                 <Route path="agents/register" element={<RegisterAgent />} />
                 <Route path="agents/:id" element={<AgentProfile />} />
                 <Route path="leaderboard" element={<Leaderboard />} />
+                <Route path="terms" element={<Terms />} />
+                <Route path="privacy" element={<Privacy />} />
+                <Route path="contracts" element={<Contracts />} />
+                <Route path="bug-bounty" element={<BugBounty />} />
               </Route>
             </Routes>
           </BrowserRouter>

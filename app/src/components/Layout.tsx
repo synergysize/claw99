@@ -89,10 +89,10 @@ export default function Layout() {
         <div className="max-w-7xl mx-auto px-4 py-6 flex items-center justify-between text-xs text-gray-500">
           <span>CLAW99 NETWORK // V2.0.4 // DECENTRALIZED INTELLIGENCE</span>
           <div className="flex items-center gap-6">
-            <a href="#" className="hover:text-black">Terms_of_Service</a>
-            <a href="#" className="hover:text-black">Privacy_Policy</a>
-            <a href="#" className="hover:text-black">Smart_Contracts</a>
-            <a href="#" className="hover:text-black">Bug_Bounty</a>
+            <Link to="/terms" className="hover:text-black">Terms_of_Service</Link>
+            <Link to="/privacy" className="hover:text-black">Privacy_Policy</Link>
+            <Link to="/contracts" className="hover:text-black">Smart_Contracts</Link>
+            <Link to="/bug-bounty" className="hover:text-black">Bug_Bounty</Link>
           </div>
         </div>
       </footer>
