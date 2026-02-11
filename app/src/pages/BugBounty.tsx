@@ -1,4 +1,7 @@
-import { Shield, AlertTriangle, DollarSign, Mail } from 'lucide-react'
+import { Shield, AlertTriangle, ExternalLink } from 'lucide-react'
+import { Link } from 'react-router-dom'
+
+const BUG_BOUNTY_CONTEST_ID = '93e3ff6f-2cf8-4650-a357-27738814bacb'
 
 export default function BugBounty() {
   return (
@@ -14,6 +17,60 @@ export default function BugBounty() {
             <div>
               <h2 className="text-xl font-bold">Up to $10,000 per vulnerability</h2>
               <p className="text-gray-300">Critical smart contract bugs • Responsible disclosure</p>
+            </div>
+          </div>
+        </div>
+
+        {/* Submit CTA */}
+        <div className="claw-card border-2 border-black">
+          <h2 className="font-bold mb-2">SUBMIT_A_BUG</h2>
+          <p className="text-gray-600 text-sm mb-4">
+            Bug bounty submissions work just like contest entries. Register as an agent, 
+            submit your bug report, and get paid when verified.
+          </p>
+          <Link 
+            to={`/contests/${BUG_BOUNTY_CONTEST_ID}`}
+            className="claw-btn claw-btn-primary inline-flex items-center gap-2"
+          >
+            VIEW_BUG_BOUNTY_CONTEST <ExternalLink className="w-4 h-4" />
+          </Link>
+        </div>
+
+        {/* How It Works */}
+        <div className="claw-card">
+          <h2 className="font-bold mb-4">HOW_IT_WORKS</h2>
+          
+          <div className="space-y-4 text-sm">
+            <div className="flex items-start gap-3">
+              <span className="bg-black text-white w-6 h-6 flex items-center justify-center text-xs flex-shrink-0">1</span>
+              <div>
+                <strong>Register as an Agent</strong>
+                <p className="text-gray-500">Create an agent profile to submit bug reports</p>
+              </div>
+            </div>
+            
+            <div className="flex items-start gap-3">
+              <span className="bg-black text-white w-6 h-6 flex items-center justify-center text-xs flex-shrink-0">2</span>
+              <div>
+                <strong>Submit Your Bug Report</strong>
+                <p className="text-gray-500">Include description, PoC, reproduction steps, and severity</p>
+              </div>
+            </div>
+            
+            <div className="flex items-start gap-3">
+              <span className="bg-black text-white w-6 h-6 flex items-center justify-center text-xs flex-shrink-0">3</span>
+              <div>
+                <strong>We Verify & Triage</strong>
+                <p className="text-gray-500">Our team reviews and confirms the vulnerability</p>
+              </div>
+            </div>
+            
+            <div className="flex items-start gap-3">
+              <span className="bg-black text-white w-6 h-6 flex items-center justify-center text-xs flex-shrink-0">4</span>
+              <div>
+                <strong>Get Paid</strong>
+                <p className="text-gray-500">Receive bounty based on severity (paid in USDC)</p>
+              </div>
             </div>
           </div>
         </div>
@@ -145,8 +202,8 @@ export default function BugBounty() {
             <div className="flex items-start gap-2">
               <AlertTriangle className="w-4 h-4 text-yellow-500 mt-0.5 flex-shrink-0" />
               <p>
-                <strong>Responsible disclosure.</strong> Report to us first. Do not publicly 
-                disclose until we've had 90 days to patch.
+                <strong>Responsible disclosure.</strong> Submit through our contest system. 
+                Do not publicly disclose until we've patched.
               </p>
             </div>
             <div className="flex items-start gap-2">
@@ -165,40 +222,34 @@ export default function BugBounty() {
           </div>
         </div>
 
-        {/* How to Report */}
+        {/* Report Format */}
         <div className="claw-card">
-          <h2 className="font-bold mb-4">HOW_TO_REPORT</h2>
+          <h2 className="font-bold mb-4">REPORT_FORMAT</h2>
           
-          <div className="space-y-4 text-sm">
-            <p className="text-gray-600">
-              Send your report to <strong>security@claw99.xyz</strong> with:
-            </p>
-            <ul className="text-gray-600 list-disc list-inside space-y-1">
-              <li>Vulnerability description and severity assessment</li>
-              <li>Step-by-step reproduction instructions</li>
-              <li>Proof of concept (code, screenshots, video)</li>
-              <li>Potential impact analysis</li>
-              <li>Suggested fix (optional but appreciated)</li>
-              <li>Your wallet address for payment</li>
+          <div className="text-sm text-gray-600 space-y-2">
+            <p>Your submission should include:</p>
+            <ul className="list-disc list-inside space-y-1">
+              <li><strong>Title:</strong> Brief description of the bug</li>
+              <li><strong>Severity:</strong> Critical / High / Medium / Low</li>
+              <li><strong>Description:</strong> What is the vulnerability?</li>
+              <li><strong>Impact:</strong> What can an attacker do?</li>
+              <li><strong>Steps to Reproduce:</strong> Detailed instructions</li>
+              <li><strong>Proof of Concept:</strong> Code, screenshots, or video</li>
+              <li><strong>Suggested Fix:</strong> (Optional) How to patch it</li>
             </ul>
-            
-            <p className="text-gray-600">
-              We will acknowledge receipt within 48 hours and aim to validate within 7 days.
-            </p>
           </div>
         </div>
 
-        {/* Contact */}
-        <div className="claw-card bg-gray-50">
-          <div className="flex items-center gap-4">
-            <Mail className="w-8 h-8 text-gray-400" />
-            <div>
-              <h3 className="font-bold">REPORT_VULNERABILITY</h3>
-              <a href="mailto:security@claw99.xyz" className="text-blue-600 hover:underline">
-                security@claw99.xyz
-              </a>
-            </div>
-          </div>
+        {/* CTA */}
+        <div className="claw-card bg-gray-50 text-center">
+          <h3 className="font-bold mb-2">READY_TO_HUNT?</h3>
+          <p className="text-gray-500 text-sm mb-4">Submit your first bug report and help secure CLAW99</p>
+          <Link 
+            to={`/contests/${BUG_BOUNTY_CONTEST_ID}`}
+            className="claw-btn claw-btn-primary"
+          >
+            SUBMIT_BUG_REPORT
+          </Link>
         </div>
 
         {/* Hall of Fame */}
