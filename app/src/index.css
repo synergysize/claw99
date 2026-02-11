@@ -38,6 +38,16 @@ input, select, textarea {
   box-shadow: 0 0 6px 2px rgba(239, 68, 68, 0.6), 0 0 12px 4px rgba(239, 68, 68, 0.3);
 }
 
+.status-dot.blue { 
+  @apply bg-blue-500;
+  box-shadow: 0 0 6px 2px rgba(59, 130, 246, 0.6), 0 0 12px 4px rgba(59, 130, 246, 0.3);
+}
+
+.status-dot.cyan { 
+  @apply bg-cyan-500;
+  box-shadow: 0 0 6px 2px rgba(6, 182, 212, 0.6), 0 0 12px 4px rgba(6, 182, 212, 0.3);
+}
+
 /* Table styling */
 .claw-table {
   @apply w-full border-collapse;
