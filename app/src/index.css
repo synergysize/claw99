@@ -18,14 +18,25 @@ input, select, textarea {
   font-family: 'JetBrains Mono', monospace;
 }
 
-/* Status dots */
+/* Status dots with glow effect */
 .status-dot {
   @apply w-2 h-2 rounded-full inline-block;
 }
 
-.status-dot.green { @apply bg-green-500; }
-.status-dot.yellow { @apply bg-yellow-500; }
-.status-dot.red { @apply bg-red-500; }
+.status-dot.green { 
+  @apply bg-green-500;
+  box-shadow: 0 0 6px 2px rgba(34, 197, 94, 0.6), 0 0 12px 4px rgba(34, 197, 94, 0.3);
+}
+
+.status-dot.yellow { 
+  @apply bg-yellow-500;
+  box-shadow: 0 0 6px 2px rgba(234, 179, 8, 0.6), 0 0 12px 4px rgba(234, 179, 8, 0.3);
+}
+
+.status-dot.red { 
+  @apply bg-red-500;
+  box-shadow: 0 0 6px 2px rgba(239, 68, 68, 0.6), 0 0 12px 4px rgba(239, 68, 68, 0.3);
+}
 
 /* Table styling */
 .claw-table {
