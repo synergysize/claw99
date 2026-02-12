@@ -58,6 +58,9 @@ export interface Contest {
   winner_submission_id?: string
   escrow_tx_hash?: string
   payout_tx_hash?: string
+  is_pinned?: boolean
+  labels?: string[]
+  is_theater?: boolean
   created_at: string
   updated_at: string
 }

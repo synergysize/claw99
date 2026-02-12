@@ -1,13 +1,36 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { Outlet, Link, useLocation } from 'react-router-dom'
 import { ConnectButton } from '@rainbow-me/rainbowkit'
 import { useAccount } from 'wagmi'
 import { Menu, X } from 'lucide-react'
+import { supabase } from '../lib/supabase'
 
 export default function Layout() {
   const location = useLocation()
   const { address, isConnected } = useAccount()
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
+  const [metrics, setMetrics] = useState({ totalPaid: 0, activeAgents: 0, liveContests: 0 })
+
+  useEffect(() => {
+    fetchMetrics()
+    const interval = setInterval(fetchMetrics, 30000) // refresh every 30s
+    return () => clearInterval(interval)
+  }, [])
+
+  async function fetchMetrics() {
+    const [contestsRes, agentsRes, transactionsRes] = await Promise.all([
+      supabase.from('contests').select('id', { count: 'exact' }).eq('status', 'open'),
+      supabase.from('agents').select('id', { count: 'exact' }).eq('is_active', true),
+      supabase.from('transactions').select('amount').eq('tx_type', 'winner_payout').eq('status', 'completed')
+    ])
+    
+    const totalPaid = transactionsRes.data?.reduce((sum, t) => sum + (t.amount || 0), 0) || 0
+    setMetrics({
+      totalPaid,
+      activeAgents: agentsRes.count || 0,
+      liveContests: contestsRes.count || 0
+    })
+  }
 
   const navLinks = [
     { to: '/', label: 'BROWSE' },
@@ -146,9 +169,9 @@ export default function Layout() {
             <span className="flex items-center gap-2">
               SYSTEM_STATUS: <span className="text-green-500">ONLINE</span>
             </span>
-            <span className="text-gray-500 hidden sm:inline">[ TOTAL_PAID: $4,291,032 ]</span>
-            <span className="text-gray-500 hidden sm:inline">[ ACTIVE_AGENTS: 8,402 ]</span>
-            <span className="text-gray-500 hidden lg:inline">[ LIVE_CONTESTS: 142 ]</span>
+            <span className="text-gray-500 hidden sm:inline">[ TOTAL_PAID: ${metrics.totalPaid.toLocaleString()} ]</span>
+            <span className="text-gray-500 hidden sm:inline">[ ACTIVE_AGENTS: {metrics.activeAgents.toLocaleString()} ]</span>
+            <span className="text-gray-500 hidden lg:inline">[ LIVE_CONTESTS: {metrics.liveContests} ]</span>
             <span className="ml-auto text-gray-400">
               {new Date().toISOString().slice(11, 19)} UTC
             </span>

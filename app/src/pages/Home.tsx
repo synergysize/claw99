@@ -33,6 +33,7 @@ export default function Home() {
       let query = supabase
         .from('contests')
         .select('*')
+        .order('is_pinned', { ascending: false, nullsFirst: false })
         .order('created_at', { ascending: false })
 
       if (category !== 'ALL_CATEGORIES') {
@@ -159,8 +160,7 @@ export default function Home() {
                   <th className="w-20">ID</th>
                   <th>TITLE / DESCRIPTION</th>
                   <th>CATEGORY</th>
-                  <th className="text-right">BOUNTY</th>
-                  <th className="text-right">USD</th>
+                  <th className="text-right">BNTY / CURR</th>
                   <th className="text-right">DEADLINE</th>
                   <th className="text-center">SUBS</th>
                   <th className="w-16">ACTION</th>
@@ -174,19 +174,24 @@ export default function Home() {
                     </td>
                     <td className="text-xs text-gray-500">#{contest.id.slice(0, 4)}</td>
                     <td>
-                      <div className="font-medium">{contest.title}</div>
+                      <div className="font-medium flex items-center gap-1">
+                        {(contest as any).is_pinned && <span title="Pinned">📌</span>}
+                        {contest.title}
+                      </div>
                       <div className="text-xs text-gray-500 truncate max-w-md">
                         {contest.objective}
                       </div>
                     </td>
                     <td>
-                      <span className="claw-tag">{contest.category}</span>
+                      <div className="flex flex-wrap gap-1">
+                        {(contest as any).labels?.includes('CLAW99') && (
+                          <span className="claw-tag bg-black text-white">CLAW99</span>
+                        )}
+                        <span className="claw-tag">{contest.category}</span>
+                      </div>
                     </td>
-                    <td className="text-right font-medium">
-                      {contest.bounty_amount.toLocaleString()} CLAW
-                    </td>
-                    <td className="text-right text-gray-500">
-                      ${contest.bounty_amount.toLocaleString()}
+                    <td className="text-right font-medium whitespace-nowrap">
+                      {contest.bounty_amount.toLocaleString()} <span className="text-gray-500 font-normal">{contest.bounty_currency}</span>
                     </td>
                     <td className="text-right">
                       {contest.status === 'reviewing' ? (
@@ -227,17 +232,23 @@ export default function Home() {
               >
                 <div className="flex items-start justify-between gap-3">
                   <div className="flex-1 min-w-0">
-                    <div className="flex items-center gap-2 mb-1">
+                    <div className="flex items-center gap-2 mb-1 flex-wrap">
                       <span className={`status-dot ${getStatusColor(contest.status)}`} />
                       <span className="text-xs text-gray-400">#{contest.id.slice(0, 4)}</span>
+                      {(contest as any).labels?.includes('CLAW99') && (
+                        <span className="claw-tag text-xs bg-black text-white">CLAW99</span>
+                      )}
                       <span className="claw-tag text-xs">{contest.category}</span>
                     </div>
-                    <h3 className="font-medium text-sm mb-1 truncate">{contest.title}</h3>
+                    <h3 className="font-medium text-sm mb-1 truncate flex items-center gap-1">
+                      {(contest as any).is_pinned && <span>📌</span>}
+                      {contest.title}
+                    </h3>
                     <p className="text-xs text-gray-500 line-clamp-2">{contest.objective}</p>
                   </div>
                   <div className="text-right flex-shrink-0">
-                    <div className="font-bold text-lg">{contest.bounty_amount.toLocaleString()} CLAW</div>
-                    <div className="text-xs text-gray-400">${contest.bounty_amount.toLocaleString()}</div>
+                    <div className="font-bold text-lg">{contest.bounty_amount.toLocaleString()}</div>
+                    <div className="text-xs text-gray-400">{contest.bounty_currency}</div>
                     <div className="text-xs text-gray-500">
                       {contest.status === 'reviewing' ? (
                         <span className="text-yellow-600">REVIEWING</span>

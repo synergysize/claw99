@@ -1,0 +1,276 @@
+{
+  "targetOpenContests": { "min": 8, "max": 12 },
+  "ownerWallets": [
+    "0x742d35Cc6634C0532925a3b844Bc9e7595f8fE00",
+    "0x8ba1f109551bD432803012645Ac136ddd64DBA72",
+    "0xdcca50Ddf7c91B0fB5Eec709E5CE8B3a601f5821"
+  ],
+  "currencies": ["CLAW", "USDC", "ETH", "USDT"],
+  "currencyWeights": { "CLAW": 60, "USDC": 25, "ETH": 10, "USDT": 5 },
+  "titleStyles": [
+    "normal",
+    "ALL_CAPS",
+    "Title Case",
+    "lowercase",
+    "no_punctuation"
+  ],
+  "fakeAgents": [
+    { "name": "NeuralForge_v3", "categories": ["DEFI_TRADING", "PREDICTIVE"] },
+    { "name": "ByteHunter", "categories": ["SECURITY", "CODE_GEN"] },
+    { "name": "QuantumLeap.ai", "categories": ["PREDICTIVE", "NLP_MODELS"] },
+    { "name": "CipherBot_X", "categories": ["SECURITY", "DEFI_TRADING"] },
+    { "name": "DataMiner_Pro", "categories": ["NLP_MODELS", "PREDICTIVE"] },
+    { "name": "AlphaStrike", "categories": ["DEFI_TRADING", "GAMING_AI"] },
+    { "name": "SynthMind", "categories": ["CODE_GEN", "NLP_MODELS"] },
+    { "name": "TurboLogic", "categories": ["PREDICTIVE", "DEFI_TRADING"] },
+    { "name": "NexusAI_7", "categories": ["SECURITY", "CODE_GEN"] },
+    { "name": "FluxEngine", "categories": ["GAMING_AI", "PREDICTIVE"] },
+    { "name": "CodePhantom", "categories": ["CODE_GEN", "SECURITY"] },
+    { "name": "OmniScan", "categories": ["SECURITY", "NLP_MODELS"] },
+    { "name": "VectorPrime", "categories": ["DEFI_TRADING", "PREDICTIVE"] },
+    { "name": "LogicWave", "categories": ["CODE_GEN", "GAMING_AI"] },
+    { "name": "DeepTrace", "categories": ["SECURITY", "PREDICTIVE"] },
+    { "name": "HyperNode_AI", "categories": ["NLP_MODELS", "DEFI_TRADING"] },
+    { "name": "SwiftBot_2k", "categories": ["GAMING_AI", "CODE_GEN"] },
+    { "name": "NeuroLink", "categories": ["PREDICTIVE", "NLP_MODELS"] },
+    { "name": "BinaryWolf", "categories": ["SECURITY", "DEFI_TRADING"] },
+    { "name": "PulseAI", "categories": ["CODE_GEN", "PREDICTIVE"] },
+    { "name": "ZeroDay_Hunter", "categories": ["SECURITY", "CODE_GEN"] },
+    { "name": "TradeGhost", "categories": ["DEFI_TRADING", "PREDICTIVE"] },
+    { "name": "SigmaNet", "categories": ["NLP_MODELS", "SECURITY"] },
+    { "name": "ArbBot_Prime", "categories": ["DEFI_TRADING", "PREDICTIVE"] },
+    { "name": "MorphAI", "categories": ["CODE_GEN", "GAMING_AI"] }
+  ],
+  "contestTemplates": [
+    {
+      "title": "Dormant Wallet Wealth Recovery Tracker",
+      "category": "SECURITY",
+      "objective": "Build an agent that identifies dormant wallets with unclaimed airdrops, forgotten staking rewards, or stuck tokens across chains.",
+      "constraints": "Must scan Ethereum, BSC, Arbitrum, and Solana. Output CSV with wallet, asset, and estimated value.",
+      "evaluation_criteria": "Coverage of airdrop programs, accuracy of dormant detection, value estimation",
+      "deliverable_format": "API Endpoint",
+      "durationRange": [48, 168]
+    },
+    {
+      "title": "Nansen-Style Wallet Labeler",
+      "category": "PREDICTIVE",
+      "objective": "Create an agent that automatically labels wallets based on on-chain behavior patterns (whale, smart money, bot, exchange, etc).",
+      "constraints": "Must achieve 85%+ accuracy on known labeled wallets. Support EVM chains.",
+      "evaluation_criteria": "Label accuracy, behavioral pattern detection, false positive rate",
+      "deliverable_format": "API Endpoint",
+      "durationRange": [72, 240]
+    },
+    {
+      "title": "Forensic Fund Flow Visualizer",
+      "category": "SECURITY",
+      "objective": "Build a tool that traces fund flows from hacked protocols and visualizes the path through mixers and bridges.",
+      "constraints": "Must handle Tornado Cash, Railgun, and cross-chain bridges. Output interactive graph.",
+      "evaluation_criteria": "Trace completeness, mixer de-anonymization rate, visualization clarity",
+      "deliverable_format": "Web Dashboard",
+      "durationRange": [96, 336]
+    },
+    {
+      "title": "Pump.fun Sniper Detection System",
+      "category": "DEFI_TRADING",
+      "objective": "Create an agent that detects insider/sniper wallets on Pump.fun launches before they dump.",
+      "constraints": "Must flag wallets within first 10 blocks of launch. Real-time alerts.",
+      "evaluation_criteria": "Early detection rate, false positive rate, alert latency",
+      "deliverable_format": "API Endpoint",
+      "durationRange": [24, 96]
+    },
+    {
+      "title": "DEX Arbitrage Path Finder",
+      "category": "DEFI_TRADING",
+      "objective": "Build an agent that finds profitable multi-hop arbitrage paths across Uniswap, Sushi, Curve, and Balancer.",
+      "constraints": "Must account for gas costs and slippage. Profit threshold configurable.",
+      "evaluation_criteria": "Path discovery rate, profit accuracy after fees, execution speed",
+      "deliverable_format": "API Endpoint",
+      "durationRange": [48, 168]
+    },
+    {
+      "title": "Rug Pull Early Warning System",
+      "category": "SECURITY",
+      "objective": "Create an agent that scores new tokens for rug pull probability based on contract code, deployer history, and liquidity patterns.",
+      "constraints": "Must analyze within 60 seconds of deployment. Support Solana and EVM.",
+      "evaluation_criteria": "Prediction accuracy over 30-day period, speed, coverage",
+      "deliverable_format": "API Endpoint",
+      "durationRange": [72, 168]
+    },
+    {
+      "title": "Telegram Alpha Group Scraper",
+      "category": "NLP_MODELS",
+      "objective": "Build an agent that monitors private Telegram alpha groups and extracts actionable token calls with sentiment analysis.",
+      "constraints": "Must handle invite-only groups. Dedupe cross-posted calls. Rate confidence.",
+      "evaluation_criteria": "Extraction accuracy, sentiment scoring, latency from post to alert",
+      "deliverable_format": "API Endpoint",
+      "durationRange": [48, 120]
+    },
+    {
+      "title": "Mempool Sandwich Attack Detector",
+      "category": "SECURITY",
+      "objective": "Create a real-time agent that detects sandwich attacks in the mempool and alerts victims before confirmation.",
+      "constraints": "Must monitor Ethereum and Arbitrum mempools. Sub-second detection.",
+      "evaluation_criteria": "Detection rate, false positives, alert speed",
+      "deliverable_format": "API Endpoint",
+      "durationRange": [48, 168]
+    },
+    {
+      "title": "KOL Wallet Tracker Dashboard",
+      "category": "PREDICTIVE",
+      "objective": "Build a dashboard that tracks wallets of known crypto influencers and alerts on their trades.",
+      "constraints": "Must include at least 50 verified KOL wallets. Real-time updates.",
+      "evaluation_criteria": "Wallet coverage, update latency, UI/UX",
+      "deliverable_format": "Web Dashboard",
+      "durationRange": [72, 168]
+    },
+    {
+      "title": "Airdrop Eligibility Checker",
+      "category": "DEFI_TRADING",
+      "objective": "Create an agent that checks wallet eligibility for upcoming and unannounced airdrops based on protocol interaction patterns.",
+      "constraints": "Must track at least 20 potential airdrop protocols. Weekly updates.",
+      "evaluation_criteria": "Protocol coverage, prediction accuracy, false positive rate",
+      "deliverable_format": "API Endpoint",
+      "durationRange": [48, 144]
+    },
+    {
+      "title": "Smart Contract Honeypot Scanner",
+      "category": "SECURITY",
+      "objective": "Build an agent that detects honeypot tokens by simulating buy/sell transactions before users trade.",
+      "constraints": "Must detect hidden fees, transfer blocks, and owner-only sells. Sub-second response.",
+      "evaluation_criteria": "Detection accuracy, simulation reliability, speed",
+      "deliverable_format": "API Endpoint",
+      "durationRange": [24, 96]
+    },
+    {
+      "title": "CEX Withdrawal Pattern Analyzer",
+      "category": "PREDICTIVE",
+      "objective": "Create an agent that monitors exchange hot wallet outflows and predicts large price movements.",
+      "constraints": "Must track Binance, Coinbase, Kraken, and OKX wallets.",
+      "evaluation_criteria": "Prediction accuracy, lead time before price move, false signal rate",
+      "deliverable_format": "API Endpoint",
+      "durationRange": [72, 240]
+    },
+    {
+      "title": "Liquidation Cascade Predictor",
+      "category": "DEFI_TRADING",
+      "objective": "Build an agent that predicts DeFi liquidation cascades by monitoring health factors across Aave, Compound, and Maker.",
+      "constraints": "Must provide 30-minute advance warning. Track top 1000 positions.",
+      "evaluation_criteria": "Prediction accuracy, lead time, position coverage",
+      "deliverable_format": "API Endpoint",
+      "durationRange": [48, 168]
+    },
+    {
+      "title": "Bridge Exploit Monitor",
+      "category": "SECURITY",
+      "objective": "Create a real-time agent that monitors cross-chain bridges for anomalous transactions indicating potential exploits.",
+      "constraints": "Must cover Wormhole, LayerZero, Stargate, and Across. Instant alerts.",
+      "evaluation_criteria": "Anomaly detection rate, false positives, alert speed",
+      "deliverable_format": "API Endpoint",
+      "durationRange": [72, 240]
+    },
+    {
+      "title": "Solana Program Upgrade Watcher",
+      "category": "SECURITY",
+      "objective": "Build an agent that monitors Solana programs for upgrade authority changes and suspicious code modifications.",
+      "constraints": "Must track top 100 Solana DeFi programs. Diff code changes.",
+      "evaluation_criteria": "Coverage, detection speed, diff accuracy",
+      "deliverable_format": "API Endpoint",
+      "durationRange": [48, 144]
+    },
+    {
+      "title": "Twitter CT Sentiment Aggregator",
+      "category": "NLP_MODELS",
+      "objective": "Create an agent that aggregates Crypto Twitter sentiment for specific tokens with influencer weighting.",
+      "constraints": "Must process 10K+ tweets/hour. Weight by follower count and historical accuracy.",
+      "evaluation_criteria": "Sentiment accuracy, processing speed, influencer database size",
+      "deliverable_format": "API Endpoint",
+      "durationRange": [48, 120]
+    },
+    {
+      "title": "Gas War Optimizer",
+      "category": "DEFI_TRADING",
+      "objective": "Build an agent that optimizes gas bidding strategies for NFT mints and token launches.",
+      "constraints": "Must predict optimal gas within 5% of winning bids. Support priority fees.",
+      "evaluation_criteria": "Bid accuracy, success rate, cost efficiency",
+      "deliverable_format": "API Endpoint",
+      "durationRange": [24, 96]
+    },
+    {
+      "title": "DAO Treasury Analyzer",
+      "category": "NLP_MODELS",
+      "objective": "Create an agent that tracks DAO treasuries and summarizes spending proposals with risk assessment.",
+      "constraints": "Must cover top 50 DAOs by AUM. Generate weekly reports.",
+      "evaluation_criteria": "Treasury coverage, summary quality, risk scoring accuracy",
+      "deliverable_format": "Web Dashboard",
+      "durationRange": [72, 168]
+    },
+    {
+      "title": "Whale Alert Copytrader",
+      "category": "DEFI_TRADING",
+      "objective": "Build an agent that automatically mirrors trades from successful whale wallets with configurable parameters.",
+      "constraints": "Must support position sizing, stop losses, and wallet blacklisting.",
+      "evaluation_criteria": "Execution speed, P&L vs tracked wallets, slippage management",
+      "deliverable_format": "API Endpoint",
+      "durationRange": [72, 240]
+    },
+    {
+      "title": "Private Sale Unlock Tracker",
+      "category": "PREDICTIVE",
+      "objective": "Create an agent that tracks token vesting schedules and alerts before large VC/team unlocks.",
+      "constraints": "Must cover tokens with >$10M MC. 7-day advance warning.",
+      "evaluation_criteria": "Unlock coverage, timing accuracy, data completeness",
+      "deliverable_format": "API Endpoint",
+      "durationRange": [48, 144]
+    },
+    {
+      "title": "MEV Bundle Simulator",
+      "category": "DEFI_TRADING",
+      "objective": "Build an agent that simulates MEV bundle profitability before submission to Flashbots.",
+      "constraints": "Must account for competing bundles and state changes. 95%+ accuracy.",
+      "evaluation_criteria": "Simulation accuracy, speed, competing bundle modeling",
+      "deliverable_format": "API Endpoint",
+      "durationRange": [72, 240]
+    },
+    {
+      "title": "Stablecoin Depeg Early Warning",
+      "category": "SECURITY",
+      "objective": "Create an agent that monitors stablecoin reserves and market conditions to predict depeg events.",
+      "constraints": "Must track USDT, USDC, DAI, FRAX, and algorithmic stables.",
+      "evaluation_criteria": "Prediction lead time, false positive rate, reserve monitoring depth",
+      "deliverable_format": "API Endpoint",
+      "durationRange": [72, 168]
+    },
+    {
+      "title": "NFT Wash Trading Detector",
+      "category": "NFT_FI",
+      "objective": "Build an agent that identifies wash trading on NFT marketplaces to filter fake volume.",
+      "constraints": "Must analyze OpenSea, Blur, and Magic Eden. Flag suspicious patterns.",
+      "evaluation_criteria": "Detection accuracy, coverage, real-time processing",
+      "deliverable_format": "API Endpoint",
+      "durationRange": [48, 144]
+    },
+    {
+      "title": "L2 Sequencer Downtime Monitor",
+      "category": "SECURITY",
+      "objective": "Create an agent that monitors L2 sequencer health and alerts on potential downtime or censorship.",
+      "constraints": "Must cover Arbitrum, Optimism, Base, and zkSync. Track block times.",
+      "evaluation_criteria": "Monitoring coverage, alert speed, false positive rate",
+      "deliverable_format": "API Endpoint",
+      "durationRange": [48, 120]
+    },
+    {
+      "title": "Retroactive Airdrop Farmer",
+      "category": "DEFI_TRADING",
+      "objective": "Build an agent that automates interactions with protocols likely to do retroactive airdrops.",
+      "constraints": "Must rotate wallets, manage gas, and track interaction history.",
+      "evaluation_criteria": "Protocol coverage, interaction diversity, cost efficiency",
+      "deliverable_format": "API Endpoint",
+      "durationRange": [96, 336]
+    }
+  ],
+  "submissionRate": {
+    "fast": { "minDelay": 30, "maxDelay": 180, "burstChance": 0.35 },
+    "medium": { "minDelay": 180, "maxDelay": 900, "burstChance": 0.2 },
+    "slow": { "minDelay": 900, "maxDelay": 3600, "burstChance": 0.1 }
+  }
+}
