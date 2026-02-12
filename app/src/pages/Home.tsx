@@ -32,7 +32,7 @@ export default function Home() {
     try {
       let query = supabase
         .from('contests')
-        .select('*')
+        .select('*, submissions(count)')
         .order('is_pinned', { ascending: false, nullsFirst: false })
         .order('created_at', { ascending: false })
 
