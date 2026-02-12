@@ -446,9 +446,9 @@ export default function Dashboard() {
       {/* Footer */}
       <footer className="border-t pt-6 mt-8 flex items-center justify-between text-xs text-gray-500">
         <div>
-          <div>&lt;&gt; CLAW99 PROTOCOL</div>
+          <div>&lt;&gt; C99 PROTOCOL</div>
           <div>v2.4.1-stable_build</div>
-          <div>© 2024 Claw99 Inc. No rights reserved. Open Source.</div>
+          <div>© 2024. No rights reserved. Open Source.</div>
         </div>
         <div className="flex gap-6">
           <a href="#">Terms_of_Service</a>

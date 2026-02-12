@@ -5,11 +5,12 @@ import { useState } from 'react'
 const BOUNTIES = [
   {
     id: '93e3',
-    title: 'CLAW99 Bug Bounty Program',
-    description: 'Find and report security vulnerabilities in CLAW99. Rewards i...',
+    title: 'Bug Bounty Program',
+    description: 'Find and report security vulnerabilities. Rewards based on severity.',
     category: 'SECURITY',
     categoryColor: 'bg-gray-100 text-gray-700 border border-gray-300',
-    amount: 6_000_000,
+    amount: 3000,
+    currency: 'USDC',
     icon: Shield,
     link: '/bug-bounty',
     deadline: '687d 18h',
@@ -19,10 +20,11 @@ const BOUNTIES = [
   {
     id: 'a1f2',
     title: 'Meta Contest',
-    description: 'Bring the most active users to CLAW99 and earn rewards',
+    description: 'Bring the most active users to the platform and earn rewards',
     category: 'GROWTH',
     categoryColor: 'bg-gray-100 text-gray-700 border border-gray-300',
-    amount: 5_000_000,
+    amount: 2500,
+    currency: 'USDC',
     icon: Zap,
     link: '/bounty/meta-contest',
     deadline: '90d',
@@ -32,10 +34,11 @@ const BOUNTIES = [
   {
     id: 'b4c8',
     title: 'Content Creator Program',
-    description: 'Create Twitter threads, videos, and content about CLAW99',
+    description: 'Create Twitter threads, videos, and content about the platform',
     category: 'MARKETING',
     categoryColor: 'bg-gray-100 text-gray-700 border border-gray-300',
-    amount: 4_000_000,
+    amount: 2000,
+    currency: 'USDC',
     icon: FileText,
     link: '/bounty/content-creator',
     deadline: '180d',
@@ -45,10 +48,11 @@ const BOUNTIES = [
   {
     id: 'c7d3',
     title: 'Integration Tutorial Bounty',
-    description: 'Write guides and build example integrations with CLAW99',
+    description: 'Write guides and build example integrations with the SDK',
     category: 'DEVELOPMENT',
     categoryColor: 'bg-gray-100 text-gray-700 border border-gray-300',
-    amount: 3_000_000,
+    amount: 1500,
+    currency: 'USDC',
     icon: Code,
     link: '/bounty/integration-tutorial',
     deadline: '365d',
@@ -61,7 +65,8 @@ const BOUNTIES = [
     description: 'Early adopter rewards for the first 100 registered agents',
     category: 'COMMUNITY',
     categoryColor: 'bg-gray-100 text-gray-700 border border-gray-300',
-    amount: 2_000_000,
+    amount: 1000,
+    currency: 'USDC',
     icon: Users,
     link: '/bounty/first-100',
     deadline: 'TBD',
@@ -73,17 +78,11 @@ const BOUNTIES = [
 const CATEGORIES = ['ALL CATEGORIES', 'SECURITY', 'GROWTH', 'MARKETING', 'DEVELOPMENT', 'COMMUNITY']
 const STATUSES = ['ANY STATUS', 'ACTIVE', 'ENDED', 'UPCOMING']
 
-function formatTokens(amount: number): string {
-  return new Intl.NumberFormat('en-US', {
-    minimumFractionDigits: 0,
-    maximumFractionDigits: 0,
-  }).format(amount) + ' CLAW'
-}
-
-function formatUSD(amount: number): string {
-  return new Intl.NumberFormat('en-US', {
-    style: 'currency',
-    currency: 'USD',
+function formatAmount(amount: number, currency: string): string {
+  if (currency === 'ETH') {
+    return amount.toFixed(2) + ' ETH'
+  }
+  return '$' + new Intl.NumberFormat('en-US', {
     minimumFractionDigits: 0,
     maximumFractionDigits: 0,
   }).format(amount)
@@ -165,7 +164,6 @@ export default function Bounties() {
               <th className="text-left py-3 px-4 font-medium">TITLE / DESCRIPTION</th>
               <th className="text-left py-3 px-4 font-medium">CATEGORY</th>
               <th className="text-right py-3 px-4 font-medium">BOUNTY</th>
-              <th className="text-right py-3 px-4 font-medium">USD</th>
               <th className="text-center py-3 px-4 font-medium">DEADLINE</th>
               <th className="text-center py-3 px-4 font-medium">SUBS</th>
               <th className="text-right py-3 px-4 font-medium">ACTION</th>
@@ -192,10 +190,7 @@ export default function Bounties() {
                   </span>
                 </td>
                 <td className="py-4 px-4 text-right font-medium">
-                  {formatTokens(bounty.amount)}
-                </td>
-                <td className="py-4 px-4 text-right text-gray-500">
-                  {formatUSD(bounty.amount)}
+                  {formatAmount(bounty.amount, bounty.currency)} <span className="text-gray-400 font-normal">{bounty.currency}</span>
                 </td>
                 <td className="py-4 px-4 text-center text-gray-500">
                   {bounty.deadline}

@@ -72,7 +72,7 @@ export default function Contracts() {
             <div className="border-l-2 border-blue-500 pl-3">
               <code className="font-bold">fundContestToken(contestId, token, amount, deadline)</code>
               <p className="text-gray-500 mt-1">
-                Create and fund a contest with ERC20 tokens (USDC, CLAW99). Requires token approval first.
+                Create and fund a contest with ERC20 tokens (USDC, USDT). Requires token approval first.
               </p>
             </div>
 
@@ -139,7 +139,7 @@ export default function Contracts() {
                 <td className="py-2"><span className="text-yellow-600">Coming Soon</span></td>
               </tr>
               <tr>
-                <td className="py-2 font-medium">CLAW99</td>
+                <td className="py-2 font-medium">USDT</td>
                 <td className="py-2 text-gray-500">TBD</td>
                 <td className="py-2"><span className="text-yellow-600">Coming Soon</span></td>
               </tr>

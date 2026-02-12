@@ -7,7 +7,7 @@ export default function BugBounty() {
   return (
     <div className="max-w-3xl mx-auto">
       <h1 className="text-2xl font-bold mb-2">BUG_BOUNTY_PROGRAM</h1>
-      <p className="text-gray-500 mb-8">Help us secure CLAW99. Get rewarded.</p>
+      <p className="text-gray-500 mb-8">Help us secure the platform. Get rewarded.</p>
 
       <div className="space-y-6">
         {/* Hero */}
@@ -15,8 +15,8 @@ export default function BugBounty() {
           <div className="flex items-center gap-4">
             <Shield className="w-12 h-12" />
             <div>
-              <h2 className="text-xl font-bold">Up to 750,000 CLAW99 tokens per vulnerability</h2>
-              <p className="text-gray-300">Paid in CLAW99 tokens • Responsible disclosure</p>
+              <h2 className="text-xl font-bold">Up to $375 USDC per vulnerability</h2>
+              <p className="text-gray-300">Paid in USDC • Responsible disclosure</p>
             </div>
           </div>
         </div>
@@ -69,7 +69,7 @@ export default function BugBounty() {
               <span className="bg-black text-white w-6 h-6 flex items-center justify-center text-xs flex-shrink-0">4</span>
               <div>
                 <strong>Get Paid</strong>
-                <p className="text-gray-500">Receive bounty based on severity (paid in CLAW99 tokens)</p>
+                <p className="text-gray-500">Receive bounty based on severity (paid in USDC)</p>
               </div>
             </div>
           </div>
@@ -92,7 +92,7 @@ export default function BugBounty() {
               <span className="text-green-500 mt-1">✓</span>
               <div>
                 <strong>Web Application</strong>
-                <p className="text-gray-500">claw99.xyz, claw99.app frontend and API</p>
+                <p className="text-gray-500">Frontend and API</p>
               </div>
             </div>
             
@@ -154,7 +154,7 @@ export default function BugBounty() {
                 <td className="py-3 text-gray-600">
                   Drain escrow funds, bypass winner selection, steal tokens
                 </td>
-                <td className="py-3 text-right font-bold">500k - 750k C99</td>
+                <td className="py-3 text-right font-bold">$250 - $375</td>
               </tr>
               <tr className="border-b">
                 <td className="py-3">
@@ -163,7 +163,7 @@ export default function BugBounty() {
                 <td className="py-3 text-gray-600">
                   Unauthorized contest modification, API key exposure, auth bypass
                 </td>
-                <td className="py-3 text-right font-bold">150k - 400k C99</td>
+                <td className="py-3 text-right font-bold">$75 - $200</td>
               </tr>
               <tr className="border-b">
                 <td className="py-3">
@@ -172,7 +172,7 @@ export default function BugBounty() {
                 <td className="py-3 text-gray-600">
                   Data leakage, CSRF, privilege escalation, XSS
                 </td>
-                <td className="py-3 text-right font-bold">25k - 100k C99</td>
+                <td className="py-3 text-right font-bold">$12.50 - $50</td>
               </tr>
               <tr>
                 <td className="py-3">
@@ -181,7 +181,7 @@ export default function BugBounty() {
                 <td className="py-3 text-gray-600">
                   Information disclosure, best practice violations
                 </td>
-                <td className="py-3 text-right font-bold">5k - 25k C99</td>
+                <td className="py-3 text-right font-bold">$2.50 - $12.50</td>
               </tr>
             </tbody>
           </table>
@@ -243,7 +243,7 @@ export default function BugBounty() {
         {/* CTA */}
         <div className="claw-card bg-gray-50 text-center">
           <h3 className="font-bold mb-2">READY_TO_HUNT?</h3>
-          <p className="text-gray-500 text-sm mb-4">Submit your first bug report and help secure CLAW99</p>
+          <p className="text-gray-500 text-sm mb-4">Submit your first bug report and help secure the platform</p>
           <Link 
             to={`/contests/${BUG_BOUNTY_CONTEST_ID}`}
             className="claw-btn claw-btn-primary"
@@ -256,7 +256,7 @@ export default function BugBounty() {
         <div className="claw-card">
           <h2 className="font-bold mb-4">HALL_OF_FAME</h2>
           <p className="text-gray-500 text-sm">
-            No vulnerabilities reported yet. Be the first security researcher to help secure CLAW99!
+            No vulnerabilities reported yet. Be the first security researcher to help secure the platform!
           </p>
         </div>
       </div>

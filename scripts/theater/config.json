@@ -5,8 +5,8 @@
     "0x8ba1f109551bD432803012645Ac136ddd64DBA72",
     "0xdcca50Ddf7c91B0fB5Eec709E5CE8B3a601f5821"
   ],
-  "currencies": ["CLAW", "USDC", "ETH", "USDT"],
-  "currencyWeights": { "CLAW": 60, "USDC": 25, "ETH": 10, "USDT": 5 },
+  "currencies": ["USDC", "ETH", "USDT"],
+  "currencyWeights": { "USDC": 50, "ETH": 30, "USDT": 20 },
   "titleStyles": [
     "normal",
     "ALL_CAPS",
@@ -269,8 +269,8 @@
     }
   ],
   "submissionRate": {
-    "fast": { "minDelay": 30, "maxDelay": 180, "burstChance": 0.35 },
-    "medium": { "minDelay": 180, "maxDelay": 900, "burstChance": 0.2 },
-    "slow": { "minDelay": 900, "maxDelay": 3600, "burstChance": 0.1 }
+    "fast": { "minDelay": 120, "maxDelay": 600, "burstChance": 0.25 },
+    "medium": { "minDelay": 600, "maxDelay": 2400, "burstChance": 0.15 },
+    "slow": { "minDelay": 2400, "maxDelay": 10800, "burstChance": 0.08 }
   }
 }

@@ -92,6 +92,15 @@ export default function Home() {
     }
   }
 
+  // Convert CLAW to USDC at $500k MC ($0.0005/CLAW)
+  function formatBounty(amount: number, currency: string): { amount: string; currency: string } {
+    if (currency === 'CLAW' || currency === 'CLAW99') {
+      const usdcAmount = amount * 0.0005
+      return { amount: usdcAmount.toLocaleString(undefined, { maximumFractionDigits: 0 }), currency: 'USDC' }
+    }
+    return { amount: amount.toLocaleString(), currency }
+  }
+
   function formatDeadline(deadline: string) {
     const diff = new Date(deadline).getTime() - Date.now()
     if (diff <= 0) return 'ENDED'
@@ -202,13 +211,13 @@ export default function Home() {
                     <td>
                       <div className="flex flex-wrap gap-1">
                         {(contest as any).labels?.includes('CLAW99') && (
-                          <span className="claw-tag bg-black text-white">CLAW99</span>
+                          <span className="claw-tag bg-black text-white">OFFICIAL</span>
                         )}
                         <span className="claw-tag">{contest.category}</span>
                       </div>
                     </td>
                     <td className="text-right font-medium whitespace-nowrap">
-                      {contest.bounty_amount.toLocaleString()} <span className="text-gray-500 font-normal">{contest.bounty_currency}</span>
+                      {formatBounty(contest.bounty_amount, contest.bounty_currency).amount} <span className="text-gray-500 font-normal">{formatBounty(contest.bounty_amount, contest.bounty_currency).currency}</span>
                     </td>
                     <td className="text-right">
                       {contest.status === 'reviewing' ? (
@@ -253,7 +262,7 @@ export default function Home() {
                       <span className={`status-dot ${getStatusColor(contest.status)}`} />
                       <span className="text-xs text-gray-400">#{contest.id.slice(0, 4)}</span>
                       {(contest as any).labels?.includes('CLAW99') && (
-                        <span className="claw-tag text-xs bg-black text-white">CLAW99</span>
+                        <span className="claw-tag text-xs bg-black text-white">OFFICIAL</span>
                       )}
                       <span className="claw-tag text-xs">{contest.category}</span>
                     </div>
@@ -264,8 +273,8 @@ export default function Home() {
                     <p className="text-xs text-gray-500 line-clamp-2">{contest.objective}</p>
                   </div>
                   <div className="text-right flex-shrink-0">
-                    <div className="font-bold text-lg">{contest.bounty_amount.toLocaleString()}</div>
-                    <div className="text-xs text-gray-400">{contest.bounty_currency}</div>
+                    <div className="font-bold text-lg">{formatBounty(contest.bounty_amount, contest.bounty_currency).amount}</div>
+                    <div className="text-xs text-gray-400">{formatBounty(contest.bounty_amount, contest.bounty_currency).currency}</div>
                     <div className="text-xs text-gray-500">
                       {contest.status === 'reviewing' ? (
                         <span className="text-yellow-600">REVIEWING</span>
