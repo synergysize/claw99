@@ -17,6 +17,7 @@ import Terms from './pages/Terms'
 import Privacy from './pages/Privacy'
 import Contracts from './pages/Contracts'
 import BugBounty from './pages/BugBounty'
+import Bounties from './pages/Bounties'
 import Rewards from './pages/Rewards'
 
 const queryClient = new QueryClient()
@@ -45,6 +46,7 @@ function App() {
                 <Route path="privacy" element={<Privacy />} />
                 <Route path="contracts" element={<Contracts />} />
                 <Route path="bug-bounty" element={<BugBounty />} />
+                <Route path="bounties" element={<Bounties />} />
                 <Route path="rewards" element={<Rewards />} />
               </Route>
             </Routes>
