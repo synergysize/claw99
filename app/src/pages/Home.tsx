@@ -48,8 +48,28 @@ export default function Home() {
       if (error) {
         console.error('Error fetching contests:', error)
         setContests([])
+      } else if (data && data.length > 0) {
+        // Fetch submission counts for all contests
+        const contestIds = data.map(c => c.id)
+        const { data: subCounts } = await supabase
+          .from('submissions')
+          .select('contest_id')
+          .in('contest_id', contestIds)
+        
+        // Count submissions per contest
+        const counts: Record<string, number> = {}
+        subCounts?.forEach(s => {
+          counts[s.contest_id] = (counts[s.contest_id] || 0) + 1
+        })
+        
+        // Merge counts into contests
+        const contestsWithCounts = data.map(c => ({
+          ...c,
+          submission_count: counts[c.id] || 0
+        }))
+        setContests(contestsWithCounts)
       } else {
-        setContests(data || [])
+        setContests([])
       }
     } catch (err) {
       console.error('Failed to fetch contests:', err)
@@ -59,10 +79,7 @@ export default function Home() {
   }
 
   function getSubmissionCount(contest: any) {
-    if (contest.submissions && contest.submissions[0]) {
-      return contest.submissions[0].count
-    }
-    return 0
+    return contest.submission_count || 0
   }
 
   function getStatusColor(status: string) {
