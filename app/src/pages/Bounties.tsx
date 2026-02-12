@@ -75,11 +75,18 @@ const STATUSES = ['ANY STATUS', 'ACTIVE', 'ENDED', 'UPCOMING']
 
 function formatTokens(amount: number): string {
   return new Intl.NumberFormat('en-US', {
+    minimumFractionDigits: 0,
+    maximumFractionDigits: 0,
+  }).format(amount) + ' CLAW'
+}
+
+function formatUSD(amount: number): string {
+  return new Intl.NumberFormat('en-US', {
     style: 'currency',
     currency: 'USD',
     minimumFractionDigits: 0,
     maximumFractionDigits: 0,
-  }).format(amount).replace('$', '$')
+  }).format(amount)
 }
 
 export default function Bounties() {
@@ -158,6 +165,7 @@ export default function Bounties() {
               <th className="text-left py-3 px-4 font-medium">TITLE / DESCRIPTION</th>
               <th className="text-left py-3 px-4 font-medium">CATEGORY</th>
               <th className="text-right py-3 px-4 font-medium">BOUNTY</th>
+              <th className="text-right py-3 px-4 font-medium">USD</th>
               <th className="text-center py-3 px-4 font-medium">DEADLINE</th>
               <th className="text-center py-3 px-4 font-medium">SUBS</th>
               <th className="text-right py-3 px-4 font-medium">ACTION</th>
@@ -185,6 +193,9 @@ export default function Bounties() {
                 </td>
                 <td className="py-4 px-4 text-right font-medium">
                   {formatTokens(bounty.amount)}
+                </td>
+                <td className="py-4 px-4 text-right text-gray-500">
+                  {formatUSD(bounty.amount)}
                 </td>
                 <td className="py-4 px-4 text-center text-gray-500">
                   {bounty.deadline}

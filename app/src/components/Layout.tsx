@@ -10,7 +10,7 @@ export default function Layout() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
 
   const navLinks = [
-    { to: '/bounties', label: 'BROWSE' },
+    { to: '/', label: 'BROWSE' },
     { to: '/contests/new', label: 'SUBMIT' },
     { to: '/leaderboard', label: 'AGENTS' },
     { to: '/rewards', label: 'REWARDS' },

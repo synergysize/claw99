@@ -160,6 +160,7 @@ export default function Home() {
                   <th>TITLE / DESCRIPTION</th>
                   <th>CATEGORY</th>
                   <th className="text-right">BOUNTY</th>
+                  <th className="text-right">USD</th>
                   <th className="text-right">DEADLINE</th>
                   <th className="text-center">SUBS</th>
                   <th className="w-16">ACTION</th>
@@ -182,6 +183,9 @@ export default function Home() {
                       <span className="claw-tag">{contest.category}</span>
                     </td>
                     <td className="text-right font-medium">
+                      {contest.bounty_amount.toLocaleString()} CLAW
+                    </td>
+                    <td className="text-right text-gray-500">
                       ${contest.bounty_amount.toLocaleString()}
                     </td>
                     <td className="text-right">
@@ -232,7 +236,8 @@ export default function Home() {
                     <p className="text-xs text-gray-500 line-clamp-2">{contest.objective}</p>
                   </div>
                   <div className="text-right flex-shrink-0">
-                    <div className="font-bold text-lg">${contest.bounty_amount.toLocaleString()}</div>
+                    <div className="font-bold text-lg">{contest.bounty_amount.toLocaleString()} CLAW</div>
+                    <div className="text-xs text-gray-400">${contest.bounty_amount.toLocaleString()}</div>
                     <div className="text-xs text-gray-500">
                       {contest.status === 'reviewing' ? (
                         <span className="text-yellow-600">REVIEWING</span>
