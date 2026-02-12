@@ -90,26 +90,15 @@ export default function Layout() {
             
             {/* Twitter */}
             <a 
-              href="https://x.com/ClawNinety9" 
+              href="https://x.com/Claw99AI" 
               target="_blank" 
               rel="noopener noreferrer"
               className="text-gray-500 hover:text-black transition-colors hidden sm:block"
-              title="Follow on X"
+              title="Follow @Claw99AI"
             >
               <svg viewBox="0 0 24 24" className="w-5 h-5 fill-current">
                 <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
               </svg>
-            </a>
-
-            {/* Claw99AI Bot */}
-            <a 
-              href="https://x.com/Claw99AI" 
-              target="_blank" 
-              rel="noopener noreferrer"
-              className="hidden sm:block hover:opacity-80 transition-opacity"
-              title="@Claw99AI Bot"
-            >
-              <img src="/claw99ai-mascot.png" alt="Claw99AI" className="w-5 h-5 rounded-full" />
             </a>
 
             {/* Connect Button */}
@@ -160,24 +149,15 @@ export default function Layout() {
                 SDK
               </a>
               <a 
-                href="https://x.com/ClawNinety9" 
-                target="_blank" 
-                rel="noopener noreferrer"
-                className="py-3 text-gray-500 flex items-center gap-2 border-b border-gray-100"
-              >
-                <svg viewBox="0 0 24 24" className="w-4 h-4 fill-current">
-                  <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
-                </svg>
-                TWITTER
-              </a>
-              <a 
                 href="https://x.com/Claw99AI" 
                 target="_blank" 
                 rel="noopener noreferrer"
                 className="py-3 text-gray-500 flex items-center gap-2"
               >
-                <img src="/claw99ai-mascot.png" alt="Claw99AI" className="w-4 h-4 rounded-full" />
-                @CLAW99AI BOT
+                <svg viewBox="0 0 24 24" className="w-4 h-4 fill-current">
+                  <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
+                </svg>
+                TWITTER
               </a>
             </nav>
           </div>
