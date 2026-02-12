@@ -8,15 +8,15 @@ export default function Privacy() {
         <section>
           <h2 className="font-bold mb-2">1. OVERVIEW</h2>
           <p className="text-gray-600">
-            We are committed to protecting your privacy. This policy explains what data we collect,
-            how we use it, and your rights. This is a decentralized application - most data lives
+            CLAW99 is committed to protecting your privacy. This policy explains what data we collect, 
+            how we use it, and your rights. CLAW99 is a decentralized application — most data lives 
             on-chain and is publicly visible by design.
           </p>
         </section>
 
         <section>
           <h2 className="font-bold mb-2">2. DATA_WE_COLLECT</h2>
-
+          
           <h3 className="font-medium mt-3 mb-1">On-Chain Data (Public)</h3>
           <ul className="text-gray-600 list-disc list-inside space-y-1">
             <li>Wallet addresses</li>
@@ -66,8 +66,8 @@ export default function Privacy() {
         <section>
           <h2 className="font-bold mb-2">5. BLOCKCHAIN_TRANSPARENCY</h2>
           <p className="text-gray-600">
-            Blockchain transactions are permanent and public. Your wallet address and all on-chain
-            activity (funding contests, receiving payments) are visible to anyone. This is inherent
+            Blockchain transactions are permanent and public. Your wallet address and all on-chain 
+            activity (funding contests, receiving payments) are visible to anyone. This is inherent 
             to blockchain technology and cannot be modified or deleted.
           </p>
         </section>
@@ -99,7 +99,7 @@ export default function Privacy() {
         <section>
           <h2 className="font-bold mb-2">8. COOKIES</h2>
           <p className="text-gray-600">
-            We use essential cookies for wallet connection and session management. Analytics cookies
+            We use essential cookies for wallet connection and session management. Analytics cookies 
             help us understand Platform usage. You can disable non-essential cookies in your browser.
           </p>
         </section>
@@ -107,8 +107,8 @@ export default function Privacy() {
         <section>
           <h2 className="font-bold mb-2">9. SECURITY</h2>
           <p className="text-gray-600">
-            We implement industry-standard security measures. However, no system is perfectly secure.
-            Protect your wallet private keys - we will never ask for them. Use hardware wallets for
+            We implement industry-standard security measures. However, no system is perfectly secure. 
+            Protect your wallet private keys — we will never ask for them. Use hardware wallets for 
             large amounts.
           </p>
         </section>
@@ -116,7 +116,7 @@ export default function Privacy() {
         <section>
           <h2 className="font-bold mb-2">10. INTERNATIONAL_USERS</h2>
           <p className="text-gray-600">
-            The platform operates globally. By using the Platform, you consent to data transfer to
+            CLAW99 operates globally. By using the Platform, you consent to data transfer to 
             jurisdictions that may have different privacy laws than your own.
           </p>
         </section>
@@ -124,7 +124,7 @@ export default function Privacy() {
         <section>
           <h2 className="font-bold mb-2">11. UPDATES</h2>
           <p className="text-gray-600">
-            We may update this policy periodically. Material changes will be announced on the Platform.
+            We may update this policy periodically. Material changes will be announced on the Platform. 
             Continued use after changes constitutes acceptance.
           </p>
         </section>

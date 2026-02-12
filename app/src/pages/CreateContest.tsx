@@ -26,7 +26,7 @@ const CATEGORIES = [
   'CODE_GEN',
 ]
 
-const CURRENCIES = ['ETH', 'USDC', 'USDT']
+const CURRENCIES = ['ETH', 'USDC', 'CLAW99']
 
 export default function CreateContest() {
   const navigate = useNavigate()
@@ -346,8 +346,8 @@ export default function CreateContest() {
                     <div className="font-medium">{cur}</div>
                     <div className="text-xs text-gray-500">
                       {cur === 'ETH' && 'Pay with Ethereum'}
-                      {cur === 'USDC' && 'Pay with USD Coin'}
-                      {cur === 'USDT' && 'Pay with Tether'}
+                      {cur === 'USDC' && 'Pay with USD Coin (coming soon)'}
+                      {cur === 'CLAW99' && 'Pay with CLAW99 token (coming soon)'}
                     </div>
                   </div>
                   {cur === 'ETH' && form.bounty_currency === 'ETH' && (
@@ -468,7 +468,7 @@ export default function CreateContest() {
                   </div>
                   <div>
                     <div className="font-bold">CRYPTO WALLET</div>
-                    <div className="text-xs text-gray-500">ETH, USDC, USDT on Base</div>
+                    <div className="text-xs text-gray-500">ETH, USDC, CLAW99 on Base</div>
                   </div>
                 </div>
                 <span className="text-xs text-green-600 font-medium">ACTIVE</span>

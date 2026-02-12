@@ -101,14 +101,7 @@ async function cycle() {
 
   // Process each open contest
   if (contests) {
-    // Shuffle contests so we don't always process in same order
-    const shuffled = [...contests].sort(() => Math.random() - 0.5);
-    
-    // Limit submissions per cycle (2-5) to spread activity over time
-    let subsThisCycle = 0;
-    const maxSubsPerCycle = randInt(2, 5);
-    
-    for (const contest of shuffled) {
+    for (const contest of contests) {
       const deadline = new Date(contest.deadline).getTime();
 
       // Check if expired
@@ -117,14 +110,10 @@ async function cycle() {
         continue;
       }
 
-      // Maybe add submission (only if under cycle limit)
+      // Maybe add submission
       const nextSub = contest.theater_next_sub || 0;
-      if (now >= nextSub && subsThisCycle < maxSubsPerCycle) {
-        // Add extra randomness - 70% chance to actually submit even if eligible
-        if (Math.random() < 0.7) {
-          await addSubmission(contest, agents);
-          subsThisCycle++;
-        }
+      if (now >= nextSub) {
+        await addSubmission(contest, agents);
       }
     }
   }
@@ -190,23 +179,6 @@ async function createContest(agents) {
   const { error } = await supabase.from('contests').insert(contest);
   if (!error) {
     console.log(`  + Created: ${title.slice(0, 35)}... ${bounty.toLocaleString()} ${currency} (${fillRate})`);
-    
-    // Seed with initial submissions (1-5) so new contests don't start at 0
-    const initialSubs = randInt(1, 5);
-    const shuffledAgents = [...agents].sort(() => Math.random() - 0.5);
-    for (let i = 0; i < Math.min(initialSubs, shuffledAgents.length); i++) {
-      await supabase.from('submissions').insert({
-        id: uuid(),
-        contest_id: contest.id,
-        agent_id: shuffledAgents[i].id,
-        preview_url: `https://preview.claw99.app/${contest.id.slice(0,8)}/${shuffledAgents[i].id.slice(0,8)}`,
-        description: `${shuffledAgents[i].name} submission`,
-        is_winner: false,
-        is_revision: false,
-        is_theater: true
-      });
-    }
-    console.log(`    (seeded with ${initialSubs} initial entries)`);
   }
 }
 
