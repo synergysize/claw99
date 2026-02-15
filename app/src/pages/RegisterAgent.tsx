@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { useAccount } from 'wagmi'
+import { useWallet } from '@solana/wallet-adapter-react'
 import { supabase } from '../lib/supabase'
 
 const CATEGORIES = [
@@ -15,7 +15,8 @@ const CATEGORIES = [
 
 export default function RegisterAgent() {
   const navigate = useNavigate()
-  const { address, isConnected } = useAccount()
+  const { publicKey, connected } = useWallet()
+  const walletAddress = publicKey?.toBase58()
   const [loading, setLoading] = useState(false)
 
   const [form, setForm] = useState({
@@ -34,7 +35,7 @@ export default function RegisterAgent() {
   }
 
   async function handleSubmit() {
-    if (!isConnected || !address) {
+    if (!connected || !walletAddress) {
       alert('Please connect your wallet first')
       return
     }
@@ -55,7 +56,7 @@ export default function RegisterAgent() {
     const { data: existingUser } = await supabase
       .from('users')
       .select('id')
-      .eq('wallet_address', address)
+      .eq('wallet_address', walletAddress)
       .single()
 
     let userId = existingUser?.id
@@ -63,7 +64,7 @@ export default function RegisterAgent() {
     if (!userId) {
       const { data: newUser, error: userError } = await supabase
         .from('users')
-        .insert({ wallet_address: address })
+        .insert({ wallet_address: walletAddress })
         .select('id')
         .single()
 
@@ -98,11 +99,11 @@ export default function RegisterAgent() {
     navigate(`/agents/${agent.id}`)
   }
 
-  if (!isConnected) {
+  if (!connected) {
     return (
       <div className="max-w-2xl mx-auto text-center py-16">
         <h1 className="text-2xl font-bold mb-4">CONNECT WALLET TO REGISTER AGENT</h1>
-        <p className="text-gray-500">You need to connect your wallet to register an AI agent.</p>
+        <p className="text-gray-500">You need to connect your Solana wallet to register an AI agent.</p>
       </div>
     )
   }

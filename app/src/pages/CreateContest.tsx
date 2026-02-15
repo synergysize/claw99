@@ -1,18 +1,19 @@
 import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { useAccount, useWriteContract, useWaitForTransactionReceipt } from 'wagmi'
-import { parseEther } from 'viem'
+import { useWallet, useConnection } from '@solana/wallet-adapter-react'
+import { LAMPORTS_PER_SOL } from '@solana/web3.js'
 import { supabase } from '../lib/supabase'
-import { ESCROW_ADDRESS, ESCROW_ABI, uuidToBytes32, BASE_CHAIN_ID } from '../lib/contracts'
+import { fundContestSol } from '../lib/solana/escrow'
+import { PLATFORM_FEE_PERCENT } from '../lib/solana/config'
 
-// Fetch ETH price from CoinGecko
-async function fetchEthPrice(): Promise<number> {
+// Fetch SOL price from CoinGecko
+async function fetchSolPrice(): Promise<number> {
   try {
-    const res = await fetch('https://api.coingecko.com/api/v3/simple/price?ids=ethereum&vs_currencies=usd')
+    const res = await fetch('https://api.coingecko.com/api/v3/simple/price?ids=solana&vs_currencies=usd')
     const data = await res.json()
-    return data.ethereum.usd
+    return data.solana.usd
   } catch {
-    return 2500 // Fallback price
+    return 150 // Fallback price
   }
 }
 
@@ -26,18 +27,21 @@ const CATEGORIES = [
   'CODE_GEN',
 ]
 
-const CURRENCIES = ['ETH', 'USDC', 'CLAW99']
+const CURRENCIES = ['SOL', 'USDC', 'CLAW99']
 
 export default function CreateContest() {
   const navigate = useNavigate()
-  const { address, isConnected } = useAccount()
+  const { publicKey, connected, sendTransaction } = useWallet()
+  const { connection } = useConnection()
   const [loading, setLoading] = useState(false)
   const [step, setStep] = useState(1)
-  const [ethPrice, setEthPrice] = useState<number>(2500) // Default fallback
+  const [solPrice, setSolPrice] = useState<number>(150) // Default fallback
+  const [txSignature, setTxSignature] = useState<string | null>(null)
+  const [pendingContestId, setPendingContestId] = useState<string | null>(null)
 
-  // Fetch ETH price on mount
+  // Fetch SOL price on mount
   useEffect(() => {
-    fetchEthPrice().then(setEthPrice)
+    fetchSolPrice().then(setSolPrice)
   }, [])
   
   const [form, setForm] = useState({
@@ -50,7 +54,7 @@ export default function CreateContest() {
     example_input: '',
     example_output: '',
     bounty_amount: 100,
-    bounty_currency: 'ETH',
+    bounty_currency: 'SOL',
     deadline_days: 7,
     max_submissions: 50,
     min_agent_reputation: 0,
@@ -60,139 +64,113 @@ export default function CreateContest() {
     setForm(prev => ({ ...prev, [field]: value }))
   }
 
-  const { writeContract, data: txHash, isPending: isWritePending, isError: isWriteError, reset: resetWrite } = useWriteContract()
-  const { isLoading: isConfirming, isSuccess: isConfirmed } = useWaitForTransactionReceipt({
-    hash: txHash,
-  })
-
-  const [pendingContestId, setPendingContestId] = useState<string | null>(null)
-
-  // Reset loading state if write fails (user rejected, etc.)
-  useEffect(() => {
-    if (isWriteError) {
-      setLoading(false)
-      resetWrite()
-    }
-  }, [isWriteError, resetWrite])
-
-  // When transaction confirms, update contest status
-  useEffect(() => {
-    if (isConfirmed && pendingContestId) {
-      supabase
-        .from('contests')
-        .update({ status: 'open', escrow_tx_hash: txHash })
-        .eq('id', pendingContestId)
-        .then(() => {
-          navigate(`/contests/${pendingContestId}`)
-        })
-    }
-  }, [isConfirmed, pendingContestId, txHash, navigate])
+  const walletAddress = publicKey?.toBase58()
 
   async function handleSubmit() {
-    if (!isConnected || !address) {
+    if (!connected || !publicKey || !walletAddress) {
       alert('Please connect your wallet first')
       return
     }
 
     setLoading(true)
 
-    // First, ensure user exists
-    const { data: existingUser } = await supabase
-      .from('users')
-      .select('id')
-      .eq('wallet_address', address)
-      .single()
-
-    let userId = existingUser?.id
-
-    if (!userId) {
-      const { data: newUser, error: userError } = await supabase
+    try {
+      // First, ensure user exists
+      const { data: existingUser } = await supabase
         .from('users')
-        .insert({ wallet_address: address })
+        .select('id')
+        .eq('wallet_address', walletAddress)
+        .single()
+
+      let userId = existingUser?.id
+
+      if (!userId) {
+        const { data: newUser, error: userError } = await supabase
+          .from('users')
+          .insert({ wallet_address: walletAddress })
+          .select('id')
+          .single()
+
+        if (userError) {
+          alert('Error creating user: ' + userError.message)
+          setLoading(false)
+          return
+        }
+        userId = newUser?.id
+      }
+
+      // Calculate deadline
+      const deadline = new Date()
+      deadline.setDate(deadline.getDate() + form.deadline_days)
+
+      // Create contest in DB first (as draft)
+      const { data: contest, error } = await supabase
+        .from('contests')
+        .insert({
+          buyer_id: userId,
+          title: form.title,
+          category: form.category,
+          objective: form.objective,
+          deliverable_format: form.deliverable_format,
+          constraints: form.constraints,
+          evaluation_criteria: form.evaluation_criteria,
+          example_input: form.example_input,
+          example_output: form.example_output,
+          bounty_amount: form.bounty_amount,
+          bounty_currency: form.bounty_currency,
+          deadline: deadline.toISOString(),
+          max_submissions: form.max_submissions,
+          min_agent_reputation: form.min_agent_reputation,
+          status: 'draft',
+        })
         .select('id')
         .single()
 
-      if (userError) {
-        alert('Error creating user: ' + userError.message)
+      if (error) {
+        alert('Error creating contest: ' + error.message)
         setLoading(false)
         return
       }
-      userId = newUser?.id
-    }
 
-    // Calculate deadline
-    const deadline = new Date()
-    deadline.setDate(deadline.getDate() + form.deadline_days)
-    const deadlineTimestamp = BigInt(Math.floor(deadline.getTime() / 1000))
+      setPendingContestId(contest.id)
 
-    // Create contest in DB first (as draft)
-    const { data: contest, error } = await supabase
-      .from('contests')
-      .insert({
-        buyer_id: userId,
-        title: form.title,
-        category: form.category,
-        objective: form.objective,
-        deliverable_format: form.deliverable_format,
-        constraints: form.constraints,
-        evaluation_criteria: form.evaluation_criteria,
-        example_input: form.example_input,
-        example_output: form.example_output,
-        bounty_amount: form.bounty_amount,
-        bounty_currency: form.bounty_currency,
-        deadline: deadline.toISOString(),
-        max_submissions: form.max_submissions,
-        min_agent_reputation: form.min_agent_reputation,
-        status: 'draft',
-      })
-      .select('id')
-      .single()
+      // Calculate amount with fee (5%)
+      const totalUsd = form.bounty_amount * (1 + PLATFORM_FEE_PERCENT / 100)
+      
+      // Convert USD to SOL
+      const solAmount = totalUsd / solPrice
 
-    if (error) {
-      alert('Error creating contest: ' + error.message)
-      setLoading(false)
-      return
-    }
+      if (form.bounty_currency === 'SOL') {
+        // Fund with SOL
+        const wallet = { publicKey, sendTransaction }
+        const signature = await fundContestSol(wallet, solAmount, contest.id)
+        setTxSignature(signature)
 
-    setPendingContestId(contest.id)
+        // Update contest status
+        await supabase
+          .from('contests')
+          .update({ status: 'open', escrow_tx_hash: signature })
+          .eq('id', contest.id)
 
-    // Convert contest ID to bytes32 for contract
-    const contestIdBytes32 = uuidToBytes32(contest.id)
-
-    // Calculate amount with fee (5%)
-    const totalUsd = form.bounty_amount * 1.05
-    
-    // Convert USD to ETH
-    const ethAmount = totalUsd / ethPrice
-
-    try {
-      if (form.bounty_currency === 'ETH') {
-        // Fund with ETH (convert from USD value)
-        writeContract({
-          address: ESCROW_ADDRESS,
-          abi: ESCROW_ABI,
-          functionName: 'fundContestETH',
-          args: [contestIdBytes32, deadlineTimestamp],
-          value: parseEther(ethAmount.toFixed(18)),
-          chainId: BASE_CHAIN_ID,
-        })
+        navigate(`/contests/${contest.id}`)
       } else {
-        // For USDC/tokens, would need approval first - simplified for now
-        alert('Token deposits coming soon. Use ETH for now.')
+        // For USDC/tokens - coming soon
+        alert('Token deposits coming soon. Use SOL for now.')
         setLoading(false)
         return
       }
     } catch (err: any) {
-      alert('Transaction failed: ' + err.message)
+      console.error('Transaction failed:', err)
+      alert('Transaction failed: ' + (err.message || 'Unknown error'))
       setLoading(false)
     }
   }
 
-  if (!isConnected) {
+  if (!connected) {
     return (
       <div className="max-w-2xl mx-auto text-center py-16">
         <h1 className="text-2xl font-bold mb-4">CONNECT WALLET TO CREATE CONTEST</h1>
-        <p className="text-gray-500">You need to connect your wallet to create a contest.</p>
+        <p className="text-gray-500">You need to connect your Solana wallet to create a contest.</p>
       </div>
     )
   }
@@ -345,18 +323,18 @@ export default function CreateContest() {
                   <div className="flex-1">
                     <div className="font-medium">{cur}</div>
                     <div className="text-xs text-gray-500">
-                      {cur === 'ETH' && 'Pay with Ethereum'}
+                      {cur === 'SOL' && 'Pay with Solana'}
                       {cur === 'USDC' && 'Pay with USD Coin (coming soon)'}
                       {cur === 'CLAW99' && 'Pay with CLAW99 token (coming soon)'}
                     </div>
                   </div>
-                  {cur === 'ETH' && form.bounty_currency === 'ETH' && (
+                  {cur === 'SOL' && form.bounty_currency === 'SOL' && (
                     <div className="text-right text-sm">
-                      <div className="font-medium">{((form.bounty_amount * 1.05) / ethPrice).toFixed(6)} ETH</div>
-                      <div className="text-xs text-gray-500">@ ${ethPrice.toLocaleString()}</div>
+                      <div className="font-medium">{((form.bounty_amount * 1.05) / solPrice).toFixed(4)} SOL</div>
+                      <div className="text-xs text-gray-500">@ ${solPrice.toLocaleString()}</div>
                     </div>
                   )}
-                  {cur !== 'ETH' && <span className="text-xs text-gray-400">SOON</span>}
+                  {cur !== 'SOL' && <span className="text-xs text-gray-400">SOON</span>}
                 </label>
               ))}
             </div>
@@ -430,7 +408,7 @@ export default function CreateContest() {
               </div>
               <div className="flex justify-between">
                 <dt className="text-gray-500">Bounty:</dt>
-                <dd className="font-bold">{form.bounty_amount} {form.bounty_currency}</dd>
+                <dd className="font-bold">${form.bounty_amount}</dd>
               </div>
               <div className="flex justify-between">
                 <dt className="text-gray-500">Platform Fee (5%):</dt>
@@ -440,10 +418,10 @@ export default function CreateContest() {
                 <dt className="text-gray-500">Total to Deposit:</dt>
                 <dd className="font-bold text-lg">${(form.bounty_amount * 1.05).toFixed(2)}</dd>
               </div>
-              {form.bounty_currency === 'ETH' && (
+              {form.bounty_currency === 'SOL' && (
                 <div className="flex justify-between text-sm text-gray-500 mt-2">
-                  <dt>ETH Equivalent:</dt>
-                  <dd>{((form.bounty_amount * 1.05) / ethPrice).toFixed(6)} ETH <span className="text-xs">(@ ${ethPrice.toLocaleString()}/ETH)</span></dd>
+                  <dt>SOL Equivalent:</dt>
+                  <dd>{((form.bounty_amount * 1.05) / solPrice).toFixed(4)} SOL <span className="text-xs">(@ ${solPrice.toLocaleString()}/SOL)</span></dd>
                 </div>
               )}
             </dl>
@@ -464,11 +442,11 @@ export default function CreateContest() {
                 />
                 <div className="flex items-center gap-3 flex-1">
                   <div className="w-10 h-10 bg-black text-white flex items-center justify-center text-lg font-bold">
-                    ₿
+                    ◎
                   </div>
                   <div>
-                    <div className="font-bold">CRYPTO WALLET</div>
-                    <div className="text-xs text-gray-500">ETH, USDC, CLAW99 on Base</div>
+                    <div className="font-bold">SOLANA WALLET</div>
+                    <div className="text-xs text-gray-500">SOL, USDC, CLAW99 on Solana</div>
                   </div>
                 </div>
                 <span className="text-xs text-green-600 font-medium">ACTIVE</span>
@@ -523,7 +501,7 @@ export default function CreateContest() {
           </div>
 
           <div className="text-xs text-yellow-600">
-            By launching this contest, you agree to deposit the total amount into escrow.
+            By launching this contest, you agree to deposit the total amount. 
             Funds will be released to the winner or refunded if no winner is selected within the review period.
           </div>
 
@@ -533,10 +511,10 @@ export default function CreateContest() {
             </button>
             <button
               onClick={handleSubmit}
-              disabled={loading || isWritePending || isConfirming}
+              disabled={loading}
               className="claw-btn claw-btn-primary flex-1 disabled:opacity-50"
             >
-              {isConfirming ? 'CONFIRMING TX...' : isWritePending ? 'SIGN IN WALLET...' : loading ? 'CREATING...' : 'FUND & LAUNCH CONTEST'}
+              {loading ? 'PROCESSING...' : 'FUND & LAUNCH CONTEST'}
             </button>
           </div>
         </div>

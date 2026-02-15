@@ -1,12 +1,12 @@
 import { useState, useEffect } from 'react'
 import { useParams } from 'react-router-dom'
-import { useAccount } from 'wagmi'
+import { useWallet } from '@solana/wallet-adapter-react'
 import { supabase } from '../lib/supabase'
 import type { Contest, Submission } from '../lib/supabase'
 
 export default function ContestDetail() {
   const { id } = useParams()
-  const { address, isConnected } = useAccount()
+  const { publicKey, connected } = useWallet()
   const [contest, setContest] = useState<Contest | null>(null)
   const [submissions, setSubmissions] = useState<Submission[]>([])
   const [loading, setLoading] = useState(true)
@@ -17,13 +17,15 @@ export default function ContestDetail() {
   const [submitForm, setSubmitForm] = useState({ agent_id: '', preview_url: '', description: '' })
   const [submitting, setSubmitting] = useState(false)
 
+  const walletAddress = publicKey?.toBase58()
+
   useEffect(() => {
     if (id) fetchContest()
   }, [id])
 
   useEffect(() => {
-    if (address && contest) checkIsBuyer()
-  }, [address, contest])
+    if (walletAddress && contest) checkIsBuyer()
+  }, [walletAddress, contest])
 
   async function fetchContest() {
     setLoading(true)
@@ -48,13 +50,13 @@ export default function ContestDetail() {
   }
 
   async function checkIsBuyer() {
-    if (!address || !contest) return
+    if (!walletAddress || !contest) return
 
     // Get user by wallet address
     const { data: user } = await supabase
       .from('users')
       .select('id')
-      .eq('wallet_address', address)
+      .eq('wallet_address', walletAddress)
       .single()
 
     if (user) {
@@ -116,18 +118,18 @@ export default function ContestDetail() {
 
   async function confirmWinner() {
     if (!selectedWinner || !contest) return
-    // TODO: Implement blockchain transaction
-    alert('Winner selection requires blockchain transaction - implement escrow contract')
+    // TODO: Implement Solana transaction for winner payout
+    alert('Winner selection requires Solana transaction - implement escrow payout')
   }
 
   if (loading) return <div className="text-center py-8">LOADING...</div>
   if (!contest) return <div className="text-center py-8">CONTEST_NOT_FOUND</div>
 
   const statusColor = contest.status === 'open' ? 'green' : contest.status === 'reviewing' ? 'yellow' : 'red'
-  const canSubmit = isConnected && userAgents.length > 0 && contest.status === 'open' && !isBuyer
+  const canSubmit = connected && userAgents.length > 0 && contest.status === 'open' && !isBuyer
 
   return (
-    <div className="grid grid-cols-2 gap-8">
+    <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
       {/* Left: Contest Info */}
       <div className="space-y-6">
         <div>
@@ -209,7 +211,7 @@ export default function ContestDetail() {
           </button>
         )}
 
-        {isConnected && !isBuyer && userAgents.length === 0 && contest.status === 'open' && (
+        {connected && !isBuyer && userAgents.length === 0 && contest.status === 'open' && (
           <div className="text-sm text-yellow-600 text-center">
             Register an agent in your Dashboard to submit work
           </div>
@@ -294,10 +296,10 @@ export default function ContestDetail() {
         {isBuyer && contest.status === 'reviewing' && (
           <div className="mt-6 space-y-2">
             <div className="text-xs text-yellow-600">
-              CAUTION: Selection is final and cannot be reverted on the blockchain.
+              CAUTION: Selection is final and triggers payment on Solana.
             </div>
             <div className="flex items-center justify-between">
-              <span className="text-xs text-gray-500">GAS FEE: ~0.002 ETH</span>
+              <span className="text-xs text-gray-500">TX FEE: ~0.000005 SOL</span>
               <button
                 onClick={confirmWinner}
                 disabled={!selectedWinner}

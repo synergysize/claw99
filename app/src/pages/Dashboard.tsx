@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
-import { useAccount } from 'wagmi'
+import { useWallet } from '@solana/wallet-adapter-react'
 import { supabase } from '../lib/supabase'
 import type { Contest, Agent, Transaction } from '../lib/supabase'
 
@@ -16,8 +16,8 @@ const MOCK_CONTESTS: Contest[] = [
     objective: 'Analyze crypto sentiment from Twitter/X feeds',
     deliverable_format: 'JSON API response',
     evaluation_criteria: 'Accuracy, speed, coverage',
-    bounty_amount: 2.5,
-    bounty_currency: 'ETH',
+    bounty_amount: 250,
+    bounty_currency: 'SOL',
     deadline: new Date(Date.now() + 86400000 * 3).toISOString(),
     max_submissions: 50,
     min_agent_reputation: 70,
@@ -33,8 +33,8 @@ const MOCK_CONTESTS: Contest[] = [
     objective: 'Detect sandwich attacks in real-time',
     deliverable_format: 'Alert system with webhook',
     evaluation_criteria: 'Detection rate, false positives, latency',
-    bounty_amount: 5.0,
-    bounty_currency: 'ETH',
+    bounty_amount: 500,
+    bounty_currency: 'SOL',
     deadline: new Date(Date.now() + 86400000 * 7).toISOString(),
     max_submissions: 30,
     min_agent_reputation: 80,
@@ -50,8 +50,8 @@ const MOCK_CONTESTS: Contest[] = [
     objective: 'Track top 100 whale wallet movements',
     deliverable_format: 'Dashboard + API',
     evaluation_criteria: 'Coverage, real-time updates',
-    bounty_amount: 1.8,
-    bounty_currency: 'ETH',
+    bounty_amount: 180,
+    bounty_currency: 'SOL',
     deadline: new Date(Date.now() - 86400000).toISOString(),
     max_submissions: 100,
     min_agent_reputation: 60,
@@ -59,7 +59,7 @@ const MOCK_CONTESTS: Contest[] = [
     created_at: new Date(Date.now() - 86400000 * 10).toISOString(),
     updated_at: new Date().toISOString(),
     winner_submission_id: 'sub-001',
-    payout_tx_hash: '0x1234567890abcdef...'
+    payout_tx_hash: '5xYzAbc123...'
   }
 ]
 
@@ -74,7 +74,7 @@ const MOCK_AGENTS: Agent[] = [
     is_active: true,
     contests_won: 7,
     contests_entered: 12,
-    total_earnings: 4.2,
+    total_earnings: 420,
     current_streak: 3,
     best_streak: 5,
     created_at: new Date(Date.now() - 86400000 * 30).toISOString(),
@@ -90,7 +90,7 @@ const MOCK_AGENTS: Agent[] = [
     is_active: true,
     contests_won: 3,
     contests_entered: 8,
-    total_earnings: 1.9,
+    total_earnings: 190,
     current_streak: 1,
     best_streak: 2,
     created_at: new Date(Date.now() - 86400000 * 15).toISOString(),
@@ -106,7 +106,7 @@ const MOCK_AGENTS: Agent[] = [
     is_active: false,
     contests_won: 1,
     contests_entered: 5,
-    total_earnings: 0.5,
+    total_earnings: 50,
     current_streak: 0,
     best_streak: 1,
     created_at: new Date(Date.now() - 86400000 * 45).toISOString(),
@@ -119,12 +119,12 @@ const MOCK_TRANSACTIONS: Transaction[] = [
     id: 'tx-001',
     user_id: 'user-1',
     contest_id: 'c003-ghi789',
-    from_address: '0x742d35Cc6634C0532925a3b844Bc9e7595f...',
-    to_address: '0x8ba1f109551bD432803012645Ac136ddd...',
+    from_address: '94JVKGBReFTSN3gE2Vm8zaC1C2gyhgDrvHRoDijKcjn7',
+    to_address: '7xKXtg2CW87d97TXJSDpbD5jBkheTqA83TZRuJosgAsU',
     tx_type: 'winner_payout',
-    amount: 1.8,
-    currency: 'ETH',
-    tx_hash: '0xabcdef1234567890abcdef1234567890abcdef1234567890abcdef1234567890',
+    amount: 180,
+    currency: 'SOL',
+    tx_hash: '5xYzAbc123def456ghi789jkl012mno345pqr678stu901vwx234yz',
     status: 'confirmed',
     created_at: new Date(Date.now() - 86400000).toISOString()
   },
@@ -132,12 +132,12 @@ const MOCK_TRANSACTIONS: Transaction[] = [
     id: 'tx-002',
     user_id: 'user-1',
     contest_id: 'c002-def456',
-    from_address: '0x8ba1f109551bD432803012645Ac136ddd...',
-    to_address: '0xEscrow...',
+    from_address: '7xKXtg2CW87d97TXJSDpbD5jBkheTqA83TZRuJosgAsU',
+    to_address: '94JVKGBReFTSN3gE2Vm8zaC1C2gyhgDrvHRoDijKcjn7',
     tx_type: 'escrow_deposit',
-    amount: 5.0,
-    currency: 'ETH',
-    tx_hash: '0x9876543210fedcba9876543210fedcba9876543210fedcba9876543210fedcba',
+    amount: 500,
+    currency: 'SOL',
+    tx_hash: '3aBcDef456ghi789jkl012mno345pqr678stu901vwx234yz567abc',
     status: 'confirmed',
     created_at: new Date(Date.now() - 86400000 * 2).toISOString()
   },
@@ -145,12 +145,12 @@ const MOCK_TRANSACTIONS: Transaction[] = [
     id: 'tx-003',
     user_id: 'user-1',
     contest_id: 'c001-abc123',
-    from_address: '0x8ba1f109551bD432803012645Ac136ddd...',
-    to_address: '0xEscrow2...',
+    from_address: '7xKXtg2CW87d97TXJSDpbD5jBkheTqA83TZRuJosgAsU',
+    to_address: '94JVKGBReFTSN3gE2Vm8zaC1C2gyhgDrvHRoDijKcjn7',
     tx_type: 'escrow_deposit',
-    amount: 2.5,
-    currency: 'ETH',
-    tx_hash: '0x1111222233334444555566667777888899990000aaaabbbbccccddddeeeefffff',
+    amount: 250,
+    currency: 'SOL',
+    tx_hash: '2zYxWvu987tsr654qpo321nml098kji765hgf432edc109ba',
     status: 'confirmed',
     created_at: new Date(Date.now() - 86400000 * 5).toISOString()
   },
@@ -158,19 +158,20 @@ const MOCK_TRANSACTIONS: Transaction[] = [
     id: 'tx-004',
     user_id: 'user-1',
     contest_id: 'c003-ghi789',
-    from_address: '0xEscrow...',
-    to_address: '0x8ba1f109551bD432803012645Ac136ddd...',
+    from_address: '94JVKGBReFTSN3gE2Vm8zaC1C2gyhgDrvHRoDijKcjn7',
+    to_address: '7xKXtg2CW87d97TXJSDpbD5jBkheTqA83TZRuJosgAsU',
     tx_type: 'winner_payout',
-    amount: 2.4,
-    currency: 'ETH',
-    tx_hash: '0xdeadbeefcafebabedeadbeefcafebabedeadbeefcafebabedeadbeefcafebabe',
+    amount: 240,
+    currency: 'SOL',
+    tx_hash: '1aZyXwv876usr543qpo210nml987kji654hgf321edc098ba',
     status: 'confirmed',
     created_at: new Date(Date.now() - 86400000 * 8).toISOString()
   }
 ]
 
 export default function Dashboard() {
-  const { address, isConnected } = useAccount()
+  const { publicKey, connected } = useWallet()
+  const walletAddress = publicKey?.toBase58()
   const [contests, setContests] = useState<Contest[]>([])
   const [agents, setAgents] = useState<Agent[]>([])
   const [transactions, setTransactions] = useState<Transaction[]>([])
@@ -183,10 +184,10 @@ export default function Dashboard() {
       setAgents(MOCK_AGENTS)
       setTransactions(MOCK_TRANSACTIONS)
       setLoading(false)
-    } else if (address) {
+    } else if (walletAddress) {
       fetchData()
     }
-  }, [address])
+  }, [walletAddress])
 
   async function fetchData() {
     setLoading(true)
@@ -195,7 +196,7 @@ export default function Dashboard() {
     const { data: user } = await supabase
       .from('users')
       .select('id')
-      .eq('wallet_address', address)
+      .eq('wallet_address', walletAddress)
       .single()
 
     if (user) {
@@ -244,11 +245,11 @@ export default function Dashboard() {
     })
   }
 
-  if (!isConnected && !USE_MOCK_DATA) {
+  if (!connected && !USE_MOCK_DATA) {
     return (
       <div className="text-center py-16">
         <h1 className="text-2xl font-bold mb-4">CONNECT WALLET</h1>
-        <p className="text-gray-500">Connect your wallet to view your dashboard.</p>
+        <p className="text-gray-500">Connect your Solana wallet to view your dashboard.</p>
       </div>
     )
   }
@@ -288,7 +289,7 @@ export default function Dashboard() {
                   <th>ID</th>
                   <th>CONTEST NAME</th>
                   <th>STATUS</th>
-                  <th className="text-right">POOL (ETH)</th>
+                  <th className="text-right">POOL (USD)</th>
                   <th className="text-right">NODES</th>
                   <th>DEADLINE</th>
                   <th>ACTION</th>
@@ -303,7 +304,7 @@ export default function Dashboard() {
                       <span className={`status-dot ${c.status === 'open' ? 'green' : c.status === 'reviewing' ? 'yellow' : 'red'} mr-1`} />
                       {c.status.toUpperCase()}
                     </td>
-                    <td className="text-right">{c.bounty_amount}</td>
+                    <td className="text-right">${c.bounty_amount}</td>
                     <td className="text-right">--</td>
                     <td>{c.status === 'completed' ? 'ENDED' : new Date(c.deadline).toLocaleDateString()}</td>
                     <td>
@@ -325,7 +326,7 @@ export default function Dashboard() {
           <h2 className="text-lg font-bold">02_MY_AGENTS</h2>
           <Link to="/agents/register" className="text-sm">[+] REGISTER_NEW</Link>
         </div>
-        <div className={`grid ${bestAgent ? 'grid-cols-4' : 'grid-cols-1'} gap-4`}>
+        <div className={`grid ${bestAgent ? 'grid-cols-1 lg:grid-cols-4' : 'grid-cols-1'} gap-4`}>
           {/* Best Performer Card */}
           {bestAgent && (
             <div className="claw-card">
@@ -342,7 +343,7 @@ export default function Dashboard() {
                 </div>
                 <div className="flex justify-between">
                   <span className="text-gray-500">EARNINGS</span>
-                  <span>{bestAgent.total_earnings} ETH</span>
+                  <span>${bestAgent.total_earnings}</span>
                 </div>
               </div>
               <Link to={`/agents/${bestAgent.id}`} className="claw-btn w-full mt-4 text-xs block text-center">
@@ -352,7 +353,7 @@ export default function Dashboard() {
           )}
 
           {/* Agents Table */}
-          <div className={`${bestAgent ? 'col-span-3' : ''} claw-card`}>
+          <div className={`${bestAgent ? 'lg:col-span-3' : ''} claw-card`}>
             {agents.length === 0 ? (
               <div className="text-center py-8 text-gray-500">NO_AGENTS_REGISTERED</div>
             ) : (
@@ -396,7 +397,7 @@ export default function Dashboard() {
       <section>
         <div className="flex items-center justify-between mb-4">
           <h2 className="text-lg font-bold">03_TRANSACTIONS</h2>
-          <div className="text-lg font-bold">BALANCE: {getTotalEarnings().toFixed(3)} ETH</div>
+          <div className="text-lg font-bold">BALANCE: ${getTotalEarnings().toFixed(0)}</div>
         </div>
         <div className="claw-card">
           {transactions.length === 0 ? (
@@ -418,7 +419,16 @@ export default function Dashboard() {
                   const displayAmount = isIncoming ? tx.amount : -tx.amount
                   return (
                     <tr key={tx.id}>
-                      <td className="text-xs">{tx.tx_hash?.slice(0, 10)}...</td>
+                      <td className="text-xs">
+                        <a 
+                          href={`https://solscan.io/tx/${tx.tx_hash}`}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="hover:underline"
+                        >
+                          {tx.tx_hash?.slice(0, 10)}...
+                        </a>
+                      </td>
                       <td>{new Date(tx.created_at).toLocaleString()}</td>
                       <td className={isIncoming ? 'text-green-600' : ''}>
                         {tx.tx_type.toUpperCase().replace('_', ' ')}
@@ -438,28 +448,35 @@ export default function Dashboard() {
             </table>
           )}
           <div className="text-right mt-4">
-            <button className="text-sm underline">[VIEW_ALL_ON_CHAIN]</button>
+            <a 
+              href="https://solscan.io"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-sm underline"
+            >
+              [VIEW_ALL_ON_SOLSCAN]
+            </a>
           </div>
         </div>
       </section>
 
       {/* Footer */}
-      <footer className="border-t pt-6 mt-8 flex items-center justify-between text-xs text-gray-500">
+      <footer className="border-t pt-6 mt-8 flex flex-col lg:flex-row items-center justify-between gap-4 text-xs text-gray-500">
         <div>
           <div>&lt;&gt; CLAW99 PROTOCOL</div>
-          <div>v2.4.1-stable_build</div>
+          <div>v2.4.1-stable_build // SOLANA</div>
           <div>© 2024 Claw99 Inc. No rights reserved. Open Source.</div>
         </div>
         <div className="flex gap-6">
-          <a href="#">Terms_of_Service</a>
-          <a href="#">Privacy_Policy</a>
-          <a href="#">Smart_Contracts</a>
-          <a href="#">Bug_Bounty</a>
+          <a href="/terms">Terms_of_Service</a>
+          <a href="/privacy">Privacy_Policy</a>
+          <a href="/contracts">Smart_Contracts</a>
+          <a href="/bug-bounty">Bug_Bounty</a>
         </div>
         <div className="text-right">
           <div>NETWORK_STATUS</div>
-          <div>Mainnet <span className="status-dot green ml-1" /></div>
-          <div>Gas: 14 gwei</div>
+          <div>Solana Mainnet <span className="status-dot green ml-1" /></div>
+          <div>TPS: ~4,000</div>
         </div>
       </footer>
     </div>

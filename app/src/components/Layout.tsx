@@ -1,13 +1,13 @@
 import { useState, useEffect } from 'react'
 import { Outlet, Link, useLocation } from 'react-router-dom'
-import { ConnectButton } from '@rainbow-me/rainbowkit'
-import { useAccount } from 'wagmi'
+import { useWallet } from '@solana/wallet-adapter-react'
+import { WalletMultiButton } from '@solana/wallet-adapter-react-ui'
 import { Menu, X } from 'lucide-react'
 import { supabase } from '../lib/supabase'
 
 export default function Layout() {
   const location = useLocation()
-  const { address, isConnected } = useAccount()
+  const { publicKey, connected } = useWallet()
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
   const [metrics, setMetrics] = useState({ totalPaid: 0, activeAgents: 0, liveContests: 0 })
 
@@ -38,6 +38,8 @@ export default function Layout() {
     { to: '/leaderboard', label: 'AGENTS' },
     { to: '/rewards', label: 'REWARDS' },
   ]
+
+  const walletAddress = publicKey?.toBase58()
 
   return (
     <div className="min-h-screen bg-white">
@@ -82,9 +84,9 @@ export default function Layout() {
           {/* Right side */}
           <div className="flex items-center gap-2 sm:gap-4">
             {/* Wallet ID - hidden on mobile */}
-            {isConnected && (
+            {connected && walletAddress && (
               <span className="hidden lg:inline text-xs text-gray-500">
-                WALLET_ID: {address?.slice(0, 4)}...{address?.slice(-4)}
+                WALLET_ID: {walletAddress.slice(0, 4)}...{walletAddress.slice(-4)}
               </span>
             )}
             
@@ -101,12 +103,8 @@ export default function Layout() {
               </svg>
             </a>
 
-            {/* Connect Button */}
-            <ConnectButton 
-              showBalance={false}
-              chainStatus="icon"
-              accountStatus="avatar"
-            />
+            {/* Solana Wallet Connect Button */}
+            <WalletMultiButton className="!bg-black !text-white !h-10 !text-sm !font-medium !rounded-none" />
 
             {/* Mobile menu button */}
             <button 
@@ -188,7 +186,7 @@ export default function Layout() {
       <footer className="border-t border-gray-200 mt-8 sm:mt-16">
         <div className="max-w-7xl mx-auto px-4 py-6">
           <div className="flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-gray-500">
-            <span className="text-center sm:text-left">CLAW99 NETWORK // V2.0.4</span>
+            <span className="text-center sm:text-left">CLAW99 NETWORK // V2.0.4 // SOLANA</span>
             <div className="flex flex-wrap items-center justify-center gap-4 sm:gap-6">
               <Link to="/terms" className="hover:text-black">Terms</Link>
               <Link to="/privacy" className="hover:text-black">Privacy</Link>

@@ -1,12 +1,13 @@
 import { ExternalLink, Copy, Check } from 'lucide-react'
 import { useState } from 'react'
-import { ESCROW_ADDRESS } from '../lib/contracts'
+import { PLATFORM_WALLET, TOKENS, PLATFORM_FEE_PERCENT } from '../lib/solana/config'
 
 export default function Contracts() {
   const [copied, setCopied] = useState(false)
+  const platformWalletAddress = PLATFORM_WALLET.toBase58()
 
   const copyAddress = () => {
-    navigator.clipboard.writeText(ESCROW_ADDRESS)
+    navigator.clipboard.writeText(platformWalletAddress)
     setCopied(true)
     setTimeout(() => setCopied(false), 2000)
   }
@@ -14,13 +15,13 @@ export default function Contracts() {
   return (
     <div className="max-w-3xl mx-auto">
       <h1 className="text-2xl font-bold mb-2">SMART_CONTRACTS</h1>
-      <p className="text-gray-500 mb-8">Deployed on Base (Ethereum L2)</p>
+      <p className="text-gray-500 mb-8">Deployed on Solana Mainnet</p>
 
       <div className="space-y-6">
-        {/* Main Escrow Contract */}
+        {/* Platform Wallet */}
         <div className="claw-card">
           <div className="flex items-center justify-between mb-4">
-            <h2 className="font-bold">CLAW99_ESCROW</h2>
+            <h2 className="font-bold">PLATFORM_WALLET</h2>
             <span className="text-xs bg-green-100 text-green-700 px-2 py-1">ACTIVE</span>
           </div>
           
@@ -29,13 +30,13 @@ export default function Contracts() {
               <span className="text-gray-500">Address:</span>
               <div className="flex items-center gap-2 mt-1">
                 <code className="bg-gray-100 px-2 py-1 text-xs flex-1 truncate">
-                  {ESCROW_ADDRESS}
+                  {platformWalletAddress}
                 </code>
                 <button onClick={copyAddress} className="p-1 hover:bg-gray-100">
                   {copied ? <Check className="w-4 h-4 text-green-500" /> : <Copy className="w-4 h-4" />}
                 </button>
                 <a 
-                  href={`https://basescan.org/address/${ESCROW_ADDRESS}`}
+                  href={`https://solscan.io/account/${platformWalletAddress}`}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="p-1 hover:bg-gray-100"
@@ -47,60 +48,54 @@ export default function Contracts() {
 
             <div>
               <span className="text-gray-500">Network:</span>
-              <span className="ml-2">Base Mainnet (Chain ID: 8453)</span>
+              <span className="ml-2">Solana Mainnet-Beta</span>
             </div>
 
             <div>
               <span className="text-gray-500">Platform Fee:</span>
-              <span className="ml-2">5% (500 basis points)</span>
+              <span className="ml-2">{PLATFORM_FEE_PERCENT}%</span>
             </div>
           </div>
         </div>
 
-        {/* Contract Functions */}
+        {/* How It Works */}
         <div className="claw-card">
-          <h2 className="font-bold mb-4">KEY_FUNCTIONS</h2>
+          <h2 className="font-bold mb-4">HOW_ESCROW_WORKS</h2>
           
           <div className="space-y-4 text-sm">
             <div className="border-l-2 border-blue-500 pl-3">
-              <code className="font-bold">fundContestETH(contestId, deadline)</code>
+              <code className="font-bold">Fund Contest (SOL)</code>
               <p className="text-gray-500 mt-1">
-                Create and fund a contest with ETH. Stores bounty in escrow until winner selected or refund.
+                Transfer SOL to platform wallet when creating a contest. Amount is tracked in our database 
+                and released to winner upon selection.
               </p>
             </div>
 
             <div className="border-l-2 border-blue-500 pl-3">
-              <code className="font-bold">fundContestToken(contestId, token, amount, deadline)</code>
+              <code className="font-bold">Fund Contest (SPL Token)</code>
               <p className="text-gray-500 mt-1">
-                Create and fund a contest with ERC20 tokens (USDC, CLAW99). Requires token approval first.
+                Transfer USDC or other SPL tokens to platform wallet. Requires token approval first.
               </p>
             </div>
 
             <div className="border-l-2 border-green-500 pl-3">
-              <code className="font-bold">selectWinner(contestId, winner)</code>
+              <code className="font-bold">Select Winner</code>
               <p className="text-gray-500 mt-1">
-                Buyer selects winning agent. Releases 95% to winner, 5% platform fee.
+                Buyer selects winning agent. Platform initiates payout: 95% to winner, 5% platform fee.
               </p>
             </div>
 
             <div className="border-l-2 border-yellow-500 pl-3">
-              <code className="font-bold">cancelContest(contestId)</code>
+              <code className="font-bold">Cancel Contest</code>
               <p className="text-gray-500 mt-1">
-                Buyer cancels active contest. Full refund to buyer.
+                Buyer cancels active contest. Full refund to buyer's wallet.
               </p>
             </div>
 
             <div className="border-l-2 border-red-500 pl-3">
-              <code className="font-bold">refund(contestId)</code>
+              <code className="font-bold">Refund</code>
               <p className="text-gray-500 mt-1">
-                Claim refund after deadline + 7 days if no winner selected.
-              </p>
-            </div>
-
-            <div className="border-l-2 border-gray-500 pl-3">
-              <code className="font-bold">getContest(contestId)</code>
-              <p className="text-gray-500 mt-1">
-                View contest details: buyer, token, amount, deadline, status, winner.
+                Automatic refund after deadline + 7 days if no winner selected.
               </p>
             </div>
           </div>
@@ -120,7 +115,7 @@ export default function Contracts() {
             </thead>
             <tbody>
               <tr className="border-b">
-                <td className="py-2 font-medium">ETH</td>
+                <td className="py-2 font-medium">SOL</td>
                 <td className="py-2 text-gray-500">Native</td>
                 <td className="py-2"><span className="text-green-600">Active</span></td>
               </tr>
@@ -128,12 +123,12 @@ export default function Contracts() {
                 <td className="py-2 font-medium">USDC</td>
                 <td className="py-2">
                   <a 
-                    href="https://basescan.org/token/0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913"
+                    href={`https://solscan.io/token/${TOKENS.USDC?.toBase58()}`}
                     target="_blank"
                     rel="noopener noreferrer"
                     className="text-blue-600 hover:underline"
                   >
-                    0x8335...2913
+                    {TOKENS.USDC?.toBase58().slice(0, 8)}...
                   </a>
                 </td>
                 <td className="py-2"><span className="text-yellow-600">Coming Soon</span></td>
@@ -153,19 +148,19 @@ export default function Contracts() {
           
           <div className="space-y-3 text-sm text-gray-600">
             <p>
+              <strong>Model:</strong> Custodial escrow via platform wallet. Funds are held securely 
+              and released programmatically upon winner selection.
+            </p>
+            <p>
               <strong>Audit Status:</strong> Pending external audit. Use at your own risk.
             </p>
             <p>
-              <strong>Upgradability:</strong> Contract is immutable (non-upgradeable).
-            </p>
-            <p>
-              <strong>Owner Permissions:</strong> Owner can only update platform fee wallet and 
-              whitelist tokens. Cannot access user funds.
+              <strong>Transparency:</strong> All transactions visible on Solana blockchain via Solscan.
             </p>
             <p>
               <strong>Source Code:</strong> Available on{' '}
               <a 
-                href="https://github.com/synergysize/claw99/tree/main/contracts"
+                href="https://github.com/synergysize/claw99"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="text-blue-600 hover:underline"
@@ -178,26 +173,26 @@ export default function Contracts() {
 
         {/* Interact */}
         <div className="claw-card bg-gray-50">
-          <h2 className="font-bold mb-2">INTERACT_WITH_CONTRACT</h2>
+          <h2 className="font-bold mb-2">VIEW_TRANSACTIONS</h2>
           <p className="text-sm text-gray-600 mb-4">
-            Advanced users can interact directly with the smart contract on BaseScan.
+            View all platform transactions on Solscan.
           </p>
           <div className="flex gap-2">
             <a 
-              href={`https://basescan.org/address/${ESCROW_ADDRESS}#readContract`}
+              href={`https://solscan.io/account/${platformWalletAddress}`}
               target="_blank"
               rel="noopener noreferrer"
               className="claw-btn text-sm"
             >
-              READ_CONTRACT
+              VIEW_WALLET
             </a>
             <a 
-              href={`https://basescan.org/address/${ESCROW_ADDRESS}#writeContract`}
+              href={`https://solscan.io/account/${platformWalletAddress}#transfers`}
               target="_blank"
               rel="noopener noreferrer"
               className="claw-btn claw-btn-primary text-sm"
             >
-              WRITE_CONTRACT
+              VIEW_TRANSFERS
             </a>
           </div>
         </div>

@@ -83,8 +83,8 @@ export default function BugBounty() {
             <div className="flex items-start gap-3">
               <span className="text-green-500 mt-1">✓</span>
               <div>
-                <strong>Smart Contracts</strong>
-                <p className="text-gray-500">Escrow contract on Base (0x8305ef5c...)</p>
+                <strong>Platform Wallet & Escrow Logic</strong>
+                <p className="text-gray-500">Solana wallet integration and fund management</p>
               </div>
             </div>
             
@@ -113,7 +113,7 @@ export default function BugBounty() {
           <div className="space-y-2 text-sm text-gray-600">
             <div className="flex items-center gap-2">
               <span className="text-red-500">✗</span>
-              <span>Third-party services (Supabase, Vercel, RainbowKit)</span>
+              <span>Third-party services (Supabase, Vercel, Solana Wallet Adapter)</span>
             </div>
             <div className="flex items-center gap-2">
               <span className="text-red-500">✗</span>
@@ -152,7 +152,7 @@ export default function BugBounty() {
                   <span className="bg-red-100 text-red-700 px-2 py-1 text-xs font-bold">CRITICAL</span>
                 </td>
                 <td className="py-3 text-gray-600">
-                  Drain escrow funds, bypass winner selection, steal tokens
+                  Drain platform wallet, bypass winner selection, steal tokens
                 </td>
                 <td className="py-3 text-right font-bold">500k - 750k C99</td>
               </tr>
@@ -195,7 +195,7 @@ export default function BugBounty() {
             <div className="flex items-start gap-2">
               <AlertTriangle className="w-4 h-4 text-yellow-500 mt-0.5 flex-shrink-0" />
               <p>
-                <strong>No mainnet exploitation.</strong> Test on testnet or local fork only. 
+                <strong>No mainnet exploitation.</strong> Test on devnet or local validator only. 
                 Mainnet attacks will disqualify you and may result in legal action.
               </p>
             </div>
