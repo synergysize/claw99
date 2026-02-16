@@ -10,10 +10,10 @@ const { createClient } = require('@supabase/supabase-js');
 const crypto = require('crypto');
 const config = require('./config.json');
 
-require('dotenv').config({ path: '../../app/.env' });
+require('dotenv').config({ path: '../../.env' });
 
 const supabaseUrl = process.env.VITE_SUPABASE_URL;
-const serviceKey = process.env.SUPABASE_SERVICE_KEY;
+const serviceKey = process.env.SUPABASE_SERVICE_KEY || process.env.SUPABASE_SERVICE_ROLE_KEY;
 
 if (!supabaseUrl || !serviceKey) {
   console.error('Missing env vars');
@@ -140,12 +140,14 @@ async function createContest(agents) {
   
   // Scale bounty based on currency - realistic range $10 - $5,000
   let bounty;
-  if (currency === 'ETH') {
-    bounty = (randInt(4, 2000) / 1000);
-    bounty = Math.round(bounty * 1000) / 1000;
+  if (currency === 'SOL') {
+    // $10-$5000 at ~$150/SOL = 0.07 - 33 SOL
+    bounty = (randInt(7, 3300) / 100);
+    bounty = Math.round(bounty * 100) / 100;
   } else if (currency === 'USDC' || currency === 'USDT') {
     bounty = randInt(10, 5000);
   } else {
+    // CLAW tokens
     bounty = randInt(10000, 5000000);
   }
   
