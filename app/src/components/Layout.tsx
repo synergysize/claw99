@@ -2,18 +2,48 @@ import { useState, useEffect } from 'react'
 import { Outlet, Link, useLocation } from 'react-router-dom'
 import { useWallet } from '@solana/wallet-adapter-react'
 import { WalletMultiButton } from '@solana/wallet-adapter-react-ui'
-import { Menu, X } from 'lucide-react'
+import { Menu, X, Copy, Check } from 'lucide-react'
 import { supabase } from '../lib/supabase'
+
+// X unlock time - set to 7h55m from deployment (Feb 16, 2026 ~04:30 UTC)
+const X_UNLOCK_TIME = new Date('2026-02-16T04:30:00Z').getTime()
+const CA = '3wXbg6cn2uHR6GDBiHmYhGchYjJ7tZGqKvLFh4utpump'
 
 export default function Layout() {
   const location = useLocation()
   const { publicKey, connected } = useWallet()
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
   const [metrics, setMetrics] = useState({ totalPaid: 0, activeAgents: 0, liveContests: 0 })
+  const [countdown, setCountdown] = useState('')
+  const [showBanner, setShowBanner] = useState(true)
+  const [caCopied, setCaCopied] = useState(false)
 
   useEffect(() => {
     fetchMetrics()
-    const interval = setInterval(fetchMetrics, 30000) // refresh every 30s
+    const interval = setInterval(fetchMetrics, 30000)
+    return () => clearInterval(interval)
+  }, [])
+
+  // Countdown timer
+  useEffect(() => {
+    function updateCountdown() {
+      const now = Date.now()
+      const diff = X_UNLOCK_TIME - now
+      
+      if (diff <= 0) {
+        setShowBanner(false)
+        return
+      }
+      
+      const hours = Math.floor(diff / (1000 * 60 * 60))
+      const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60))
+      const seconds = Math.floor((diff % (1000 * 60)) / 1000)
+      
+      setCountdown(`${hours}h ${minutes}m ${seconds}s`)
+    }
+    
+    updateCountdown()
+    const interval = setInterval(updateCountdown, 1000)
     return () => clearInterval(interval)
   }, [])
 
@@ -32,6 +62,12 @@ export default function Layout() {
     })
   }
 
+  function copyCA() {
+    navigator.clipboard.writeText(CA)
+    setCaCopied(true)
+    setTimeout(() => setCaCopied(false), 2000)
+  }
+
   const navLinks = [
     { to: '/', label: 'BROWSE' },
     { to: '/contests/new', label: 'SUBMIT' },
@@ -43,6 +79,53 @@ export default function Layout() {
 
   return (
     <div className="min-h-screen bg-white">
+      {/* Scrolling Marquee Banner */}
+      {showBanner && (
+        <div className="bg-black text-white py-2 overflow-hidden">
+          <div className="animate-marquee whitespace-nowrap">
+            <span className="mx-8">
+              ⚠️ ATTENTION: Our X account is locked for the next <strong>{countdown}</strong>. Please join us in our{' '}
+              <a 
+                href="https://x.com/i/communities/2023208132399288386" 
+                target="_blank" 
+                rel="noopener noreferrer"
+                className="underline text-cyan-400 hover:text-cyan-300"
+              >
+                X Community
+              </a>
+              ! ⚠️
+            </span>
+            <span className="mx-8">
+              ⚠️ ATTENTION: Our X account is locked for the next <strong>{countdown}</strong>. Please join us in our{' '}
+              <a 
+                href="https://x.com/i/communities/2023208132399288386" 
+                target="_blank" 
+                rel="noopener noreferrer"
+                className="underline text-cyan-400 hover:text-cyan-300"
+              >
+                X Community
+              </a>
+              ! ⚠️
+            </span>
+          </div>
+        </div>
+      )}
+
+      {/* CA Banner */}
+      <div className="bg-gradient-to-r from-purple-600 to-cyan-600 text-white py-1.5 px-4">
+        <div className="max-w-7xl mx-auto flex items-center justify-center gap-2 text-sm">
+          <span className="hidden sm:inline">$CLAW99 Token:</span>
+          <code className="bg-black/30 px-2 py-0.5 rounded font-mono text-xs sm:text-sm">{CA}</code>
+          <button 
+            onClick={copyCA}
+            className="p-1 hover:bg-white/20 rounded transition-colors"
+            title="Copy CA"
+          >
+            {caCopied ? <Check className="w-4 h-4" /> : <Copy className="w-4 h-4" />}
+          </button>
+        </div>
+      </div>
+
       {/* Header */}
       <header className="border-b border-gray-200">
         <div className="max-w-7xl mx-auto px-4 py-4 flex items-center justify-between">
