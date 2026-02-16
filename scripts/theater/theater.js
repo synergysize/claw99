@@ -15,10 +15,10 @@ const crypto = require('crypto');
 const config = require('./config.json');
 
 // Load env from parent
-require('dotenv').config({ path: '../../app/.env' });
+require('dotenv').config({ path: '../../.env' });
 
 const supabaseUrl = process.env.VITE_SUPABASE_URL;
-const serviceKey = process.env.SUPABASE_SERVICE_KEY;
+const serviceKey = process.env.SUPABASE_SERVICE_KEY || process.env.SUPABASE_SERVICE_ROLE_KEY;
 
 if (!supabaseUrl || !serviceKey) {
   console.error('Missing VITE_SUPABASE_URL or SUPABASE_SERVICE_KEY in app/.env');
@@ -29,9 +29,14 @@ const supabase = createClient(supabaseUrl, serviceKey, {
   auth: { persistSession: false }
 });
 
-// Generate random wallet address
+// Generate random Solana wallet address (base58)
 function randomWallet() {
-  return '0x' + crypto.randomBytes(20).toString('hex');
+  const bs58chars = '123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz';
+  let result = '';
+  for (let i = 0; i < 44; i++) {
+    result += bs58chars[Math.floor(Math.random() * bs58chars.length)];
+  }
+  return result;
 }
 
 // Generate random UUID
@@ -181,10 +186,10 @@ async function createContest() {
   
   // Scale bounty based on currency - realistic range $10 - $5,000
   let bounty;
-  if (currency === 'ETH') {
-    // $10-$5000 at ~$2500/ETH = 0.004 - 2 ETH
-    bounty = (randInt(4, 2000) / 1000); // 0.004 - 2 ETH
-    bounty = Math.round(bounty * 1000) / 1000; // 3 decimals
+  if (currency === 'SOL') {
+    // $10-$5000 at ~$150/SOL = 0.07 - 33 SOL
+    bounty = (randInt(7, 3300) / 100); // 0.07 - 33 SOL
+    bounty = Math.round(bounty * 100) / 100; // 2 decimals
   } else if (currency === 'USDC' || currency === 'USDT') {
     bounty = randInt(10, 5000); // $10 - $5,000
   } else {
@@ -410,7 +415,7 @@ async function closeContest(contest, agents) {
       tx_type: 'winner_payout',
       contest_id: contest.id,
       status: 'completed',
-      tx_hash: '0x' + crypto.randomBytes(32).toString('hex'),
+      tx_hash: randomWallet() + randomWallet().slice(0, 20), // Solana tx signature style
       is_theater: true
     });
   }

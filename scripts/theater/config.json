@@ -1,12 +1,10 @@
 {
-  "targetOpenContests": { "min": 8, "max": 12 },
+  "targetOpenContests": { "min": 8, "max": 13 },
   "ownerWallets": [
-    "0x742d35Cc6634C0532925a3b844Bc9e7595f8fE00",
-    "0x8ba1f109551bD432803012645Ac136ddd64DBA72",
-    "0xdcca50Ddf7c91B0fB5Eec709E5CE8B3a601f5821"
+    "94JVKGBReFTSN3gE2Vm8zaC1C2gyhgDrvHRoDijKcjn7"
   ],
-  "currencies": ["CLAW", "USDC", "ETH", "USDT"],
-  "currencyWeights": { "CLAW": 60, "USDC": 25, "ETH": 10, "USDT": 5 },
+  "currencies": ["CLAW", "USDC", "SOL"],
+  "currencyWeights": { "CLAW": 60, "USDC": 25, "SOL": 15 },
   "titleStyles": [
     "normal",
     "ALL_CAPS",
@@ -81,7 +79,7 @@
     {
       "title": "DEX Arbitrage Path Finder",
       "category": "DEFI_TRADING",
-      "objective": "Build an agent that finds profitable multi-hop arbitrage paths across Uniswap, Sushi, Curve, and Balancer.",
+      "objective": "Build an agent that finds profitable multi-hop arbitrage paths across Raydium, Orca, Jupiter, and Meteora.",
       "constraints": "Must account for gas costs and slippage. Profit threshold configurable.",
       "evaluation_criteria": "Path discovery rate, profit accuracy after fees, execution speed",
       "deliverable_format": "API Endpoint",
@@ -106,10 +104,10 @@
       "durationRange": [48, 120]
     },
     {
-      "title": "Mempool Sandwich Attack Detector",
+      "title": "Solana MEV Bundle Detector",
       "category": "SECURITY",
-      "objective": "Create a real-time agent that detects sandwich attacks in the mempool and alerts victims before confirmation.",
-      "constraints": "Must monitor Ethereum and Arbitrum mempools. Sub-second detection.",
+      "objective": "Create a real-time agent that detects sandwich attacks and MEV extraction on Solana DEXes.",
+      "constraints": "Must monitor Jupiter, Raydium, and Orca. Sub-second detection.",
       "evaluation_criteria": "Detection rate, false positives, alert speed",
       "deliverable_format": "API Endpoint",
       "durationRange": [48, 168]
@@ -153,7 +151,7 @@
     {
       "title": "Liquidation Cascade Predictor",
       "category": "DEFI_TRADING",
-      "objective": "Build an agent that predicts DeFi liquidation cascades by monitoring health factors across Aave, Compound, and Maker.",
+      "objective": "Build an agent that predicts DeFi liquidation cascades by monitoring health factors across Solend, Marginfi, and Kamino.",
       "constraints": "Must provide 30-minute advance warning. Track top 1000 positions.",
       "evaluation_criteria": "Prediction accuracy, lead time, position coverage",
       "deliverable_format": "API Endpoint",
@@ -163,7 +161,7 @@
       "title": "Bridge Exploit Monitor",
       "category": "SECURITY",
       "objective": "Create a real-time agent that monitors cross-chain bridges for anomalous transactions indicating potential exploits.",
-      "constraints": "Must cover Wormhole, LayerZero, Stargate, and Across. Instant alerts.",
+      "constraints": "Must cover Wormhole, LayerZero, deBridge, and Allbridge. Instant alerts.",
       "evaluation_criteria": "Anomaly detection rate, false positives, alert speed",
       "deliverable_format": "API Endpoint",
       "durationRange": [72, 240]
@@ -187,10 +185,10 @@
       "durationRange": [48, 120]
     },
     {
-      "title": "Gas War Optimizer",
+      "title": "Priority Fee Optimizer",
       "category": "DEFI_TRADING",
-      "objective": "Build an agent that optimizes gas bidding strategies for NFT mints and token launches.",
-      "constraints": "Must predict optimal gas within 5% of winning bids. Support priority fees.",
+      "objective": "Build an agent that optimizes Solana priority fee bidding strategies for token launches and NFT mints.",
+      "constraints": "Must predict optimal fee within 5% of winning bids. Real-time adjustment.",
       "evaluation_criteria": "Bid accuracy, success rate, cost efficiency",
       "deliverable_format": "API Endpoint",
       "durationRange": [24, 96]
@@ -223,9 +221,9 @@
       "durationRange": [48, 144]
     },
     {
-      "title": "MEV Bundle Simulator",
+      "title": "Jito Bundle Simulator",
       "category": "DEFI_TRADING",
-      "objective": "Build an agent that simulates MEV bundle profitability before submission to Flashbots.",
+      "objective": "Build an agent that simulates Jito bundle profitability before submission.",
       "constraints": "Must account for competing bundles and state changes. 95%+ accuracy.",
       "evaluation_criteria": "Simulation accuracy, speed, competing bundle modeling",
       "deliverable_format": "API Endpoint",
@@ -244,16 +242,16 @@
       "title": "NFT Wash Trading Detector",
       "category": "NFT_FI",
       "objective": "Build an agent that identifies wash trading on NFT marketplaces to filter fake volume.",
-      "constraints": "Must analyze OpenSea, Blur, and Magic Eden. Flag suspicious patterns.",
+      "constraints": "Must analyze Magic Eden, Tensor, and OpenSea. Flag suspicious patterns.",
       "evaluation_criteria": "Detection accuracy, coverage, real-time processing",
       "deliverable_format": "API Endpoint",
       "durationRange": [48, 144]
     },
     {
-      "title": "L2 Sequencer Downtime Monitor",
+      "title": "Validator Downtime Monitor",
       "category": "SECURITY",
-      "objective": "Create an agent that monitors L2 sequencer health and alerts on potential downtime or censorship.",
-      "constraints": "Must cover Arbitrum, Optimism, Base, and zkSync. Track block times.",
+      "objective": "Create an agent that monitors Solana validator health and alerts on potential downtime or performance issues.",
+      "constraints": "Must track top 100 validators by stake. Monitor skip rates and vote latency.",
       "evaluation_criteria": "Monitoring coverage, alert speed, false positive rate",
       "deliverable_format": "API Endpoint",
       "durationRange": [48, 120]
