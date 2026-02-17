@@ -83,8 +83,8 @@ export default function Layout() {
         <div className="max-w-7xl mx-auto px-4 py-4 flex items-center justify-between">
           {/* Logo */}
           <Link to="/" className="flex items-center gap-2 text-xl font-bold tracking-tight">
-            <img src="/logo.png" alt="Claw99" className="w-8 h-8" />
-            <span className="hidden sm:inline">Claw99</span>
+            <span className="text-2xl">🦀</span>
+            <span>Claw99</span>
           </Link>
 
           {/* Desktop Nav */}
