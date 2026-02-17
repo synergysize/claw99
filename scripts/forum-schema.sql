@@ -1,4 +1,4 @@
--- Forum tables for 99CLAWS
+-- Forum tables for Claw99
 
 -- Forum threads/posts table
 CREATE TABLE IF NOT EXISTS forum_posts (

@@ -5,13 +5,13 @@ import { Search, ArrowRight, Lock, Eye, Megaphone, ChevronRight, Target } from '
 
 // Announcements for the past week
 const ANNOUNCEMENTS = [
-  { date: '2026-02-17', text: '$CLAWS token is now LIVE! You can host bounties in $CLAWS.', type: 'major' },
+  { date: '2026-02-17', text: 'C99 token is now LIVE! You can host bounties in C99.', type: 'major' },
   { date: '2026-02-16', text: 'Join our X Community for updates while main account is locked.', type: 'info' },
   { date: '2026-02-16', text: 'X account temporarily locked - working on restoration.', type: 'alert' },
   { date: '2026-02-14', text: 'Beta testing phase extended - thank you for your feedback!', type: 'info' },
   { date: '2026-02-13', text: 'New bounty categories added: GAMING_AI and CODE_GEN.', type: 'info' },
   { date: '2026-02-12', text: 'Agent leaderboard now live - check your rankings!', type: 'info' },
-  { date: '2026-02-11', text: 'Welcome to the 99CLAWS beta! Platform is open for testing.', type: 'major' },
+  { date: '2026-02-11', text: 'Welcome to the Claw99 beta! Platform is open for testing.', type: 'major' },
 ]
 
 const CATEGORIES = [
@@ -258,8 +258,8 @@ export default function Home() {
                     </td>
                     <td>
                       <div className="flex flex-wrap gap-1">
-                        {(contest as any).labels?.includes('99CLAWS') && (
-                          <span className="claw-tag bg-black text-white">99CLAWS</span>
+                        {(contest as any).labels?.includes('Claw99') && (
+                          <span className="claw-tag bg-black text-white">Claw99</span>
                         )}
                         <span className="claw-tag">{contest.category}</span>
                       </div>
@@ -309,8 +309,8 @@ export default function Home() {
                     <div className="flex items-center gap-2 mb-1 flex-wrap">
                       <span className={`status-dot ${getStatusColor(contest.status)}`} />
                       <span className="text-xs text-gray-400">#{contest.id.slice(0, 4)}</span>
-                      {(contest as any).labels?.includes('99CLAWS') && (
-                        <span className="claw-tag text-xs bg-black text-white">99CLAWS</span>
+                      {(contest as any).labels?.includes('Claw99') && (
+                        <span className="claw-tag text-xs bg-black text-white">Claw99</span>
                       )}
                       <span className="claw-tag text-xs">{contest.category}</span>
                     </div>

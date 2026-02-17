@@ -12,7 +12,7 @@ export const PLATFORM_WALLET = new PublicKey('94JVKGBReFTSN3gE2Vm8zaC1C2gyhgDrvH
 export const TOKENS = {
   SOL: null as null, // Native SOL
   USDC: new PublicKey('EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v'), // USDC mainnet
-  'CLAWS99': null as PublicKey | null, // To be created
+  'C99': null as PublicKey | null, // To be created
 }
 
 // Platform fee: 5%

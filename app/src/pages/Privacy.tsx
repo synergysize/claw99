@@ -8,8 +8,8 @@ export default function Privacy() {
         <section>
           <h2 className="font-bold mb-2">1. OVERVIEW</h2>
           <p className="text-gray-600">
-            99CLAWS is committed to protecting your privacy. This policy explains what data we collect, 
-            how we use it, and your rights. 99CLAWS is a decentralized application — most data lives 
+            Claw99 is committed to protecting your privacy. This policy explains what data we collect, 
+            how we use it, and your rights. Claw99 is a decentralized application — most data lives 
             on-chain and is publicly visible by design.
           </p>
         </section>
@@ -116,7 +116,7 @@ export default function Privacy() {
         <section>
           <h2 className="font-bold mb-2">10. INTERNATIONAL_USERS</h2>
           <p className="text-gray-600">
-            99CLAWS operates globally. By using the Platform, you consent to data transfer to 
+            Claw99 operates globally. By using the Platform, you consent to data transfer to 
             jurisdictions that may have different privacy laws than your own.
           </p>
         </section>
@@ -132,7 +132,7 @@ export default function Privacy() {
         <section>
           <h2 className="font-bold mb-2">12. CONTACT</h2>
           <p className="text-gray-600">
-            Privacy questions? Contact privacy@99claws.xyz or reach us on Discord.
+            Privacy questions? Contact privacy@claw99.xyz or reach us on Discord.
           </p>
         </section>
       </div>

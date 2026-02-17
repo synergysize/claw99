@@ -134,7 +134,7 @@ export default function Contracts() {
                 <td className="py-2"><span className="text-yellow-600">Coming Soon</span></td>
               </tr>
               <tr>
-                <td className="py-2 font-medium">99CLAWS</td>
+                <td className="py-2 font-medium">Claw99</td>
                 <td className="py-2 text-gray-500">TBD</td>
                 <td className="py-2"><span className="text-yellow-600">Coming Soon</span></td>
               </tr>
@@ -160,7 +160,7 @@ export default function Contracts() {
             <p>
               <strong>Source Code:</strong> Available on{' '}
               <a 
-                href="https://github.com/synergysize/99claws"
+                href="https://github.com/synergysize/claw99"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="text-blue-600 hover:underline"

@@ -5,7 +5,7 @@ import { WalletMultiButton } from '@solana/wallet-adapter-react-ui'
 import { Menu, X, Copy, Check } from 'lucide-react'
 import { supabase } from '../lib/supabase'
 
-const CA = '' // TBA
+const CA = 'DxFyD4KUUMYn66e1CrDS8CgAXcVxXadFKYcwpZCWpump'
 
 export default function Layout() {
   const location = useLocation()
@@ -58,21 +58,21 @@ export default function Layout() {
 
   return (
     <div className="min-h-screen bg-white">
-      {/* CA Banner */}
+      {/* CA Banner - Sticky */}
       {showBanner && (
-        <div className="bg-black text-white py-2 overflow-hidden">
+        <div className="bg-gradient-to-r from-purple-600 via-purple-500 to-indigo-600 text-white py-2.5 overflow-hidden sticky top-0 z-50 shadow-lg">
           <div className="flex items-center justify-center gap-3">
-            <span className="text-sm font-medium">CA:</span>
+            <span className="text-sm font-bold tracking-wide">CA:</span>
             {CA ? (
               <button
                 onClick={copyCA}
-                className="flex items-center gap-2 font-mono text-sm bg-white/10 px-3 py-1 rounded hover:bg-white/20 transition-colors"
+                className="flex items-center gap-2 font-mono text-sm bg-white/20 backdrop-blur px-4 py-1.5 rounded-full hover:bg-white/30 transition-all border border-white/30"
               >
-                <span>{CA}</span>
-                {caCopied ? <Check className="w-4 h-4 text-green-400" /> : <Copy className="w-4 h-4" />}
+                <span className="tracking-wide">{CA}</span>
+                {caCopied ? <Check className="w-4 h-4 text-green-300" /> : <Copy className="w-4 h-4" />}
               </button>
             ) : (
-              <span className="font-mono text-sm text-gray-400">TBA</span>
+              <span className="font-mono text-sm text-white/60">TBA</span>
             )}
           </div>
         </div>
@@ -83,8 +83,8 @@ export default function Layout() {
         <div className="max-w-7xl mx-auto px-4 py-4 flex items-center justify-between">
           {/* Logo */}
           <Link to="/" className="flex items-center gap-2 text-xl font-bold tracking-tight">
-            <img src="/logo.png" alt="99CLAWS" className="w-8 h-8" />
-            <span className="hidden sm:inline">99CLAWS</span>
+            <img src="/logo.png" alt="Claw99" className="w-8 h-8" />
+            <span className="hidden sm:inline">Claw99</span>
           </Link>
 
           {/* Desktop Nav */}
@@ -99,7 +99,7 @@ export default function Layout() {
               </Link>
             ))}
             <a 
-              href="https://contagion.gitbook.io/99claws" 
+              href="https://contagion.gitbook.io/claw99" 
               target="_blank" 
               rel="noopener noreferrer" 
               className="text-gray-500 hover:text-black"
@@ -107,7 +107,7 @@ export default function Layout() {
               DOCS
             </a>
             <a 
-              href="https://clawdhub.com/skills/99claws-sdk" 
+              href="https://clawdhub.com/skills/claw99-sdk" 
               target="_blank" 
               rel="noopener noreferrer" 
               className="text-gray-500 hover:text-black"
@@ -127,11 +127,11 @@ export default function Layout() {
             
             {/* Twitter */}
             <a 
-              href="https://x.com/99ClawsAI" 
+              href="https://x.com/claw99ai" 
               target="_blank" 
               rel="noopener noreferrer"
               className="text-gray-500 hover:text-black transition-colors hidden sm:block"
-              title="Follow @99ClawsAI"
+              title="Follow @Claw99AI"
             >
               <svg viewBox="0 0 24 24" className="w-5 h-5 fill-current">
                 <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
@@ -166,7 +166,7 @@ export default function Layout() {
                 </Link>
               ))}
               <a 
-                href="https://contagion.gitbook.io/99claws" 
+                href="https://contagion.gitbook.io/claw99" 
                 target="_blank" 
                 rel="noopener noreferrer" 
                 className="py-3 border-b border-gray-100 text-gray-500"
@@ -174,7 +174,7 @@ export default function Layout() {
                 DOCS
               </a>
               <a 
-                href="https://clawdhub.com/skills/99claws-sdk" 
+                href="https://clawdhub.com/skills/claw99-sdk" 
                 target="_blank" 
                 rel="noopener noreferrer" 
                 className="py-3 border-b border-gray-100 text-gray-500"
@@ -182,7 +182,7 @@ export default function Layout() {
                 SDK
               </a>
               <a 
-                href="https://x.com/99ClawsAI" 
+                href="https://x.com/claw99ai" 
                 target="_blank" 
                 rel="noopener noreferrer"
                 className="py-3 text-gray-500 flex items-center gap-2"
@@ -215,7 +215,7 @@ export default function Layout() {
       <footer className="border-t border-gray-200 mt-8 sm:mt-16">
         <div className="max-w-7xl mx-auto px-4 py-6">
           <div className="flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-gray-500">
-            <span className="text-center sm:text-left">99CLAWS NETWORK // V2.0.4 // SOLANA</span>
+            <span className="text-center sm:text-left">Claw99 NETWORK // V2.0.4 // SOLANA</span>
             <div className="flex flex-wrap items-center justify-center gap-4 sm:gap-6">
               <Link to="/terms" className="hover:text-black">Terms</Link>
               <Link to="/privacy" className="hover:text-black">Privacy</Link>

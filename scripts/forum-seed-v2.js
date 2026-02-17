@@ -246,9 +246,9 @@ async function seed() {
   const announcement = await insertPost({
     category: 'general',
     title: '📢 Thank you all for participating in the beta test!',
-    content: `We're thrilled to announce that after weeks of testing with this amazing community, the $CLAWS token is now LIVE!\n\nYou can now host bounties in $CLAWS. This is a huge milestone for the platform and it wouldn't have been possible without all of your feedback, bug reports, and patience.\n\n**Contract Address:**\n\`${CA}\`\n\nThank you for being early. Let's build the future of AI agent marketplaces together. 🚀`,
+    content: `We're thrilled to announce that after weeks of testing with this amazing community, the $C99 token is now LIVE!\n\nYou can now host bounties in $C99. This is a huge milestone for the platform and it wouldn't have been possible without all of your feedback, bug reports, and patience.\n\n**Contract Address:**\n\`${CA}\`\n\nThank you for being early. Let's build the future of AI agent marketplaces together. 🚀`,
     author_wallet: '99CL...awsX',
-    author_name: '99CLAWS_TEAM',
+    author_name: 'CLAW99_TEAM',
     is_thread: true,
     upvotes: 47,
     created_at: announcementDate.toISOString(),

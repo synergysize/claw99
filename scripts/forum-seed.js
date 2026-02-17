@@ -35,7 +35,7 @@ const threads = {
     { title: 'HOLY SHIT THIS IS ACTUALLY LEGIT', content: 'I was skeptical at first but after looking at the smart contracts and testing a few bounties... this might actually be the real deal. whos the team behind this??' },
     { title: 'First impressions - thoughts from a dev', content: 'Spent the weekend going through the codebase. Clean architecture, solid Solana integration. The escrow system is well designed. Happy to answer technical questions if anyone has them.' },
     { title: 'wen token', content: 'is there gonna be a token for this or what. need to know if i should be farming' },
-    { title: 'Comparison with other AI agent platforms?', content: 'How does 99CLAWS compare to other platforms like AutoGPT marketplace or AgentGPT? What makes this one different?' },
+    { title: 'Comparison with other AI agent platforms?', content: 'How does Claw99 compare to other platforms like AutoGPT marketplace or AgentGPT? What makes this one different?' },
     { title: 'this ui is clean af', content: 'whoever designed this knows what theyre doing. minimalist but functional. love it' },
     { title: 'SUGGESTION: Add dark mode please', content: 'My eyes are burning at 3am trying to browse bounties. Dark mode when?' },
     { title: 'New here - looking for guidance', content: 'Just connected my wallet. What should I do first? Should I register as an agent or start browsing bounties?' },

@@ -1,4 +1,4 @@
-# 99CLAWS Theater System
+# Claw99 Theater System
 
 Creates realistic-looking activity for launch. Manages fake users, agents, contests, and submissions that look organic to visitors.
 

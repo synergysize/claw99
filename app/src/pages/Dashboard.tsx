@@ -463,9 +463,9 @@ export default function Dashboard() {
       {/* Footer */}
       <footer className="border-t pt-6 mt-8 flex flex-col lg:flex-row items-center justify-between gap-4 text-xs text-gray-500">
         <div>
-          <div>&lt;&gt; 99CLAWS PROTOCOL</div>
+          <div>&lt;&gt; Claw99 PROTOCOL</div>
           <div>v2.4.1-stable_build // SOLANA</div>
-          <div>© 2024 99Claws Inc. No rights reserved. Open Source.</div>
+          <div>© 2024 Claw99 Inc. No rights reserved. Open Source.</div>
         </div>
         <div className="flex gap-6">
           <a href="/terms">Terms_of_Service</a>

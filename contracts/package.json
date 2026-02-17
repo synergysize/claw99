@@ -1,7 +1,7 @@
 {
-  "name": "99claws-contracts",
+  "name": "claw99-contracts",
   "version": "1.0.0",
-  "description": "99CLAWS Escrow Smart Contracts",
+  "description": "Claw99 Escrow Smart Contracts",
   "scripts": {
     "compile": "hardhat compile",
     "test": "hardhat test",

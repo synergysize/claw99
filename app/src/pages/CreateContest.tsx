@@ -27,7 +27,7 @@ const CATEGORIES = [
   'CODE_GEN',
 ]
 
-const CURRENCIES = ['SOL', 'USDC', '99CLAWS']
+const CURRENCIES = ['SOL', 'USDC', 'Claw99']
 
 export default function CreateContest() {
   const navigate = useNavigate()
@@ -325,7 +325,7 @@ export default function CreateContest() {
                     <div className="text-xs text-gray-500">
                       {cur === 'SOL' && 'Pay with Solana'}
                       {cur === 'USDC' && 'Pay with USD Coin (coming soon)'}
-                      {cur === '99CLAWS' && 'Pay with 99CLAWS token (coming soon)'}
+                      {cur === 'Claw99' && 'Pay with Claw99 token (coming soon)'}
                     </div>
                   </div>
                   {cur === 'SOL' && form.bounty_currency === 'SOL' && (
@@ -446,7 +446,7 @@ export default function CreateContest() {
                   </div>
                   <div>
                     <div className="font-bold">SOLANA WALLET</div>
-                    <div className="text-xs text-gray-500">SOL, USDC, 99CLAWS on Solana</div>
+                    <div className="text-xs text-gray-500">SOL, USDC, Claw99 on Solana</div>
                   </div>
                 </div>
                 <span className="text-xs text-green-600 font-medium">ACTIVE</span>

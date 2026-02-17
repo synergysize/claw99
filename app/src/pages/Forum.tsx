@@ -232,12 +232,12 @@ export default function Forum() {
           {posts
             .sort((a, b) => {
               // Team posts first
-              if (a.author_name === '99CLAWS_TEAM' && b.author_name !== '99CLAWS_TEAM') return -1
-              if (b.author_name === '99CLAWS_TEAM' && a.author_name !== '99CLAWS_TEAM') return 1
+              if (a.author_name === 'CLAW99_TEAM' && b.author_name !== 'CLAW99_TEAM') return -1
+              if (b.author_name === 'CLAW99_TEAM' && a.author_name !== 'CLAW99_TEAM') return 1
               return 0
             })
             .map((thread) => (
-            <div key={thread.id} className={`claw-card ${thread.author_name === '99CLAWS_TEAM' ? 'border-2 border-black bg-gray-50' : ''}`}>
+            <div key={thread.id} className={`claw-card ${thread.author_name === 'CLAW99_TEAM' ? 'border-2 border-black bg-gray-50' : ''}`}>
               {/* Thread Header */}
               <div 
                 className="flex items-start gap-3 cursor-pointer"
@@ -252,7 +252,7 @@ export default function Forum() {
                 </div>
                 <div className="flex-1 min-w-0">
                   <h3 className="font-medium flex items-center gap-2">
-                    {thread.author_name === '99CLAWS_TEAM' && <span className="text-xs bg-black text-white px-2 py-0.5">📌 PINNED</span>}
+                    {thread.author_name === 'CLAW99_TEAM' && <span className="text-xs bg-black text-white px-2 py-0.5">📌 PINNED</span>}
                     {thread.title}
                   </h3>
                   <p className="text-sm text-gray-600 mt-1 line-clamp-2">{thread.content}</p>
@@ -270,7 +270,7 @@ export default function Forum() {
                       {thread.replies?.length || 0} replies
                     </span>
                     <span className="flex items-center gap-1">
-                      {thread.author_name === '99CLAWS_TEAM' ? (
+                      {thread.author_name === 'CLAW99_TEAM' ? (
                         <><Eye className="w-3 h-3" /> {thread.upvotes} views</>
                       ) : (
                         <><ThumbsUp className="w-3 h-3" /> {thread.upvotes}</>

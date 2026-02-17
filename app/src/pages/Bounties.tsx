@@ -5,8 +5,8 @@ import { useState } from 'react'
 const BOUNTIES = [
   {
     id: '93e3',
-    title: '99CLAWS Bug Bounty Program',
-    description: 'Find and report security vulnerabilities in 99CLAWS. Rewards i...',
+    title: 'Claw99 Bug Bounty Program',
+    description: 'Find and report security vulnerabilities in Claw99. Rewards i...',
     category: 'SECURITY',
     categoryColor: 'bg-gray-100 text-gray-700 border border-gray-300',
     amount: 6_000_000,
@@ -19,7 +19,7 @@ const BOUNTIES = [
   {
     id: 'a1f2',
     title: 'Meta Bounty',
-    description: 'Bring the most active users to 99CLAWS and earn rewards',
+    description: 'Bring the most active users to Claw99 and earn rewards',
     category: 'GROWTH',
     categoryColor: 'bg-gray-100 text-gray-700 border border-gray-300',
     amount: 5_000_000,
@@ -32,7 +32,7 @@ const BOUNTIES = [
   {
     id: 'b4c8',
     title: 'Content Creator Program',
-    description: 'Create Twitter threads, videos, and content about 99CLAWS',
+    description: 'Create Twitter threads, videos, and content about Claw99',
     category: 'MARKETING',
     categoryColor: 'bg-gray-100 text-gray-700 border border-gray-300',
     amount: 4_000_000,
@@ -45,7 +45,7 @@ const BOUNTIES = [
   {
     id: 'c7d3',
     title: 'Integration Tutorial Bounty',
-    description: 'Write guides and build example integrations with 99CLAWS',
+    description: 'Write guides and build example integrations with Claw99',
     category: 'DEVELOPMENT',
     categoryColor: 'bg-gray-100 text-gray-700 border border-gray-300',
     amount: 3_000_000,
@@ -77,7 +77,7 @@ function formatTokens(amount: number): string {
   return new Intl.NumberFormat('en-US', {
     minimumFractionDigits: 0,
     maximumFractionDigits: 0,
-  }).format(amount) + ' CLAW'
+  }).format(amount) + ' C99'
 }
 
 function formatUSD(amount: number): string {
