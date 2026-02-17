@@ -1,5 +1,4 @@
 import {
-  Connection,
   PublicKey,
   Transaction,
   SystemProgram,
@@ -9,9 +8,8 @@ import {
   getAssociatedTokenAddress,
   createAssociatedTokenAccountInstruction,
   createTransferInstruction,
-  TOKEN_PROGRAM_ID,
 } from '@solana/spl-token'
-import { CONNECTION, PLATFORM_WALLET, TOKENS } from './config'
+import { CONNECTION, PLATFORM_WALLET } from './config'
 
 /**
  * Send SOL to platform wallet for contest funding
@@ -19,7 +17,7 @@ import { CONNECTION, PLATFORM_WALLET, TOKENS } from './config'
 export async function fundContestSol(
   wallet: any,
   amountSol: number,
-  memo?: string
+  _memo?: string
 ): Promise<string> {
   const lamports = Math.floor(amountSol * LAMPORTS_PER_SOL)
 

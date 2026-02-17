@@ -105,7 +105,7 @@ export default function AgentProfile() {
         </div>
       </div>
 
-      {/* Contest History */}
+      {/* Bounty History */}
       <section>
         <h2 className="text-lg font-bold mb-4">CONTEST_HISTORY</h2>
         <div className="claw-card">

@@ -12,6 +12,7 @@ export default function ContestDetail() {
   const [loading, setLoading] = useState(true)
   const [selectedWinner, setSelectedWinner] = useState<string | null>(null)
   const [isBuyer, setIsBuyer] = useState(false)
+  const [buyer, setBuyer] = useState<{ wallet_address: string; twitter_handle?: string } | null>(null)
   const [userAgents, setUserAgents] = useState<any[]>([])
   const [showSubmitModal, setShowSubmitModal] = useState(false)
   const [submitForm, setSubmitForm] = useState({ agent_id: '', preview_url: '', description: '' })
@@ -37,6 +38,15 @@ export default function ContestDetail() {
 
     if (contestData) {
       setContest(contestData)
+
+      // Fetch buyer info
+      const { data: buyerData } = await supabase
+        .from('users')
+        .select('wallet_address, twitter_handle')
+        .eq('id', contestData.buyer_id)
+        .single()
+      
+      setBuyer(buyerData)
 
       const { data: submissionsData } = await supabase
         .from('submissions')
@@ -123,7 +133,7 @@ export default function ContestDetail() {
   }
 
   if (loading) return <div className="text-center py-8">LOADING...</div>
-  if (!contest) return <div className="text-center py-8">CONTEST_NOT_FOUND</div>
+  if (!contest) return <div className="text-center py-8">BOUNTY_NOT_FOUND</div>
 
   const statusColor = contest.status === 'open' ? 'green' : contest.status === 'reviewing' ? 'yellow' : 'red'
   const canSubmit = connected && userAgents.length > 0 && contest.status === 'open' && !isBuyer
@@ -134,7 +144,7 @@ export default function ContestDetail() {
       <div className="space-y-6">
         <div>
           <div className="flex items-center gap-3 mb-2">
-            <span className="claw-tag">ACTIVE CONTEST</span>
+            <span className="claw-tag">ACTIVE BOUNTY</span>
             <span className="text-gray-500 text-sm">#{contest.id.slice(0, 8)}</span>
           </div>
           <h1 className="text-3xl font-bold leading-tight">{contest.title}</h1>
@@ -149,7 +159,7 @@ export default function ContestDetail() {
         <div className="grid grid-cols-2 gap-4">
           <div>
             <div className="text-xs text-gray-500 mb-1">PRIZE POOL</div>
-            <div className="text-2xl font-bold">${contest.bounty_amount.toLocaleString()}</div>
+            <div className="text-2xl font-bold">{contest.bounty_amount.toLocaleString()} <span className="text-base font-normal text-gray-500">{contest.bounty_currency}</span></div>
           </div>
           <div>
             <div className="text-xs text-red-500 mb-1">DEADLINE</div>
@@ -163,10 +173,29 @@ export default function ContestDetail() {
             <div className="text-xs text-gray-500 mb-1">MAX TOKENS</div>
             <div className="font-medium">{contest.max_submissions} Context</div>
           </div>
+          <div>
+            <div className="text-xs text-gray-500 mb-1">POSTED BY</div>
+            <div className="font-medium">
+              {buyer?.twitter_handle ? (
+                <a 
+                  href={`https://x.com/${buyer.twitter_handle.replace('@', '')}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-blue-600 hover:underline"
+                >
+                  {buyer.twitter_handle}
+                </a>
+              ) : buyer?.wallet_address ? (
+                <span className="font-mono text-sm">{buyer.wallet_address.slice(0, 4)}...{buyer.wallet_address.slice(-4)}</span>
+              ) : (
+                <span className="text-gray-400">Unknown</span>
+              )}
+            </div>
+          </div>
         </div>
 
         <div className="border-l-4 border-black pl-4 space-y-4">
-          <h2 className="font-bold">CONTEST BRIEF</h2>
+          <h2 className="font-bold">BOUNTY BRIEF</h2>
           
           <div>
             <div className="text-sm text-gray-500">&gt;&gt;&gt; OBJECTIVE_INIT</div>

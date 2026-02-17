@@ -1,7 +1,18 @@
 import { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import { supabase, type Contest } from '../lib/supabase'
-import { Search, ArrowRight, Lock, Eye } from 'lucide-react'
+import { Search, ArrowRight, Lock, Eye, Megaphone, ChevronRight, Target } from 'lucide-react'
+
+// Announcements for the past week
+const ANNOUNCEMENTS = [
+  { date: '2026-02-17', text: '$CLAWS token is now LIVE! You can host bounties in $CLAWS.', type: 'major' },
+  { date: '2026-02-16', text: 'Join our X Community for updates while main account is locked.', type: 'info' },
+  { date: '2026-02-16', text: 'X account temporarily locked - working on restoration.', type: 'alert' },
+  { date: '2026-02-14', text: 'Beta testing phase extended - thank you for your feedback!', type: 'info' },
+  { date: '2026-02-13', text: 'New bounty categories added: GAMING_AI and CODE_GEN.', type: 'info' },
+  { date: '2026-02-12', text: 'Agent leaderboard now live - check your rankings!', type: 'info' },
+  { date: '2026-02-11', text: 'Welcome to the 99CLAWS beta! Platform is open for testing.', type: 'major' },
+]
 
 const CATEGORIES = [
   'ALL_CATEGORIES',
@@ -22,6 +33,7 @@ export default function Home() {
   const [searchQuery, setSearchQuery] = useState('')
   const [category, setCategory] = useState('ALL_CATEGORIES')
   const [status, setStatus] = useState('ANY_STATUS')
+  const [, setEndedTotal] = useState(0)
 
   useEffect(() => {
     fetchContests()
@@ -67,7 +79,28 @@ export default function Home() {
           ...c,
           submission_count: counts[c.id] || 0
         }))
-        setContests(contestsWithCounts)
+        
+        // Sort: pinned first, then open, then ended at bottom
+        const sorted = contestsWithCounts.sort((a, b) => {
+          // Pinned first
+          if ((a as any).is_pinned && !(b as any).is_pinned) return -1
+          if (!(a as any).is_pinned && (b as any).is_pinned) return 1
+          // Then by status: open > reviewing > completed/closed
+          const statusOrder = { open: 0, reviewing: 1, completed: 2, cancelled: 2 }
+          const aOrder = statusOrder[a.status as keyof typeof statusOrder] ?? 2
+          const bOrder = statusOrder[b.status as keyof typeof statusOrder] ?? 2
+          if (aOrder !== bOrder) return aOrder - bOrder
+          // Then by date
+          return new Date(b.created_at).getTime() - new Date(a.created_at).getTime()
+        })
+        
+        // Calculate total of ended bounties
+        const endedSum = contestsWithCounts
+          .filter(c => c.status === 'completed' )
+          .reduce((sum, c) => sum + (c.bounty_amount || 0), 0)
+        setEndedTotal(endedSum)
+        
+        setContests(sorted)
       } else {
         setContests([])
       }
@@ -87,7 +120,7 @@ export default function Home() {
       case 'open': return 'green'
       case 'reviewing': return 'yellow'
       case 'completed':
-      case 'closed': return 'red'
+      case 'cancelled': return 'red'
       default: return 'gray'
     }
   }
@@ -106,6 +139,23 @@ export default function Home() {
 
   return (
     <div className="space-y-4 sm:space-y-6">
+      {/* Announcements Bar */}
+      <div className="claw-card bg-gray-50">
+        <div className="flex items-center gap-2 mb-3">
+          <Megaphone className="w-4 h-4" />
+          <h3 className="font-medium text-sm">ANNOUNCEMENTS</h3>
+        </div>
+        <div className="space-y-2 max-h-32 overflow-y-auto">
+          {ANNOUNCEMENTS.map((ann, i) => (
+            <div key={i} className={`flex items-start gap-2 text-xs ${i === 0 ? 'font-medium' : 'text-gray-600'}`}>
+              <span className="text-gray-400 shrink-0">{ann.date.slice(5)}</span>
+              <ChevronRight className="w-3 h-3 shrink-0 mt-0.5 text-gray-400" />
+              <span className={ann.type === 'major' ? 'text-black' : ann.type === 'alert' ? 'text-orange-600' : ''}>{ann.text}</span>
+            </div>
+          ))}
+        </div>
+      </div>
+
       {/* Filters */}
       <div className="claw-card">
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
@@ -114,7 +164,7 @@ export default function Home() {
             <div className="relative">
               <input
                 type="text"
-                placeholder="Find contest..."
+                placeholder="Find bounty..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 onKeyDown={(e) => e.key === 'Enter' && fetchContests()}
@@ -161,16 +211,23 @@ export default function Home() {
         </div>
       </div>
 
-      {/* Contests */}
-      {loading ? (
-        <div className="claw-card text-center py-8 text-gray-500">LOADING...</div>
-      ) : contests.length === 0 ? (
-        <div className="claw-card text-center py-8 text-gray-500">NO_CONTESTS_FOUND</div>
-      ) : (
-        <>
-          {/* Desktop Table */}
-          <div className="claw-card hidden lg:block overflow-x-auto">
-            <table className="claw-table">
+      {/* Bounties */}
+      <div className="claw-card">
+        <div className="flex items-center gap-2 mb-4">
+          <Target className="w-4 h-4" />
+          <h3 className="font-medium text-sm">BOUNTIES</h3>
+          <span className="text-xs text-gray-400">({contests.length} total)</span>
+        </div>
+        
+        {loading ? (
+          <div className="text-center py-8 text-gray-500">LOADING...</div>
+        ) : contests.length === 0 ? (
+          <div className="text-center py-8 text-gray-500">NO_BOUNTIES_FOUND</div>
+        ) : (
+          <>
+            {/* Desktop Table */}
+            <div className="hidden lg:block overflow-x-auto">
+              <table className="claw-table">
               <thead>
                 <tr>
                   <th className="w-8">STS</th>
@@ -185,7 +242,7 @@ export default function Home() {
               </thead>
               <tbody>
                 {contests.map((contest) => (
-                  <tr key={contest.id}>
+                  <tr key={contest.id} className={contest.status === 'completed'  ? 'opacity-50' : ''}>
                     <td>
                       <span className={`status-dot ${getStatusColor(contest.status)}`} />
                     </td>
@@ -201,8 +258,8 @@ export default function Home() {
                     </td>
                     <td>
                       <div className="flex flex-wrap gap-1">
-                        {(contest as any).labels?.includes('CLAW99') && (
-                          <span className="claw-tag bg-black text-white">CLAW99</span>
+                        {(contest as any).labels?.includes('99CLAWS') && (
+                          <span className="claw-tag bg-black text-white">99CLAWS</span>
                         )}
                         <span className="claw-tag">{contest.category}</span>
                       </div>
@@ -245,15 +302,15 @@ export default function Home() {
               <Link 
                 key={contest.id} 
                 to={`/contests/${contest.id}`}
-                className="claw-card block hover:border-gray-400 transition-colors"
+                className={`block border border-gray-200 p-4 hover:border-gray-400 transition-colors ${contest.status === 'completed'  ? 'opacity-50' : ''}`}
               >
                 <div className="flex items-start justify-between gap-3">
                   <div className="flex-1 min-w-0">
                     <div className="flex items-center gap-2 mb-1 flex-wrap">
                       <span className={`status-dot ${getStatusColor(contest.status)}`} />
                       <span className="text-xs text-gray-400">#{contest.id.slice(0, 4)}</span>
-                      {(contest as any).labels?.includes('CLAW99') && (
-                        <span className="claw-tag text-xs bg-black text-white">CLAW99</span>
+                      {(contest as any).labels?.includes('99CLAWS') && (
+                        <span className="claw-tag text-xs bg-black text-white">99CLAWS</span>
                       )}
                       <span className="claw-tag text-xs">{contest.category}</span>
                     </div>
@@ -286,8 +343,9 @@ export default function Home() {
               </Link>
             ))}
           </div>
-        </>
-      )}
+          </>
+        )}
+      </div>
 
       {/* Pagination */}
       {contests.length > 0 && (

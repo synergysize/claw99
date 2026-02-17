@@ -5,12 +5,12 @@ export default function Rewards() {
   return (
     <div className="max-w-4xl mx-auto">
       <h1 className="text-2xl font-bold mb-2">REWARDS_PROGRAM</h1>
-      <p className="text-gray-500 mb-8">Earn CLAW99 tokens for growing the ecosystem</p>
+      <p className="text-gray-500 mb-8">Earn 99CLAWS tokens for growing the ecosystem</p>
 
       <div className="space-y-8">
         {/* Overview */}
         <div className="claw-card bg-gradient-to-r from-gray-900 to-gray-800 text-white">
-          <h2 className="text-xl font-bold mb-2">25,000,000 CLAW99 Token Pool</h2>
+          <h2 className="text-xl font-bold mb-2">25,000,000 99CLAWS Token Pool</h2>
           <p className="text-gray-300">2.5% of total supply dedicated to community rewards</p>
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 mt-4 text-center">
             <div>
@@ -77,15 +77,15 @@ export default function Rewards() {
             </div>
             <div className="flex-1">
               <h2 className="font-bold text-lg mb-1">REFERRAL_PROGRAM</h2>
-              <p className="text-gray-500 text-sm mb-4">Earn tokens for bringing active users to CLAW99</p>
+              <p className="text-gray-500 text-sm mb-4">Earn tokens for bringing active users to 99CLAWS</p>
               
               <div className="space-y-3 text-sm">
                 <div>
                   <h3 className="font-medium mb-1">Rewards:</h3>
                   <ul className="text-gray-600 list-disc list-inside space-y-1">
-                    <li><strong>50,000 CLAW99</strong> when referee funds their first contest (min $25)</li>
-                    <li><strong>25,000 CLAW99</strong> when referee wins their first contest</li>
-                    <li>Cap: 500,000 CLAW99 per referrer total</li>
+                    <li><strong>50,000 99CLAWS</strong> when referee funds their first contest (min $25)</li>
+                    <li><strong>25,000 99CLAWS</strong> when referee wins their first contest</li>
+                    <li>Cap: 500,000 99CLAWS per referrer total</li>
                   </ul>
                 </div>
                 
@@ -114,7 +114,7 @@ export default function Rewards() {
             </div>
             <div className="flex-1">
               <h2 className="font-bold text-lg mb-1">CONTENT_BOUNTIES</h2>
-              <p className="text-gray-500 text-sm mb-4">Create content about CLAW99 and earn tokens</p>
+              <p className="text-gray-500 text-sm mb-4">Create content about 99CLAWS and earn tokens</p>
               
               <div className="space-y-3 text-sm">
                 <div>
@@ -123,19 +123,19 @@ export default function Rewards() {
                     <tbody>
                       <tr className="border-b">
                         <td className="py-2">Best Twitter Thread</td>
-                        <td className="py-2 text-right">250,000 CLAW99</td>
+                        <td className="py-2 text-right">250,000 99CLAWS</td>
                       </tr>
                       <tr className="border-b">
                         <td className="py-2">Best Meme</td>
-                        <td className="py-2 text-right">100,000 CLAW99</td>
+                        <td className="py-2 text-right">100,000 99CLAWS</td>
                       </tr>
                       <tr className="border-b">
                         <td className="py-2">Weekly Shill Competition</td>
-                        <td className="py-2 text-right">150,000 CLAW99</td>
+                        <td className="py-2 text-right">150,000 99CLAWS</td>
                       </tr>
                       <tr>
                         <td className="py-2">Integration Tutorial</td>
-                        <td className="py-2 text-right">200,000 CLAW99</td>
+                        <td className="py-2 text-right">200,000 99CLAWS</td>
                       </tr>
                     </tbody>
                   </table>
@@ -175,7 +175,7 @@ export default function Rewards() {
             </div>
             <div className="flex-1">
               <h2 className="font-bold text-lg mb-1">META_CONTEST</h2>
-              <p className="text-gray-500 text-sm mb-4">Compete to bring the most active users to CLAW99</p>
+              <p className="text-gray-500 text-sm mb-4">Compete to bring the most active users to 99CLAWS</p>
               
               <div className="space-y-3 text-sm">
                 <div>
@@ -190,9 +190,9 @@ export default function Rewards() {
                 <div>
                   <h3 className="font-medium mb-1">Rewards (per verified user):</h3>
                   <ul className="text-gray-600 list-disc list-inside space-y-1">
-                    <li>First 5 users: 20,000 CLAW99 each</li>
-                    <li>Next 10 users: 15,000 CLAW99 each</li>
-                    <li>Additional users: 10,000 CLAW99 each</li>
+                    <li>First 5 users: 20,000 99CLAWS each</li>
+                    <li>Next 10 users: 15,000 99CLAWS each</li>
+                    <li>Additional users: 10,000 99CLAWS each</li>
                   </ul>
                 </div>
                 
@@ -221,7 +221,7 @@ export default function Rewards() {
             </div>
             <div className="flex-1">
               <h2 className="font-bold text-lg mb-1">BUG_BOUNTY</h2>
-              <p className="text-gray-500 text-sm mb-4">Find security vulnerabilities, earn up to 750,000 CLAW99</p>
+              <p className="text-gray-500 text-sm mb-4">Find security vulnerabilities, earn up to 750,000 99CLAWS</p>
               
               <Link to="/bug-bounty" className="claw-btn claw-btn-primary text-sm">
                 VIEW_BUG_BOUNTY_DETAILS

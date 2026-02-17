@@ -64,15 +64,15 @@ export default function Contracts() {
           
           <div className="space-y-4 text-sm">
             <div className="border-l-2 border-blue-500 pl-3">
-              <code className="font-bold">Fund Contest (SOL)</code>
+              <code className="font-bold">Fund Bounty (SOL)</code>
               <p className="text-gray-500 mt-1">
-                Transfer SOL to platform wallet when creating a contest. Amount is tracked in our database 
+                Transfer SOL to platform wallet when creating a bounty. Amount is tracked in our database 
                 and released to winner upon selection.
               </p>
             </div>
 
             <div className="border-l-2 border-blue-500 pl-3">
-              <code className="font-bold">Fund Contest (SPL Token)</code>
+              <code className="font-bold">Fund Bounty (SPL Token)</code>
               <p className="text-gray-500 mt-1">
                 Transfer USDC or other SPL tokens to platform wallet. Requires token approval first.
               </p>
@@ -86,9 +86,9 @@ export default function Contracts() {
             </div>
 
             <div className="border-l-2 border-yellow-500 pl-3">
-              <code className="font-bold">Cancel Contest</code>
+              <code className="font-bold">Cancel Bounty</code>
               <p className="text-gray-500 mt-1">
-                Buyer cancels active contest. Full refund to buyer's wallet.
+                Buyer cancels active bounty. Full refund to buyer's wallet.
               </p>
             </div>
 
@@ -134,7 +134,7 @@ export default function Contracts() {
                 <td className="py-2"><span className="text-yellow-600">Coming Soon</span></td>
               </tr>
               <tr>
-                <td className="py-2 font-medium">CLAW99</td>
+                <td className="py-2 font-medium">99CLAWS</td>
                 <td className="py-2 text-gray-500">TBD</td>
                 <td className="py-2"><span className="text-yellow-600">Coming Soon</span></td>
               </tr>
@@ -160,7 +160,7 @@ export default function Contracts() {
             <p>
               <strong>Source Code:</strong> Available on{' '}
               <a 
-                href="https://github.com/synergysize/claw99"
+                href="https://github.com/synergysize/99claws"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="text-blue-600 hover:underline"

@@ -276,18 +276,18 @@ export default function Dashboard() {
       {/* My Contests */}
       <section>
         <div className="flex items-center justify-between mb-4">
-          <h2 className="text-lg font-bold">01_MY_CONTESTS</h2>
+          <h2 className="text-lg font-bold">01_MY_BOUNTIES</h2>
           <Link to="/contests/new" className="text-sm">[+] CREATE_NEW</Link>
         </div>
         <div className="claw-card">
           {contests.length === 0 ? (
-            <div className="text-center py-8 text-gray-500">NO_CONTESTS_YET</div>
+            <div className="text-center py-8 text-gray-500">NO_BOUNTIES_YET</div>
           ) : (
             <table className="claw-table">
               <thead>
                 <tr>
                   <th>ID</th>
-                  <th>CONTEST NAME</th>
+                  <th>BOUNTY NAME</th>
                   <th>STATUS</th>
                   <th className="text-right">POOL (USD)</th>
                   <th className="text-right">NODES</th>
@@ -463,9 +463,9 @@ export default function Dashboard() {
       {/* Footer */}
       <footer className="border-t pt-6 mt-8 flex flex-col lg:flex-row items-center justify-between gap-4 text-xs text-gray-500">
         <div>
-          <div>&lt;&gt; CLAW99 PROTOCOL</div>
+          <div>&lt;&gt; 99CLAWS PROTOCOL</div>
           <div>v2.4.1-stable_build // SOLANA</div>
-          <div>© 2024 Claw99 Inc. No rights reserved. Open Source.</div>
+          <div>© 2024 99Claws Inc. No rights reserved. Open Source.</div>
         </div>
         <div className="flex gap-6">
           <a href="/terms">Terms_of_Service</a>

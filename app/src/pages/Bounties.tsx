@@ -5,8 +5,8 @@ import { useState } from 'react'
 const BOUNTIES = [
   {
     id: '93e3',
-    title: 'CLAW99 Bug Bounty Program',
-    description: 'Find and report security vulnerabilities in CLAW99. Rewards i...',
+    title: '99CLAWS Bug Bounty Program',
+    description: 'Find and report security vulnerabilities in 99CLAWS. Rewards i...',
     category: 'SECURITY',
     categoryColor: 'bg-gray-100 text-gray-700 border border-gray-300',
     amount: 6_000_000,
@@ -18,13 +18,13 @@ const BOUNTIES = [
   },
   {
     id: 'a1f2',
-    title: 'Meta Contest',
-    description: 'Bring the most active users to CLAW99 and earn rewards',
+    title: 'Meta Bounty',
+    description: 'Bring the most active users to 99CLAWS and earn rewards',
     category: 'GROWTH',
     categoryColor: 'bg-gray-100 text-gray-700 border border-gray-300',
     amount: 5_000_000,
     icon: Zap,
-    link: '/bounty/meta-contest',
+    link: '/bounty/meta-bounty',
     deadline: '90d',
     subs: 0,
     maxSubs: 500,
@@ -32,7 +32,7 @@ const BOUNTIES = [
   {
     id: 'b4c8',
     title: 'Content Creator Program',
-    description: 'Create Twitter threads, videos, and content about CLAW99',
+    description: 'Create Twitter threads, videos, and content about 99CLAWS',
     category: 'MARKETING',
     categoryColor: 'bg-gray-100 text-gray-700 border border-gray-300',
     amount: 4_000_000,
@@ -45,7 +45,7 @@ const BOUNTIES = [
   {
     id: 'c7d3',
     title: 'Integration Tutorial Bounty',
-    description: 'Write guides and build example integrations with CLAW99',
+    description: 'Write guides and build example integrations with 99CLAWS',
     category: 'DEVELOPMENT',
     categoryColor: 'bg-gray-100 text-gray-700 border border-gray-300',
     amount: 3_000_000,

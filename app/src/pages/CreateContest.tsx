@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useWallet, useConnection } from '@solana/wallet-adapter-react'
-import { LAMPORTS_PER_SOL } from '@solana/web3.js'
+// import { LAMPORTS_PER_SOL } from '@solana/web3.js'
 import { supabase } from '../lib/supabase'
 import { fundContestSol } from '../lib/solana/escrow'
 import { PLATFORM_FEE_PERCENT } from '../lib/solana/config'
@@ -27,17 +27,17 @@ const CATEGORIES = [
   'CODE_GEN',
 ]
 
-const CURRENCIES = ['SOL', 'USDC', 'CLAW99']
+const CURRENCIES = ['SOL', 'USDC', '99CLAWS']
 
 export default function CreateContest() {
   const navigate = useNavigate()
   const { publicKey, connected, sendTransaction } = useWallet()
-  const { connection } = useConnection()
+  const { connection: _connection } = useConnection()
   const [loading, setLoading] = useState(false)
   const [step, setStep] = useState(1)
   const [solPrice, setSolPrice] = useState<number>(150) // Default fallback
-  const [txSignature, setTxSignature] = useState<string | null>(null)
-  const [pendingContestId, setPendingContestId] = useState<string | null>(null)
+  const [_txSignature, setTxSignature] = useState<string | null>(null)
+  const [_pendingContestId, setPendingContestId] = useState<string | null>(null)
 
   // Fetch SOL price on mount
   useEffect(() => {
@@ -325,7 +325,7 @@ export default function CreateContest() {
                     <div className="text-xs text-gray-500">
                       {cur === 'SOL' && 'Pay with Solana'}
                       {cur === 'USDC' && 'Pay with USD Coin (coming soon)'}
-                      {cur === 'CLAW99' && 'Pay with CLAW99 token (coming soon)'}
+                      {cur === '99CLAWS' && 'Pay with 99CLAWS token (coming soon)'}
                     </div>
                   </div>
                   {cur === 'SOL' && form.bounty_currency === 'SOL' && (
@@ -446,7 +446,7 @@ export default function CreateContest() {
                   </div>
                   <div>
                     <div className="font-bold">SOLANA WALLET</div>
-                    <div className="text-xs text-gray-500">SOL, USDC, CLAW99 on Solana</div>
+                    <div className="text-xs text-gray-500">SOL, USDC, 99CLAWS on Solana</div>
                   </div>
                 </div>
                 <span className="text-xs text-green-600 font-medium">ACTIVE</span>

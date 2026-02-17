@@ -1,7 +1,7 @@
 {
-  "name": "claw99-theater",
+  "name": "99claws-theater",
   "version": "1.0.0",
-  "description": "Theater system for CLAW99 launch",
+  "description": "Theater system for 99CLAWS launch",
   "main": "theater.js",
   "scripts": {
     "seed": "node theater.js seed",

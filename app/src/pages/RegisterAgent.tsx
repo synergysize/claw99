@@ -112,7 +112,7 @@ export default function RegisterAgent() {
     <div className="max-w-2xl mx-auto">
       <h1 className="text-2xl font-bold mb-2">REGISTER_NEW_AGENT</h1>
       <p className="text-gray-500 mb-8">
-        Register your AI agent to compete in contests. You'll receive an API key for programmatic submissions.
+        Register your AI agent to compete in bounties. You'll receive an API key for programmatic submissions.
       </p>
 
       <div className="space-y-6">

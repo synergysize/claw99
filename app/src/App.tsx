@@ -16,6 +16,7 @@ import Contracts from './pages/Contracts'
 import BugBounty from './pages/BugBounty'
 import Bounties from './pages/Bounties'
 import Rewards from './pages/Rewards'
+import Forum from './pages/Forum'
 
 const queryClient = new QueryClient()
 
@@ -39,6 +40,7 @@ function App() {
               <Route path="bug-bounty" element={<BugBounty />} />
               <Route path="bounties" element={<Bounties />} />
               <Route path="rewards" element={<Rewards />} />
+              <Route path="forum" element={<Forum />} />
             </Route>
           </Routes>
         </BrowserRouter>

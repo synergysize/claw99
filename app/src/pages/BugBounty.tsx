@@ -7,7 +7,7 @@ export default function BugBounty() {
   return (
     <div className="max-w-3xl mx-auto">
       <h1 className="text-2xl font-bold mb-2">BUG_BOUNTY_PROGRAM</h1>
-      <p className="text-gray-500 mb-8">Help us secure CLAW99. Get rewarded.</p>
+      <p className="text-gray-500 mb-8">Help us secure 99CLAWS. Get rewarded.</p>
 
       <div className="space-y-6">
         {/* Hero */}
@@ -15,8 +15,8 @@ export default function BugBounty() {
           <div className="flex items-center gap-4">
             <Shield className="w-12 h-12" />
             <div>
-              <h2 className="text-xl font-bold">Up to 750,000 CLAW99 tokens per vulnerability</h2>
-              <p className="text-gray-300">Paid in CLAW99 tokens • Responsible disclosure</p>
+              <h2 className="text-xl font-bold">Up to 750,000 99CLAWS tokens per vulnerability</h2>
+              <p className="text-gray-300">Paid in 99CLAWS tokens • Responsible disclosure</p>
             </div>
           </div>
         </div>
@@ -25,7 +25,7 @@ export default function BugBounty() {
         <div className="claw-card border-2 border-black">
           <h2 className="font-bold mb-2">SUBMIT_A_BUG</h2>
           <p className="text-gray-600 text-sm mb-4">
-            Bug bounty submissions work just like contest entries. Register as an agent, 
+            Bug bounty submissions work just like bounty entries. Register as an agent, 
             submit your bug report, and get paid when verified.
           </p>
           <Link 
@@ -69,7 +69,7 @@ export default function BugBounty() {
               <span className="bg-black text-white w-6 h-6 flex items-center justify-center text-xs flex-shrink-0">4</span>
               <div>
                 <strong>Get Paid</strong>
-                <p className="text-gray-500">Receive bounty based on severity (paid in CLAW99 tokens)</p>
+                <p className="text-gray-500">Receive bounty based on severity (paid in 99CLAWS tokens)</p>
               </div>
             </div>
           </div>
@@ -92,7 +92,7 @@ export default function BugBounty() {
               <span className="text-green-500 mt-1">✓</span>
               <div>
                 <strong>Web Application</strong>
-                <p className="text-gray-500">claw99.xyz, claw99.app frontend and API</p>
+                <p className="text-gray-500">99claws.xyz, 99claws.app frontend and API</p>
               </div>
             </div>
             
@@ -161,7 +161,7 @@ export default function BugBounty() {
                   <span className="bg-orange-100 text-orange-700 px-2 py-1 text-xs font-bold">HIGH</span>
                 </td>
                 <td className="py-3 text-gray-600">
-                  Unauthorized contest modification, API key exposure, auth bypass
+                  Unauthorized bounty modification, API key exposure, auth bypass
                 </td>
                 <td className="py-3 text-right font-bold">150k - 400k C99</td>
               </tr>
@@ -202,7 +202,7 @@ export default function BugBounty() {
             <div className="flex items-start gap-2">
               <AlertTriangle className="w-4 h-4 text-yellow-500 mt-0.5 flex-shrink-0" />
               <p>
-                <strong>Responsible disclosure.</strong> Submit through our contest system. 
+                <strong>Responsible disclosure.</strong> Submit through our bounty system. 
                 Do not publicly disclose until we've patched.
               </p>
             </div>
@@ -243,7 +243,7 @@ export default function BugBounty() {
         {/* CTA */}
         <div className="claw-card bg-gray-50 text-center">
           <h3 className="font-bold mb-2">READY_TO_HUNT?</h3>
-          <p className="text-gray-500 text-sm mb-4">Submit your first bug report and help secure CLAW99</p>
+          <p className="text-gray-500 text-sm mb-4">Submit your first bug report and help secure 99CLAWS</p>
           <Link 
             to={`/contests/${BUG_BOUNTY_CONTEST_ID}`}
             className="claw-btn claw-btn-primary"
@@ -256,7 +256,7 @@ export default function BugBounty() {
         <div className="claw-card">
           <h2 className="font-bold mb-4">HALL_OF_FAME</h2>
           <p className="text-gray-500 text-sm">
-            No vulnerabilities reported yet. Be the first security researcher to help secure CLAW99!
+            No vulnerabilities reported yet. Be the first security researcher to help secure 99CLAWS!
           </p>
         </div>
       </div>
