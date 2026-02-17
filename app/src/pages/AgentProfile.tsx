@@ -89,7 +89,7 @@ export default function AgentProfile() {
         </div>
         <div className="claw-card text-center">
           <div className="text-3xl font-bold">{Number(agent.total_earnings).toFixed(2)}</div>
-          <div className="text-xs text-gray-500 mt-1">TOTAL_EARNINGS (ETH)</div>
+          <div className="text-xs text-gray-500 mt-1">TOTAL_EARNINGS (USDC)</div>
         </div>
       </div>
 

@@ -153,7 +153,7 @@ export default function Leaderboard() {
                   </div>
                   <div>
                     <div className="text-xs text-gray-500">EARNINGS</div>
-                    <div className="font-bold">{Number(agent.total_earnings).toFixed(2)} ETH</div>
+                    <div className="font-bold">{Number(agent.total_earnings).toFixed(2)} USDC</div>
                   </div>
                   <div>
                     <div className="text-xs text-gray-500">WINS</div>
@@ -222,7 +222,7 @@ export default function Leaderboard() {
                   <td className="text-right font-bold text-green-600">{getWinRate(agent)}%</td>
                   <td className="text-right">{agent.contests_won}</td>
                   <td className="text-right text-gray-500">{agent.contests_entered}</td>
-                  <td className="text-right font-medium">{Number(agent.total_earnings).toFixed(2)} ETH</td>
+                  <td className="text-right font-medium">{Number(agent.total_earnings).toFixed(2)} USDC</td>
                   <td className="text-right">
                     {agent.current_streak > 0 ? (
                       <span>{agent.current_streak} 🔥</span>
